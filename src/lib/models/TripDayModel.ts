@@ -1,0 +1,31 @@
+import type { TripDay, BadgeType } from './types';
+import { dmToDow, dmToLabel } from '$lib/utils/dates';
+
+const BADGE_MAP: Record<BadgeType, { cls: string; label: string }> = {
+  fly:  { cls: 'b-fly',  label: '✈ Vuelo' },
+  bed:  { cls: 'b-bed',  label: '🛏 Dormir' },
+  act:  { cls: 'b-act',  label: '🎯 Planes' },
+  warn: { cls: 'b-warn', label: '⚠ Ojo' },
+};
+
+const CITY_GRADIENT: Record<string, string> = {
+  lima:     'linear-gradient(160deg,#e8dcc8,#ddc9a8)',
+  arequipa: 'linear-gradient(160deg,#f0d9c0,#e6b98f)',
+  cusco:    'linear-gradient(160deg,#e4cdb6,#c99a76)',
+  selva:    'linear-gradient(160deg,#cfe0cb,#9cc09a)',
+};
+
+export class TripDayModel {
+  constructor(readonly data: TripDay) {}
+
+  get dow()          { return dmToDow(this.data.d); }
+  get dayNum()       { return this.data.d % 100; }
+  get dateLabel()    { return dmToLabel(this.data.d); }
+  get cityGradient() { return CITY_GRADIENT[this.data.city] ?? CITY_GRADIENT.lima; }
+
+  get badgeInfos() {
+    return this.data.badges.map(b => ({ ...BADGE_MAP[b], type: b }));
+  }
+
+  isToday(todayDm: number) { return this.data.d === todayDm; }
+}

@@ -1,0 +1,232 @@
+/* ── DESIGN TOKENS ─────────────────────────────────────── */
+:root {
+  --ink:        #2a1a12;
+  --ink-soft:   #5c4636;
+  --paper:      #f3e9db;
+  --paper-2:    #ece0cf;
+  --card:       #fbf5ec;
+  --terra:      #c65a34;
+  --terra-deep: #9c3f22;
+  --clay:       #d98b45;
+  --jade:       #3f7d64;
+  --sky:        #3a6ea5;
+  --gold:       #e0a83e;
+  --line:       rgba(42,26,18,.14);
+  --shadow:     0 8px 24px -12px rgba(42,26,18,.45);
+  --shadow-sm:  0 2px 8px -4px rgba(42,26,18,.3);
+  --radius-sm:  8px;
+  --radius-md:  14px;
+  --radius-lg:  18px;
+  --nav-height: 64px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* ── RESET ─────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; overscroll-behavior-y: none; }
+
+body {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  max-width: 520px;
+  margin: 0 auto;
+  min-height: 100dvh;
+  position: relative;
+}
+
+/* Subtle grid texture */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  max-width: 520px;
+  margin: 0 auto;
+  background-image:
+    repeating-linear-gradient(90deg, rgba(42,26,18,.025) 0 1px, transparent 1px 7px),
+    repeating-linear-gradient(0deg,  rgba(42,26,18,.025) 0 1px, transparent 1px 7px);
+}
+
+/* ── TYPOGRAPHY ─────────────────────────────────────────── */
+.font-serif  { font-family: 'Fraunces', serif; }
+.font-sans   { font-family: 'Space Grotesk', system-ui, sans-serif; }
+
+/* ── LAYOUT ─────────────────────────────────────────────── */
+.page {
+  position: relative;
+  z-index: 1;
+  padding: 0 14px;
+  padding-bottom: calc(var(--nav-height) + var(--safe-bottom) + 20px);
+}
+
+/* ── SECTION LABEL ──────────────────────────────────────── */
+.section-label {
+  font-size: .68rem;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 600;
+  margin: 24px 6px 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-label::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+
+/* ── FILTERS / CHIPS ────────────────────────────────────── */
+.filters {
+  display: flex;
+  gap: 7px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 10px 14px;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: linear-gradient(var(--paper) 70%, transparent);
+  margin: 0 -14px;
+}
+.filters::-webkit-scrollbar { display: none; }
+
+.chip {
+  flex: 0 0 auto;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink-soft);
+  font-family: inherit;
+  font-size: .76rem;
+  font-weight: 600;
+  padding: 6px 13px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: .18s;
+  white-space: nowrap;
+}
+.chip.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+/* ── BUTTONS ────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: inherit;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: .15s;
+  border: none;
+  text-decoration: none;
+}
+.btn-primary   { background: var(--ink); color: var(--paper); font-size: .76rem; padding: 7px 14px; }
+.btn-secondary { background: var(--paper-2); color: var(--ink-soft); border: 1px solid var(--line); font-size: .76rem; padding: 6px 13px; }
+.btn-outline   { background: transparent; color: var(--ink); border: 1px solid var(--line); font-size: .76rem; padding: 6px 13px; }
+.btn-danger    { background: rgba(198,90,52,.12); color: var(--terra-deep); font-size: .76rem; padding: 6px 13px; }
+.btn-primary:active   { background: var(--ink-soft); }
+.btn-secondary:active { background: var(--clay); color: #fff; border-color: var(--clay); }
+.btn-danger:active    { background: var(--terra-deep); color: #fff; }
+
+.btn-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  display: grid; place-items: center;
+  background: rgba(42,26,18,.07);
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: var(--ink-soft);
+  transition: .15s;
+}
+.btn-icon:active { background: var(--ink); color: var(--paper); }
+
+/* ── ROW ACTIONS & NAV BUTTONS ──────────────────────────── */
+.row-actions { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-top: 8px; }
+
+a.call {
+  display: inline-flex; align-items: center; gap: 5px; text-decoration: none;
+  background: var(--ink); color: var(--paper);
+  font-size: .76rem; font-weight: 600; padding: 5px 11px; border-radius: 8px;
+}
+a.maps {
+  display: inline-flex; align-items: center; gap: 5px; text-decoration: none;
+  border: 1px solid var(--line); color: var(--ink);
+  font-size: .76rem; font-weight: 600; padding: 5px 11px; border-radius: 8px;
+}
+.btn-nav {
+  display: inline-flex; align-items: center; gap: 5px;
+  border: 1px solid var(--line); background: var(--paper-2); color: var(--ink-soft);
+  font-size: .76rem; font-weight: 600; padding: 5px 11px; border-radius: 8px;
+  cursor: pointer; font-family: inherit; text-decoration: none; transition: .15s;
+}
+.btn-nav:active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+/* ── BASE CARD ──────────────────────────────────────────── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+  padding: 14px;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+/* ── FLASH ANIMATION ────────────────────────────────────── */
+@keyframes card-flash {
+  0%   { box-shadow: 0 0 0 0   var(--flash-color, var(--terra)); }
+  30%  { box-shadow: 0 0 0 3px var(--flash-color, var(--terra)); }
+  100% { box-shadow: var(--shadow); }
+}
+.flash { animation: card-flash 1.8s ease-out; }
+
+/* ── FORMS (shared across all form modals) ──────────────── */
+.form-title { font-size: 1rem; font-weight: 700; margin-bottom: 16px; }
+.form { display: flex; flex-direction: column; gap: 12px; }
+.field { display: flex; flex-direction: column; gap: 4px; }
+.field > span,
+.field > label > span {
+  font-size: .7rem; font-weight: 600; color: var(--ink-soft);
+  text-transform: uppercase; letter-spacing: .06em;
+}
+.field input,
+.field select,
+.field textarea {
+  font-family: inherit; font-size: .84rem; color: var(--ink);
+  background: var(--paper); border: 1px solid var(--line);
+  border-radius: var(--radius-sm); padding: 8px 10px; outline: none; transition: .15s;
+}
+.field textarea { resize: vertical; line-height: 1.45; }
+.field input:focus,
+.field select:focus,
+.field textarea:focus { border-color: var(--ink); }
+.row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.form-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 4px; }
+
+/* ── INFO PILLS ─────────────────────────────────────────── */
+.pill-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.pill {
+  font-size: .64rem;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+
+.pill-info  { background: var(--paper-2);              color: var(--ink-soft); }
+.pill-green { background: rgba(63,125,100,.12);         color: var(--jade); }
+.pill-sky   { background: rgba(58,110,165,.12);         color: var(--sky); }
+.pill-terra { background: rgba(198,90,52,.12);          color: var(--terra-deep); }
+.pill-warn  { background: rgba(224,168,62,.18);         color: #8a6010; }
+.pill-gold  { background: rgba(224,168,62,.22);         color: #7a5a10; letter-spacing: .04em; }
+
+/* ── FOOTER NOTE ────────────────────────────────────────── */
+.foot { text-align: center; font-size: .68rem; color: var(--ink-soft); padding: 20px 0 8px; opacity: .7; }
