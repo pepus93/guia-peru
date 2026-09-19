@@ -48,10 +48,10 @@
 <style>
   .hotel-header { display: flex; gap: 8px; align-items: flex-start; }
   .hotel-info { display: flex; flex-direction: column; gap: 2px; flex: 1; }
-  .hotel-name  { font-size: .85rem; font-weight: 700; color: var(--ink); }
-  .hotel-dates { font-size: .7rem; color: var(--jade); font-weight: 600; }
-  .hotel-addr  { font-size: .68rem; color: var(--ink-soft); }
-  .hotel-notes { font-size: .68rem; color: var(--jade); margin-top: 1px; }
-  .hotel-times { font-size: .68rem; color: var(--ink-soft); }
+  .hotel-name  { font-size: .9rem; font-weight: 700; color: var(--ink); }
+  .hotel-dates { font-size: .78rem; color: var(--jade); font-weight: 600; }
+  .hotel-addr  { font-size: .76rem; color: var(--ink-soft); }
+  .hotel-notes { font-size: .76rem; color: var(--jade); margin-top: 1px; }
+  .hotel-times { font-size: .76rem; color: var(--ink-soft); }
   .badges-row  { margin-top: 6px; }
 </style>

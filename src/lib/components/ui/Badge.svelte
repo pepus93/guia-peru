@@ -20,7 +20,7 @@
     display: inline-flex;
     align-items: center;
     gap: 3px;
-    font-size: .65rem;
+    font-size: .74rem;
     font-weight: 700;
     letter-spacing: .04em;
     padding: 3px 8px;

@@ -1,0 +1,18 @@
+{
+  "name": "Pepe & Sunta · Perú 2026",
+  "short_name": "Perú 2026",
+  "description": "Guía de viaje para Perú 2026",
+  "start_url": "/dias",
+  "display": "standalone",
+  "background_color": "#f3e9db",
+  "theme_color": "#2a1a12",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

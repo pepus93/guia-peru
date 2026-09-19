@@ -120,23 +120,23 @@
   }
   .exc-days-list li:last-child { border-bottom: none; }
   .day-num {
-    flex: 0 0 38px; font-size: .6rem; font-weight: 700;
+    flex: 0 0 38px; font-size: .7rem; font-weight: 700;
     letter-spacing: .05em; text-transform: uppercase;
     color: rgba(120,80,160,.75); padding-top: 2px;
   }
   .day-body { flex: 1; }
-  .day-route { font-size: .77rem; font-weight: 600; color: var(--ink); line-height: 1.3; }
-  .day-note  { font-size: .67rem; color: var(--ink-soft); margin-top: 2px; line-height: 1.3; }
+  .day-route { font-size: .84rem; font-weight: 600; color: var(--ink); line-height: 1.3; }
+  .day-note  { font-size: .76rem; color: var(--ink-soft); margin-top: 2px; line-height: 1.3; }
 
   /* Listas incluye/no incluye */
   .exc-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 3px; }
-  .exc-list li { font-size: .76rem; line-height: 1.3; }
+  .exc-list li { font-size: .84rem; line-height: 1.3; }
   .exc-list-yes li { color: rgba(63,125,100,.9); }
   .exc-list-no  li { color: rgba(198,90,52,.85); }
 
   /* Aviso */
   .exc-warn {
-    margin-top: 6px; font-size: .74rem; font-weight: 600;
+    margin-top: 6px; font-size: .82rem; font-weight: 600;
     color: #9a6b12; line-height: 1.4; padding: 6px 8px;
     background: rgba(224,168,62,.12); border-radius: 6px;
   }

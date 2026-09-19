@@ -63,7 +63,7 @@
   }
 
   .title-sub {
-    font-size: .72rem;
+    font-size: .8rem;
     letter-spacing: .1em;
     text-transform: uppercase;
     color: rgba(243,233,219,.6);
@@ -79,14 +79,14 @@
     display: flex;
     align-items: center;
     gap: 5px;
-    font-size: .7rem;
+    font-size: .78rem;
   }
 
   .clock-flag { font-size: .9rem; }
 
   .clock-label {
     color: rgba(243,233,219,.55);
-    font-size: .6rem;
+    font-size: .68rem;
     line-height: 1;
     letter-spacing: .04em;
     text-transform: uppercase;
@@ -101,7 +101,7 @@
   }
 
   .clock-diff {
-    font-size: .62rem;
+    font-size: .72rem;
     color: var(--gold);
     font-weight: 700;
     white-space: nowrap;

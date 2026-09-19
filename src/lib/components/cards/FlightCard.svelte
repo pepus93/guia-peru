@@ -119,7 +119,7 @@
 {/if}
 
 <style>
-  .flight-badge { font-size: .6rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--sky); margin-bottom: 10px; }
+  .flight-badge { font-size: .7rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--sky); margin-bottom: 10px; }
   .is-intl .flight-badge { color: var(--terra); }
 
   .flight-row { display: flex; align-items: center; gap: 8px; }
@@ -128,18 +128,18 @@
   .flight-city.right { align-items: flex-end; }
 
   .iata { font-size: 1.15rem; font-weight: 700; color: var(--ink); line-height: 1; }
-  .city-name { font-size: .65rem; color: var(--ink-soft); }
+  .city-name { font-size: .74rem; color: var(--ink-soft); }
   .time { font-size: .9rem; font-weight: 600; color: var(--sky); }
 
   .flight-arrow { display: flex; flex-direction: column; align-items: center; gap: 1px; flex: 0 0 auto; }
-  .airline { font-size: .62rem; color: var(--ink-soft); }
-  .arrow { color: var(--sky); font-size: .75rem; }
-  .code { font-size: .62rem; font-weight: 700; color: var(--ink-soft); letter-spacing: .04em; }
+  .airline { font-size: .72rem; color: var(--ink-soft); }
+  .arrow { color: var(--sky); font-size: .82rem; }
+  .code { font-size: .72rem; font-weight: 700; color: var(--ink-soft); letter-spacing: .04em; }
 
   .badges-row { margin-top: 8px; }
   .flight-transport { margin-top: 6px; display: flex; flex-direction: column; gap: 2px; }
-  .transport-how  { font-size: .72rem; color: var(--ink-soft); }
-  .transport-early { font-size: .7rem; font-weight: 700; color: var(--terra); }
+  .transport-how  { font-size: .8rem; color: var(--ink-soft); }
+  .transport-early { font-size: .78rem; font-weight: 700; color: var(--terra); }
   .early-solo { margin-top: 6px; }
 
   /* ── Boarding passes ─────────────────────────────────────── */
@@ -154,7 +154,7 @@
   .bp-row:last-child { border-bottom: none; }
 
   .bp-who {
-    font-size: .78rem;
+    font-size: .86rem;
     font-weight: 700;
     color: var(--ink);
     min-width: 42px;
@@ -167,7 +167,7 @@
     flex: 1;
   }
   .bp-loc {
-    font-size: .72rem;
+    font-size: .8rem;
     font-weight: 700;
     color: var(--ink);
     letter-spacing: .05em;
@@ -177,11 +177,11 @@
     padding: 1px 6px;
   }
   .bp-field {
-    font-size: .72rem;
+    font-size: .8rem;
     color: var(--ink-soft);
   }
   .bp-seat {
-    font-size: .78rem;
+    font-size: .86rem;
     font-weight: 700;
     color: var(--sky);
     background: rgba(58,110,165,.1);
@@ -210,7 +210,7 @@
     display: block;
   }
   .bp-edit-btn {
-    font-size: .72rem;
+    font-size: .8rem;
     font-weight: 600;
     color: var(--ink-soft);
     background: var(--paper-2);

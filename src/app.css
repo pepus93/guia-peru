@@ -65,7 +65,7 @@ body::before {
 
 /* ── SECTION LABEL ──────────────────────────────────────── */
 .section-label {
-  font-size: .68rem;
+  font-size: .76rem;
   letter-spacing: .24em;
   text-transform: uppercase;
   color: var(--ink-soft);
@@ -101,7 +101,7 @@ body::before {
   background: var(--card);
   color: var(--ink-soft);
   font-family: inherit;
-  font-size: .76rem;
+  font-size: .84rem;
   font-weight: 600;
   padding: 6px 13px;
   border-radius: 999px;
@@ -124,10 +124,10 @@ body::before {
   border: none;
   text-decoration: none;
 }
-.btn-primary   { background: var(--ink); color: var(--paper); font-size: .76rem; padding: 7px 14px; }
-.btn-secondary { background: var(--paper-2); color: var(--ink-soft); border: 1px solid var(--line); font-size: .76rem; padding: 6px 13px; }
-.btn-outline   { background: transparent; color: var(--ink); border: 1px solid var(--line); font-size: .76rem; padding: 6px 13px; }
-.btn-danger    { background: rgba(198,90,52,.12); color: var(--terra-deep); font-size: .76rem; padding: 6px 13px; }
+.btn-primary   { background: var(--ink); color: var(--paper); font-size: .84rem; padding: 7px 14px; }
+.btn-secondary { background: var(--paper-2); color: var(--ink-soft); border: 1px solid var(--line); font-size: .84rem; padding: 6px 13px; }
+.btn-outline   { background: transparent; color: var(--ink); border: 1px solid var(--line); font-size: .84rem; padding: 6px 13px; }
+.btn-danger    { background: rgba(198,90,52,.12); color: var(--terra-deep); font-size: .84rem; padding: 6px 13px; }
 .btn-primary:active   { background: var(--ink-soft); }
 .btn-secondary:active { background: var(--clay); color: #fff; border-color: var(--clay); }
 .btn-danger:active    { background: var(--terra-deep); color: #fff; }
@@ -151,17 +151,17 @@ body::before {
 a.call {
   display: inline-flex; align-items: center; gap: 5px; text-decoration: none;
   background: var(--ink); color: var(--paper);
-  font-size: .76rem; font-weight: 600; padding: 5px 11px; border-radius: 8px;
+  font-size: .84rem; font-weight: 600; padding: 5px 11px; border-radius: 8px;
 }
 a.maps {
   display: inline-flex; align-items: center; gap: 5px; text-decoration: none;
   border: 1px solid var(--line); color: var(--ink);
-  font-size: .76rem; font-weight: 600; padding: 5px 11px; border-radius: 8px;
+  font-size: .84rem; font-weight: 600; padding: 5px 11px; border-radius: 8px;
 }
 .btn-nav {
   display: inline-flex; align-items: center; gap: 5px;
   border: 1px solid var(--line); background: var(--paper-2); color: var(--ink-soft);
-  font-size: .76rem; font-weight: 600; padding: 5px 11px; border-radius: 8px;
+  font-size: .84rem; font-weight: 600; padding: 5px 11px; border-radius: 8px;
   cursor: pointer; font-family: inherit; text-decoration: none; transition: .15s;
 }
 .btn-nav:active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
@@ -195,13 +195,13 @@ a.maps {
 .field { display: flex; flex-direction: column; gap: 4px; }
 .field > span,
 .field > label > span {
-  font-size: .7rem; font-weight: 600; color: var(--ink-soft);
+  font-size: .78rem; font-weight: 600; color: var(--ink-soft);
   text-transform: uppercase; letter-spacing: .06em;
 }
 .field input,
 .field select,
 .field textarea {
-  font-family: inherit; font-size: .84rem; color: var(--ink);
+  font-family: inherit; font-size: .9rem; color: var(--ink);
   background: var(--paper); border: 1px solid var(--line);
   border-radius: var(--radius-sm); padding: 8px 10px; outline: none; transition: .15s;
 }
@@ -221,7 +221,7 @@ a.maps {
 }
 
 .pill {
-  font-size: .64rem;
+  font-size: .74rem;
   font-weight: 600;
   padding: 2px 7px;
   border-radius: 5px;
@@ -242,7 +242,7 @@ a.maps {
   border-top: 1px solid var(--line);
 }
 .card-section-title {
-  font-size: .62rem;
+  font-size: .72rem;
   font-weight: 700;
   letter-spacing: .07em;
   text-transform: uppercase;
@@ -251,4 +251,4 @@ a.maps {
 }
 
 /* ── FOOTER NOTE ────────────────────────────────────────── */
-.foot { text-align: center; font-size: .68rem; color: var(--ink-soft); padding: 20px 0 8px; opacity: .7; }
+.foot { text-align: center; font-size: .76rem; color: var(--ink-soft); padding: 20px 0 8px; opacity: .7; }

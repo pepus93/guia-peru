@@ -292,17 +292,17 @@
     padding: 10px 4px;
     gap: 1px;
   }
-  .dow  { font-size: .58rem; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-soft); font-weight: 600; }
+  .dow  { font-size: .66rem; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-soft); font-weight: 600; }
   .dnum { font-size: 1.6rem; font-weight: 600; line-height: 1; color: var(--ink); }
-  .mon  { font-size: .58rem; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-soft); font-weight: 600; }
+  .mon  { font-size: .66rem; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-soft); font-weight: 600; }
 
   /* ── Day main ───────────────────────────────────────── */
   .day-main { flex: 1; padding: 12px 32px 12px 12px; min-width: 0; }
   .day-title { font-size: 1.08rem; font-weight: 600; line-height: 1.15; letter-spacing: -.01em; }
-  .day-sub   { font-size: .77rem; color: var(--ink-soft); margin-top: 1px; }
+  .day-sub   { font-size: .84rem; color: var(--ink-soft); margin-top: 1px; }
 
   .badges { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 7px; }
-  .badge  { font-size: .64rem; font-weight: 600; padding: 2px 7px; border-radius: 6px; display: inline-flex; align-items: center; gap: 3px; }
+  .badge  { font-size: .74rem; font-weight: 600; padding: 2px 7px; border-radius: 6px; display: inline-flex; align-items: center; gap: 3px; }
   :global(.b-fly)  { background: rgba(58,110,165,.14);  color: var(--sky); }
   :global(.b-bed)  { background: rgba(63,125,100,.14);  color: var(--jade); }
   :global(.b-act)  { background: rgba(198,90,52,.13);   color: var(--terra-deep); }
@@ -324,7 +324,7 @@
   }
 
   .warn-label {
-    font-size: .68rem;
+    font-size: .76rem;
     text-transform: uppercase;
     letter-spacing: .1em;
     color: var(--ink-soft);

@@ -114,7 +114,7 @@
       </div>
     {:else}
       <label class="img-upload-btn">
-        <input type="file" accept="image/*" capture="environment" on:change={onFileChange} />
+        <input type="file" accept="image/*" on:change={onFileChange} />
         <span>📷 Añadir foto</span>
       </label>
     {/if}

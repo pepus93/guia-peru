@@ -38,7 +38,7 @@
   .row-body { flex: 1; min-width: 0; }
 
   .rt {
-    font-size: .68rem;
+    font-size: .76rem;
     text-transform: uppercase;
     letter-spacing: .1em;
     color: var(--ink-soft);
