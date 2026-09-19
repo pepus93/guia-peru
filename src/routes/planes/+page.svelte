@@ -1,25 +1,24 @@
 <script lang="ts">
-  import { activityList, tripDays, loading } from '$lib/stores/trip';
-  import ActivityCard from '$lib/components/cards/ActivityCard.svelte';
-  import FilterChips from '$lib/components/ui/FilterChips.svelte';
-  import ListToolbar from '$lib/components/ui/ListToolbar.svelte';
+  import { activityList, excursionList, tripDays, loading } from '$lib/stores/trip';
+  import ActivityCard  from '$lib/components/cards/ActivityCard.svelte';
+  import ExcursionCard from '$lib/components/cards/ExcursionCard.svelte';
+  import FlashHandler  from '$lib/components/ui/FlashHandler.svelte';
+  import FAB           from '$lib/components/ui/FAB.svelte';
   import { openModal } from '$lib/stores/ui';
-  import { ACTIVITY_TYPES } from '$lib/models/types';
   import { dmToLabel } from '$lib/utils/dates';
+  import type { Activity, Excursion } from '$lib/models/types';
 
-  const TYPE_FILTERS = [
-    { key: 'all', label: 'Todos' },
-    ...Object.entries(ACTIVITY_TYPES).map(([k, v]) => ({ key: k, label: `${v.icon} ${v.label}` })),
+  type PlanItem =
+    | { kind: 'activity';  item: Activity }
+    | { kind: 'excursion'; item: Excursion };
+
+  $: allPlans = [
+    ...$activityList.map(a  => ({ kind: 'activity',  item: a } as PlanItem)),
+    ...$excursionList.map(e => ({ kind: 'excursion', item: e } as PlanItem)),
   ];
 
-  let filter = 'all';
-
-  $: filtered = filter === 'all'
-    ? $activityList
-    : $activityList.filter(a => a.type === filter);
-
-  $: byDay = filtered.reduce<Record<number, typeof filtered>>((acc, a) => {
-    (acc[a.dayDm] ??= []).push(a);
+  $: byDay = allPlans.reduce<Record<number, PlanItem[]>>((acc, p) => {
+    (acc[p.item.dayDm] ??= []).push(p);
     return acc;
   }, {});
 
@@ -31,25 +30,26 @@
   }
 </script>
 
-<FilterChips filters={TYPE_FILTERS} active={filter} on:change={(e) => (filter = e.detail)} />
-<ListToolbar count={filtered.length} singular="plan" plural="planes" addLabel="+ Añadir plan" on:add={() => openModal('activity')} />
+<FlashHandler {loading} />
+
+<FAB on:click={() => openModal('activity')} />
 
 {#if $loading}
   <p class="empty-msg">Cargando…</p>
 {:else if dayKeys.length === 0}
-  <p class="empty-msg">Aún no hay planes añadidos.</p>
+  <p class="empty-msg">Aún no hay planes.</p>
 {:else}
   {#each dayKeys as dm}
     <div class="day-group">
       <div class="section-label">{dayTitle(dm)}</div>
-      {#each byDay[dm] as act (act.id)}
-        <ActivityCard activity={act} />
+      {#each byDay[dm] as plan (plan.item.id)}
+        {#if plan.kind === 'activity'}
+          <ActivityCard activity={plan.item} />
+        {:else}
+          <ExcursionCard excursion={plan.item} />
+        {/if}
       {/each}
     </div>
   {/each}
 {/if}
 
-<style>
-  .day-group { margin-bottom: 4px; }
-  .empty-msg { text-align: center; color: var(--ink-soft); padding: 40px 0; font-size: .85rem; }
-</style>

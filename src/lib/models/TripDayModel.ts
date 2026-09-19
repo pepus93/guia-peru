@@ -1,5 +1,5 @@
 import type { TripDay, BadgeType } from './types';
-import { dmToDow, dmToLabel } from '$lib/utils/dates';
+import { dmToDow, dmToLabel, todayDm } from '$lib/utils/dates';
 
 const BADGE_MAP: Record<BadgeType, { cls: string; label: string }> = {
   fly:  { cls: 'b-fly',  label: '✈ Vuelo' },
@@ -27,5 +27,6 @@ export class TripDayModel {
     return this.data.badges.map(b => ({ ...BADGE_MAP[b], type: b }));
   }
 
-  isToday(todayDm: number) { return this.data.d === todayDm; }
+  get isPast()  { return this.data.d < todayDm(); }
+  isToday()     { return this.data.d === todayDm(); }
 }

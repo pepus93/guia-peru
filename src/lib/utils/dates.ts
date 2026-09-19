@@ -28,6 +28,17 @@ export function todayDm(): number {
   return (d.getMonth() + 1) * 100 + d.getDate();
 }
 
+// "12 oct" para un día, "12–15 oct" para un rango del mismo mes
+export function dmToDateRange(from: number, to?: number): string {
+  if (!to || to === from) return dmToLabel(from);
+  const fromDate = dmToDate(from);
+  const toDate   = dmToDate(to);
+  if (fromDate.getMonth() === toDate.getMonth()) {
+    return `${fromDate.getDate()}–${toDate.getDate()} ${MONTHS_ES[fromDate.getMonth()]}`;
+  }
+  return `${dmToLabel(from)} – ${dmToLabel(to)}`;
+}
+
 export function countdownLabel(dm: number): string {
   const n = daysUntil(dm);
   if (n < 0)  return 'En curso';

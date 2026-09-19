@@ -1,5 +1,4 @@
-import type { Flight } from './types';
-import type { InfoBadge } from './ActivityModel';
+import type { Flight, InfoBadge } from './types';
 
 export class FlightModel {
   constructor(readonly data: Flight) {}

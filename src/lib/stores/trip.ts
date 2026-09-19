@@ -1,18 +1,19 @@
 import { writable, derived, get } from 'svelte/store';
-import type { Trip, TripDay, Activity, Flight, Accommodation, Traveler } from '$lib/models/types';
-import { trips, days, activities, flights, accommodations, travelers } from '$lib/firebase/services';
-import { SEED_TRIP, SEED_DAYS, SEED_ACTIVITIES, SEED_FLIGHTS, SEED_ACCOMMODATIONS, SEED_TRAVELERS } from '$lib/data/seed';
+import type { Trip, TripDay, Activity, Flight, Accommodation, Traveler, Excursion } from '$lib/models/types';
+import { trips, days, activities, flights, accommodations, travelers, excursions } from '$lib/firebase/services';
+import { SEED_TRIP, SEED_DAYS, SEED_ACTIVITIES, SEED_FLIGHTS, SEED_ACCOMMODATIONS, SEED_TRAVELERS, SEED_EXCURSIONS } from '$lib/data/seed';
 import { TRIP_ID } from '$lib/config';
 
 // ── State ──────────────────────────────────────────────────
 
-export const trip         = writable<Trip | null>(null);
-export const tripDays     = writable<TripDay[]>([]);
-export const activityList = writable<Activity[]>([]);
-export const flightList   = writable<Flight[]>([]);
-export const stayList     = writable<Accommodation[]>([]);
-export const travelerList = writable<Traveler[]>([]);
-export const loading      = writable(false);
+export const trip           = writable<Trip | null>(null);
+export const tripDays       = writable<TripDay[]>([]);
+export const activityList   = writable<Activity[]>([]);
+export const flightList     = writable<Flight[]>([]);
+export const stayList       = writable<Accommodation[]>([]);
+export const travelerList   = writable<Traveler[]>([]);
+export const excursionList  = writable<Excursion[]>([]);
+export const loading        = writable(false);
 
 // ── Derived ────────────────────────────────────────────────
 
@@ -29,6 +30,10 @@ export const flightsMap = derived(flightList, ($fl) =>
 
 export const staysMap = derived(stayList, ($sl) =>
   Object.fromEntries($sl.map(s => [s.id, s]))
+);
+
+export const excursionsMap = derived(excursionList, ($el) =>
+  Object.fromEntries($el.map(e => [e.id, e]))
 );
 
 // ── Load ───────────────────────────────────────────────────
@@ -49,18 +54,20 @@ export async function loadTrip() {
 
     trip.set(t);
 
-    const [d, a, f, s, tv] = await Promise.all([
+    const [d, a, f, s, tv, ex] = await Promise.all([
       days.getByTrip(TRIP_ID).catch(() => SEED_DAYS),
       activities.getByTrip(TRIP_ID).catch(() => SEED_ACTIVITIES),
       flights.getByTrip(TRIP_ID).catch(() => SEED_FLIGHTS),
       accommodations.getByTrip(TRIP_ID).catch(() => SEED_ACCOMMODATIONS),
       travelers.getByTrip(TRIP_ID).catch(() => SEED_TRAVELERS),
+      excursions.getByTrip(TRIP_ID).catch(() => SEED_EXCURSIONS),
     ]);
     tripDays.set(d);
     activityList.set(a);
     flightList.set(f);
     stayList.set(s);
     travelerList.set(tv);
+    excursionList.set(ex);
   } finally {
     loading.set(false);
   }
@@ -74,26 +81,26 @@ async function seedFirestore() {
     ...SEED_FLIGHTS.map(f => flights.save(f)),
     ...SEED_ACCOMMODATIONS.map(s => accommodations.save(s)),
     ...SEED_TRAVELERS.map(t => travelers.save(t)),
+    ...SEED_EXCURSIONS.map(e => excursions.save(e)),
   ]);
 }
 
 // ── Mutations: Activity ────────────────────────────────────
 
 export async function saveActivity(a: Activity) {
-  await activities.save(a);
   activityList.update(list => {
     const idx = list.findIndex(x => x.id === a.id);
     return idx >= 0 ? list.with(idx, a) : [...list, a];
   });
-  // Actualiza badge del día
   _syncDayActivityBadge(a.dayDm);
+  await activities.save(a).catch(() => {});
 }
 
 export async function deleteActivity(id: string) {
   const a = get(activityList).find(x => x.id === id);
-  await activities.delete(id);
   activityList.update(list => list.filter(x => x.id !== id));
   if (a) _syncDayActivityBadge(a.dayDm);
+  await activities.delete(id).catch(() => {});
 }
 
 // ── Mutations: TripDay warn ────────────────────────────────
@@ -109,16 +116,16 @@ export async function saveDayWarn(dayId: string, warn: string) {
 // ── Mutations: Flight ──────────────────────────────────────
 
 export async function saveFlight(f: Flight) {
-  await flights.save(f);
   flightList.update(list => {
     const idx = list.findIndex(x => x.id === f.id);
     return idx >= 0 ? list.with(idx, f) : [...list, f];
   });
+  await flights.save(f).catch(() => {});
 }
 
 export async function deleteFlight(id: string) {
-  await flights.delete(id);
   flightList.update(list => list.filter(x => x.id !== id));
+  await flights.delete(id).catch(() => {});
 }
 
 export async function saveBoardingPass(flightId: string, bp: import('$lib/models/types').BoardingPass) {
@@ -132,16 +139,16 @@ export async function saveBoardingPass(flightId: string, bp: import('$lib/models
 // ── Mutations: Accommodation ───────────────────────────────
 
 export async function saveAccommodation(a: Accommodation) {
-  await accommodations.save(a);
   stayList.update(list => {
     const idx = list.findIndex(x => x.id === a.id);
     return idx >= 0 ? list.with(idx, a) : [...list, a];
   });
+  await accommodations.save(a).catch(() => {});
 }
 
 export async function deleteAccommodation(id: string) {
-  await accommodations.delete(id);
   stayList.update(list => list.filter(x => x.id !== id));
+  await accommodations.delete(id).catch(() => {});
 }
 
 // ── Helpers ────────────────────────────────────────────────

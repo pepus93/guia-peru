@@ -1,8 +1,9 @@
 <script lang="ts">
   import type { Accommodation } from '$lib/models/types';
-  import { saveAccommodation } from '$lib/stores/trip';
+  import { saveAccommodation, tripDays } from '$lib/stores/trip';
   import { closeModal } from '$lib/stores/ui';
   import { nanoid } from '$lib/utils/maps';
+  import { dmToLabel, dmToDateRange } from '$lib/utils/dates';
   import { TRIP_ID } from '$lib/config';
 
   export let data: Partial<Accommodation> | null = null;
@@ -11,16 +12,23 @@
     id:       data?.id       || nanoid('hot_'),
     tripId:   data?.tripId   || TRIP_ID,
     name:     data?.name     || '',
-    city:     data?.city     || 'lima',
+    city:     data?.city     || $tripDays[0]?.city || 'lima',
     dates:    data?.dates    || '',
-    startDm:  data?.startDm  ?? 1009,
-    endDm:    data?.endDm    ?? 1009,
+    startDm:  data?.startDm  ?? ($tripDays[0]?.d || 1009),
+    endDm:    data?.endDm    ?? ($tripDays[0]?.d || 1009),
     addr:     data?.addr     || '',
     tel:      data?.tel      || '',
     checkIn:  data?.checkIn  || '',
     checkOut: data?.checkOut || '',
     notes:    data?.notes    || '',
   };
+
+  // Sincroniza ciudad y fechas cuando cambian los selectores de día
+  $: {
+    const startDay = $tripDays.find(d => d.d === form.startDm);
+    if (startDay) form.city = startDay.city;
+    form.dates = dmToDateRange(form.startDm, form.endDm);
+  }
 
   let saving = false;
 
@@ -44,20 +52,24 @@
     <input type="text" bind:value={form.name} placeholder="Hotel Límade ★★★" required />
   </label>
 
-  <label class="field">
-    <span>Ciudad</span>
-    <select bind:value={form.city}>
-      <option value="lima">Lima</option>
-      <option value="arequipa">Arequipa</option>
-      <option value="cusco">Cusco</option>
-      <option value="selva">Amazonia</option>
-    </select>
-  </label>
-
-  <label class="field">
-    <span>Fechas</span>
-    <input type="text" bind:value={form.dates} placeholder="9–12 oct" />
-  </label>
+  <div class="row-2">
+    <label class="field">
+      <span>Check-in (día)</span>
+      <select bind:value={form.startDm}>
+        {#each $tripDays as d}
+          <option value={d.d}>{dmToLabel(d.d)}</option>
+        {/each}
+      </select>
+    </label>
+    <label class="field">
+      <span>Check-out (día)</span>
+      <select bind:value={form.endDm}>
+        {#each $tripDays as d}
+          <option value={d.d}>{dmToLabel(d.d)}</option>
+        {/each}
+      </select>
+    </label>
+  </div>
 
   <label class="field">
     <span>Dirección</span>
@@ -92,4 +104,3 @@
     </button>
   </div>
 </form>
-

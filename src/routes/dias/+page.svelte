@@ -1,33 +1,25 @@
 <script lang="ts">
+  import { tick } from 'svelte';
   import { tripDays, loading } from '$lib/stores/trip';
   import DayCard from '$lib/components/cards/DayCard.svelte';
-  import FilterChips from '$lib/components/ui/FilterChips.svelte';
+  import { todayDm } from '$lib/utils/dates';
 
-  const CITIES = [
-    { key: 'all',      label: 'Todos' },
-    { key: 'lima',     label: '🏙 Lima' },
-    { key: 'arequipa', label: '🌋 Arequipa' },
-    { key: 'cusco',    label: '🏔 Cusco' },
-    { key: 'selva',    label: '🌿 Amazonia' },
-  ];
+  let scrolled = false;
 
-  let filter = 'all';
-
-  $: filtered = filter === 'all'
-    ? $tripDays
-    : $tripDays.filter(d => d.city === filter);
+  $: if (!$loading && !scrolled) {
+    scrolled = true;
+    tick().then(() => {
+      const el = document.getElementById(`day-${todayDm()}`);
+      el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
 </script>
 
-<FilterChips filters={CITIES} active={filter} on:change={(e) => (filter = e.detail)} />
-
 {#if $loading}
-  <p class="loading-msg">Cargando…</p>
+  <p class="empty-msg">Cargando…</p>
 {:else}
-  {#each filtered as day (day.id)}
+  {#each $tripDays as day (day.id)}
     <DayCard {day} />
   {/each}
 {/if}
 
-<style>
-  .loading-msg { text-align: center; color: var(--ink-soft); padding: 40px 0; font-size: .85rem; }
-</style>

@@ -1,46 +1,31 @@
-import type { Activity } from './types';
+import type { Activity, InfoBadge } from './types';
 import { ACTIVITY_TYPES } from './types';
 import { mapsUrl } from '$lib/utils/maps';
+import { BaseDayModel } from './BaseDayModel';
 
-export interface InfoBadge {
-  label: string;
-  cls: 'pill-info' | 'pill-green' | 'pill-sky' | 'pill-terra' | 'pill-warn' | 'pill-gold';
-}
-
-export class ActivityModel {
-  constructor(readonly data: Activity) {}
+export class ActivityModel extends BaseDayModel<Activity> {
+  // meetUrl, endUrl y timeLabel heredados de BaseDayModel
 
   get typeInfo() {
     return ACTIVITY_TYPES[this.data.type] ?? { icon: '📌', bg: 'rgba(42,26,18,.07)', label: this.data.type };
   }
 
-  get mapsUrl()  { return this.data.mapsQuery  ? mapsUrl(this.data.mapsQuery)  : ''; }
-  get meetUrl()  { return this.data.meetQuery  ? mapsUrl(this.data.meetQuery)  : ''; }
-  get endUrl()   { return this.data.endQuery   ? mapsUrl(this.data.endQuery)   : ''; }
-
-  get timeLabel() {
-    const parts = [this.data.time, this.data.duration].filter(Boolean);
-    return parts.join(' · ');
-  }
-
+  get mapsUrl()  { return this.data.mapsQuery ? mapsUrl(this.data.mapsQuery) : ''; }
   get hasMaps()  { return !!(this.mapsUrl || this.meetUrl || this.endUrl); }
   get hasPhone() { return !!this.data.tel; }
 
-  // ── Info badges — defined per type ───────────────────────
+  // ── Info badges — definidos por tipo ────────────────────────
 
   get infoBadges(): InfoBadge[] {
     const b: InfoBadge[] = [];
     const note = this.data.note?.toLowerCase() ?? '';
 
-    // Duration — universal
     if (this.data.duration)
       b.push({ label: this.data.duration, cls: 'pill-info' });
 
-    // Booking confirmed
     if (this.data.bookingUrl)
       b.push({ label: '🎫 Reservado', cls: 'pill-green' });
 
-    // Type-specific logic
     switch (this.data.type) {
       case 'tour':
         if (note.includes('gratis') || note.includes('gratuito'))
@@ -49,7 +34,6 @@ export class ActivityModel {
           b.push({ label: 'Propina voluntaria', cls: 'pill-info' });
         else if (note.includes('incluido') || note.includes('included'))
           b.push({ label: 'Incluido', cls: 'pill-green' });
-        // Agency name: first segment before · in note
         if (this.data.note?.includes('·')) {
           const agency = this.data.note.split('·')[0].trim();
           if (agency.length > 0 && agency.length <= 20)

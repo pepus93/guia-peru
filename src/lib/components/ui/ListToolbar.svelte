@@ -4,7 +4,7 @@
   export let count: number;
   export let singular: string;
   export let plural: string;
-  export let addLabel: string;
+  export let addLabel: string = '';
 
   const dispatch = createEventDispatcher<{ add: void }>();
 
@@ -13,9 +13,11 @@
 
 <div class="list-toolbar">
   <span class="list-count">{label}</span>
-  <button class="btn btn-primary add-btn" on:click={() => dispatch('add')}>
-    {addLabel}
-  </button>
+  {#if addLabel}
+    <button class="btn btn-primary add-btn" on:click={() => dispatch('add')}>
+      {addLabel}
+    </button>
+  {/if}
 </div>
 
 <style>

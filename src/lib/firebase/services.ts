@@ -5,7 +5,7 @@ import {
   serverTimestamp,
 } from 'firebase/firestore';
 import { db } from './config';
-import type { Activity, Flight, Accommodation, TripDay, Trip, Traveler } from '$lib/models/types';
+import type { Activity, Flight, Accommodation, TripDay, Trip, Traveler, Excursion } from '$lib/models/types';
 
 // ── Generic helpers ────────────────────────────────────────
 
@@ -36,6 +36,13 @@ async function remove(path: string, id: string): Promise<void> {
   await deleteDoc(ref(path, id));
 }
 
+async function queryByTrip<T>(path: string, tripId: string, orderField?: string): Promise<T[]> {
+  const constraints: import('firebase/firestore').QueryConstraint[] = [where('tripId', '==', tripId)];
+  if (orderField) constraints.push(orderBy(orderField));
+  const snap = await getDocs(query(col(path), ...constraints));
+  return snap.docs.map(d => ({ id: d.id, ...d.data() }) as T);
+}
+
 // ── Trip ───────────────────────────────────────────────────
 
 export const trips = {
@@ -48,11 +55,7 @@ export const trips = {
 // ── TripDay ────────────────────────────────────────────────
 
 export const days = {
-  getByTrip: async (tripId: string): Promise<TripDay[]> => {
-    const q = query(col('days'), where('tripId', '==', tripId), orderBy('d'));
-    const snap = await getDocs(q);
-    return snap.docs.map(d => ({ id: d.id, ...d.data() }) as TripDay);
-  },
+  getByTrip: (tripId: string) => queryByTrip<TripDay>('days', tripId, 'd'),
   save:   (day: TripDay) => upsert('days', day),
   delete: (id: string) => remove('days', id),
 };
@@ -60,11 +63,7 @@ export const days = {
 // ── Activity ───────────────────────────────────────────────
 
 export const activities = {
-  getByTrip: async (tripId: string): Promise<Activity[]> => {
-    const q = query(col('activities'), where('tripId', '==', tripId), orderBy('dayDm'));
-    const snap = await getDocs(q);
-    return snap.docs.map(d => ({ id: d.id, ...d.data() }) as Activity);
-  },
+  getByTrip: (tripId: string) => queryByTrip<Activity>('activities', tripId, 'dayDm'),
   getByDay: async (tripId: string, dayDm: number): Promise<Activity[]> => {
     const q = query(
       col('activities'),
@@ -81,11 +80,7 @@ export const activities = {
 // ── Flight ─────────────────────────────────────────────────
 
 export const flights = {
-  getByTrip: async (tripId: string): Promise<Flight[]> => {
-    const q = query(col('flights'), where('tripId', '==', tripId), orderBy('dm'));
-    const snap = await getDocs(q);
-    return snap.docs.map(d => ({ id: d.id, ...d.data() }) as Flight);
-  },
+  getByTrip: (tripId: string) => queryByTrip<Flight>('flights', tripId, 'dm'),
   save:   (f: Flight) => upsert('flights', f),
   delete: (id: string) => remove('flights', id),
 };
@@ -93,23 +88,23 @@ export const flights = {
 // ── Accommodation ──────────────────────────────────────────
 
 export const accommodations = {
-  getByTrip: async (tripId: string): Promise<Accommodation[]> => {
-    const q = query(col('accommodations'), where('tripId', '==', tripId));
-    const snap = await getDocs(q);
-    return snap.docs.map(d => ({ id: d.id, ...d.data() }) as Accommodation);
-  },
+  getByTrip: (tripId: string) => queryByTrip<Accommodation>('accommodations', tripId, 'startDm'),
   save:   (a: Accommodation) => upsert('accommodations', a),
   delete: (id: string) => remove('accommodations', id),
+};
+
+// ── Excursion ──────────────────────────────────────────────
+
+export const excursions = {
+  getByTrip: (tripId: string) => queryByTrip<Excursion>('excursions', tripId, 'dayDm'),
+  save:   (e: Excursion) => upsert('excursions', e),
+  delete: (id: string) => remove('excursions', id),
 };
 
 // ── Traveler ───────────────────────────────────────────────
 
 export const travelers = {
-  getByTrip: async (tripId: string): Promise<Traveler[]> => {
-    const q = query(col('travelers'), where('tripId', '==', tripId));
-    const snap = await getDocs(q);
-    return snap.docs.map(d => ({ id: d.id, ...d.data() }) as Traveler);
-  },
+  getByTrip: (tripId: string) => queryByTrip<Traveler>('travelers', tripId),
   save:   (t: Traveler) => upsert('travelers', t),
   delete: (id: string) => remove('travelers', id),
 };

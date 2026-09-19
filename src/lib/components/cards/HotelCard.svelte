@@ -22,6 +22,9 @@
       <span class="hotel-name">{hotel.name}</span>
       <span class="hotel-dates">{hotel.dates}</span>
       <span class="hotel-addr">{hotel.addr}</span>
+      {#if hotel.notes}
+        <span class="hotel-notes">{hotel.notes}</span>
+      {/if}
       {#if model.infoBadges.length}
         <div class="pill-line badges-row">
           {#each model.infoBadges as b}<span class="pill {b.cls}">{b.label}</span>{/each}
@@ -51,6 +54,7 @@
   .hotel-name  { font-size: .85rem; font-weight: 700; color: var(--ink); }
   .hotel-dates { font-size: .7rem; color: var(--jade); font-weight: 600; }
   .hotel-addr  { font-size: .68rem; color: var(--ink-soft); }
+  .hotel-notes { font-size: .68rem; color: var(--jade); margin-top: 1px; }
   .hotel-times { font-size: .68rem; color: var(--ink-soft); }
   .badges-row  { margin-top: 6px; }
 </style>

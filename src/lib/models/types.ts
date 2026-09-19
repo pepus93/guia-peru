@@ -1,10 +1,10 @@
 // ── CITY ────────────────────────────────────────────────────
 export type City = 'lima' | 'arequipa' | 'cusco' | 'selva';
 
-// ── ACTIVITY ─────────────────────────────────────────────────
+// ── ACTIVITY TYPE ─────────────────────────────────────────────
 export type ActivityType =
   | 'tour' | 'restaurant' | 'museo' | 'transporte'
-  | 'mirador' | 'playa' | 'compras' | 'ocio';
+  | 'mirador' | 'playa' | 'compras' | 'ocio' | 'excursion';
 
 export const ACTIVITY_TYPES: Record<ActivityType, { icon: string; bg: string; label: string }> = {
   tour:       { icon: '🎭', bg: 'rgba(63,125,100,.14)',  label: 'Tour' },
@@ -15,25 +15,39 @@ export const ACTIVITY_TYPES: Record<ActivityType, { icon: string; bg: string; la
   playa:      { icon: '🏖️', bg: 'rgba(58,110,165,.12)', label: 'Playa' },
   compras:    { icon: '🛍️', bg: 'rgba(198,90,52,.12)',  label: 'Compras' },
   ocio:       { icon: '🎉', bg: 'rgba(224,168,62,.14)', label: 'Ocio' },
+  excursion:  { icon: '🥾', bg: 'rgba(120,80,160,.14)', label: 'Excursión' },
 };
 
-export interface Activity {
+// ── INFO BADGE ────────────────────────────────────────────────
+export interface InfoBadge {
+  label: string;
+  cls: 'pill-info' | 'pill-green' | 'pill-sky' | 'pill-terra' | 'pill-warn' | 'pill-gold';
+}
+
+// ── BASE ACTIVITY ─────────────────────────────────────────────
+// Campos comunes a Activity y Excursion (ambos son elementos de un día concreto)
+export interface BaseActivity {
   id: string;
   tripId: string;
   dayDm: number;
+  endDayDm?: number;   // para planes multi-día (p.ej. excursión que abarca 2 días)
   city: City;
-  type: ActivityType;
   name: string;
   time?: string;
   duration?: string;
   note?: string;
   meet?: string;
+  meetQuery?: string;
   end?: string;
+  endQuery?: string;
+}
+
+// ── ACTIVITY ─────────────────────────────────────────────────
+export interface Activity extends BaseActivity {
+  type: ActivityType;
   addr?: string;
   tel?: string;
   mapsQuery?: string;
-  meetQuery?: string;
-  endQuery?: string;
   bookingUrl?: string;
 }
 
@@ -91,6 +105,29 @@ export interface Accommodation {
   notes?: string;
 }
 
+// ── EXCURSION ─────────────────────────────────────────────────
+// Extiende BaseActivity y convierte algunos opcionales en obligatorios
+export interface ExcursionDay {
+  title: string;   // ruta / hitos principales del día
+  sub?: string;    // info extra (alojamiento, altitud, etc.)
+}
+
+export interface Excursion extends BaseActivity {
+  time: string;        // obligatorio (en BaseActivity es opcional)
+  duration: string;    // obligatorio
+  meet: string;        // obligatorio
+  bookingCode: string;
+  pin?: string;
+  provider: string;
+  providerTel: string;
+  price: string;
+  includes: string[];
+  notIncludes: string[];
+  days?: ExcursionDay[];    // itinerario día a día (excursiones multi-día)
+  cancelBefore?: string;
+  warn?: string;
+}
+
 // ── TRIP DAY ──────────────────────────────────────────────────
 export type BadgeType = 'fly' | 'bed' | 'act' | 'warn';
 
@@ -102,8 +139,9 @@ export interface TripDay {
   place: string;
   title: string;
   sub: string;
-  flightId?: string;
+  flightIds?: string[];
   stayId?: string;
+  excursionId?: string;
   act?: string[];
   warn?: string;
   badges: BadgeType[];

@@ -1,9 +1,10 @@
 <script lang="ts">
   import type { Activity, ActivityType } from '$lib/models/types';
   import { ACTIVITY_TYPES } from '$lib/models/types';
-  import { saveActivity } from '$lib/stores/trip';
+  import { saveActivity, tripDays } from '$lib/stores/trip';
   import { closeModal } from '$lib/stores/ui';
   import { nanoid } from '$lib/utils/maps';
+  import { dmToLabel } from '$lib/utils/dates';
   import { TRIP_ID } from '$lib/config';
 
   export let data: Partial<Activity> | null = null;
@@ -11,8 +12,8 @@
   let form: Activity = {
     id:         data?.id    || nanoid('act_'),
     tripId:     data?.tripId || TRIP_ID,
-    dayDm:      data?.dayDm  || 1010,
-    city:       data?.city   || 'lima',
+    dayDm:      data?.dayDm  || $tripDays[0]?.d || 1009,
+    city:       data?.city   || $tripDays[0]?.city || 'lima',
     type:       data?.type   || 'tour',
     name:       data?.name   || '',
     time:       data?.time   || '',
@@ -26,6 +27,11 @@
     bookingUrl: data?.bookingUrl || '',
     tel:        data?.tel    || '',
   };
+
+  function onDayChange() {
+    const day = $tripDays.find(d => d.d === form.dayDm);
+    if (day) form.city = day.city;
+  }
 
   let saving = false;
 
@@ -44,6 +50,15 @@
 <h2 class="form-title">{data?.id ? 'Editar plan' : 'Nuevo plan'}</h2>
 
 <form on:submit|preventDefault={submit} class="form">
+  <label class="field">
+    <span>Día *</span>
+    <select bind:value={form.dayDm} on:change={onDayChange}>
+      {#each $tripDays as d}
+        <option value={d.d}>{dmToLabel(d.d)} · {d.title}</option>
+      {/each}
+    </select>
+  </label>
+
   <label class="field">
     <span>Tipo</span>
     <select bind:value={form.type}>

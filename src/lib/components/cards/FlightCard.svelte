@@ -83,8 +83,8 @@
 
   {#if !compact}
     <!-- Boarding passes section -->
-    <div class="bp-section">
-      <div class="bp-title">🎫 Tarjetas de embarque</div>
+    <div class="card-section bp-section">
+      <div class="card-section-title">🎫 Tarjetas de embarque</div>
       {#each TRAVELERS as t}
         {@const bp = getBp(t.id)}
         {@const img = bpImages[t.id]}
@@ -152,19 +152,7 @@
   .early-solo { margin-top: 6px; }
 
   /* ── Boarding passes ─────────────────────────────────────── */
-  .bp-section {
-    margin-top: 12px;
-    padding-top: 10px;
-    border-top: 1px solid var(--line);
-  }
-  .bp-title {
-    font-size: .62rem;
-    font-weight: 700;
-    letter-spacing: .07em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
-    margin-bottom: 8px;
-  }
+  .bp-section { margin-top: 12px; padding-top: 10px; }
   .bp-row {
     display: flex;
     align-items: center;
