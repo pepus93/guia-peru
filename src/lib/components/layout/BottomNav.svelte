@@ -90,7 +90,7 @@
   }
 
   .nav-label {
-    font-size: .64rem;
+    font-size: .72rem;
     font-weight: 600;
     letter-spacing: .01em;
     position: relative;

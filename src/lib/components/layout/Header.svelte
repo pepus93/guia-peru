@@ -86,7 +86,7 @@
 
   .clock-label {
     color: rgba(243,233,219,.55);
-    font-size: .68rem;
+    font-size: .74rem;
     line-height: 1;
     letter-spacing: .04em;
     text-transform: uppercase;
