@@ -16,6 +16,10 @@ export function dmToLabel(dm: number): string {
   return `${date.getDate()} ${MONTHS_ES[date.getMonth()]}`;
 }
 
+export function dmToMonth(dm: number): string {
+  return MONTHS_ES[dmToDate(dm).getMonth()];
+}
+
 export function daysUntil(dm: number): number {
   const target = dmToDate(dm);
   const now = new Date();

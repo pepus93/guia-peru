@@ -27,8 +27,4 @@
     border-radius: 6px;
     white-space: nowrap;
   }
-  :global(.b-fly)  { background: rgba(58,110,165,.14); color: #2a5a8a; }
-  :global(.b-bed)  { background: rgba(63,125,100,.14); color: #2e6a53; }
-  :global(.b-act)  { background: rgba(224,168,62,.18); color: #7a5a10; }
-  :global(.b-warn) { background: rgba(198,90,52,.14);  color: #8a3a1a; }
 </style>

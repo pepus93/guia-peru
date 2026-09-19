@@ -2,7 +2,7 @@
   import type { Flight } from '$lib/models/types';
   import { saveFlight } from '$lib/stores/trip';
   import { closeModal } from '$lib/stores/ui';
-  import { nanoid } from '$lib/utils/maps';
+  import { nanoid } from '$lib/utils/nanoid';
   import { TRIP_ID } from '$lib/config';
 
   export let data: Partial<Flight> | null = null;

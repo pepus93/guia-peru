@@ -64,15 +64,6 @@ export const days = {
 
 export const activities = {
   getByTrip: (tripId: string) => queryByTrip<Activity>('activities', tripId, 'dayDm'),
-  getByDay: async (tripId: string, dayDm: number): Promise<Activity[]> => {
-    const q = query(
-      col('activities'),
-      where('tripId', '==', tripId),
-      where('dayDm', '==', dayDm),
-    );
-    const snap = await getDocs(q);
-    return snap.docs.map(d => ({ id: d.id, ...d.data() }) as Activity);
-  },
   save:   (a: Activity) => upsert('activities', a),
   delete: (id: string) => remove('activities', id),
 };

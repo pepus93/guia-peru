@@ -79,21 +79,21 @@
     display: flex;
     align-items: center;
     gap: 5px;
-    font-size: .78rem;
+    font-size: .9rem;
   }
 
-  .clock-flag { font-size: .9rem; }
+  .clock-flag { font-size: 1.1rem; }
 
   .clock-label {
     color: rgba(243,233,219,.55);
-    font-size: .74rem;
+    font-size: .82rem;
     line-height: 1;
     letter-spacing: .04em;
     text-transform: uppercase;
   }
 
   .clock-time {
-    font-size: .82rem;
+    font-size: .96rem;
     font-weight: 700;
     color: var(--paper);
     letter-spacing: .02em;
@@ -101,7 +101,7 @@
   }
 
   .clock-diff {
-    font-size: .72rem;
+    font-size: .8rem;
     color: var(--gold);
     font-weight: 700;
     white-space: nowrap;

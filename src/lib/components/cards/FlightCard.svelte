@@ -84,24 +84,15 @@
         {@const img = bpImages[t.id]}
         <div class="bp-row">
           <div class="bp-who">{t.label}</div>
-          {#if bp}
-            <div class="bp-data">
-              {#if bp.locator}<span class="bp-loc">{bp.locator}</span>{/if}
-              {#if bp.terminal}<span class="bp-field">T{bp.terminal}</span>{/if}
-              {#if bp.gate}<span class="bp-field">Puerta <strong>{bp.gate}</strong></span>{/if}
-              {#if bp.boardingTime}<span class="bp-field">🕐 {bp.boardingTime}</span>{/if}
-              {#if bp.seat}<span class="bp-seat">{bp.seat}</span>{/if}
-            </div>
+          {#if img}
             <div class="bp-actions">
-              {#if img}
-                <button class="bp-thumb-btn" on:click={() => (viewerSrc = img)} title="Ampliar QR">
-                  <img src={img} alt="Boarding pass" class="bp-thumb" />
-                </button>
-              {/if}
+              <button class="bp-thumb-btn" on:click={() => (viewerSrc = img)} title="Ver QR">
+                <img src={img} alt="Boarding pass" class="bp-thumb" />
+              </button>
               <button class="bp-edit-btn" on:click={() => openBpModal(flight, t.id, bp)}>Editar</button>
             </div>
           {:else}
-            <button class="bp-add-btn" on:click={() => openBpModal(flight, t.id)}>+ Añadir</button>
+            <button class="bp-add-btn" on:click={() => openBpModal(flight, t.id)}>+ Añadir foto</button>
           {/if}
         </div>
       {/each}
@@ -158,35 +149,6 @@
     font-weight: 700;
     color: var(--ink);
     min-width: 42px;
-  }
-  .bp-data {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    align-items: center;
-    flex: 1;
-  }
-  .bp-loc {
-    font-size: .8rem;
-    font-weight: 700;
-    color: var(--ink);
-    letter-spacing: .05em;
-    background: var(--paper-2);
-    border: 1px solid var(--line);
-    border-radius: 5px;
-    padding: 1px 6px;
-  }
-  .bp-field {
-    font-size: .8rem;
-    color: var(--ink-soft);
-  }
-  .bp-seat {
-    font-size: .86rem;
-    font-weight: 700;
-    color: var(--sky);
-    background: rgba(58,110,165,.1);
-    border-radius: 5px;
-    padding: 1px 7px;
   }
   .bp-actions {
     display: flex;

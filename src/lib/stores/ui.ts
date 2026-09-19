@@ -1,11 +1,6 @@
 import { writable } from 'svelte/store';
 import type { Activity, Flight, Accommodation, BoardingPass } from '$lib/models/types';
 
-// ── Active tab ─────────────────────────────────────────────
-
-export type Tab = 'dias' | 'vuelos' | 'hoteles' | 'planes' | 'info';
-export const activeTab = writable<Tab>('dias');
-
 // ── Modal ──────────────────────────────────────────────────
 
 export type ModalKind = 'activity' | 'flight' | 'hotel';

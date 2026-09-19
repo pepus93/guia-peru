@@ -1,5 +1,5 @@
 import type { TripDay, BadgeType } from './types';
-import { dmToDow, dmToLabel, todayDm } from '$lib/utils/dates';
+import { dmToDow, dmToLabel, dmToMonth, todayDm } from '$lib/utils/dates';
 
 const BADGE_MAP: Record<BadgeType, { cls: string; label: string }> = {
   fly:  { cls: 'b-fly',  label: '✈ Vuelo' },
@@ -20,6 +20,7 @@ export class TripDayModel {
 
   get dow()          { return dmToDow(this.data.d); }
   get dayNum()       { return this.data.d % 100; }
+  get monthLabel()   { return dmToMonth(this.data.d); }
   get dateLabel()    { return dmToLabel(this.data.d); }
   get cityGradient() { return CITY_GRADIENT[this.data.city] ?? CITY_GRADIENT.lima; }
 

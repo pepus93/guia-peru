@@ -3,7 +3,7 @@
   import { ACTIVITY_TYPES } from '$lib/models/types';
   import { saveActivity, tripDays } from '$lib/stores/trip';
   import { closeModal } from '$lib/stores/ui';
-  import { nanoid } from '$lib/utils/maps';
+  import { nanoid } from '$lib/utils/nanoid';
   import { dmToLabel } from '$lib/utils/dates';
   import { TRIP_ID } from '$lib/config';
 

@@ -78,7 +78,7 @@
   }
 
   .nav-icon {
-    font-size: 1.1rem;
+    font-size: 1.5rem;
     line-height: 1;
     filter: grayscale(.5);
     transition: filter .2s, transform .2s;

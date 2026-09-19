@@ -5,11 +5,12 @@
   import { AccommodationModel } from '$lib/models/AccommodationModel';
   import { ActivityModel }      from '$lib/models/ActivityModel';
   import DayRow                 from '$lib/components/cards/DayRow.svelte';
-  import { dmToDate }           from '$lib/utils/dates';
+  import { dmToDate, todayDm } from '$lib/utils/dates';
   import { activitiesByDay, flightsMap, staysMap, activitiesMap, saveDayWarn } from '$lib/stores/trip';
   import { openModal, flashId } from '$lib/stores/ui';
   import { slide } from 'svelte/transition';
   import { TRIP_ID } from '$lib/config';
+  import { onMount } from 'svelte';
 
   export let day: TripDay;
 
@@ -21,7 +22,9 @@
   $: hotelData  = day.stayId      ? $staysMap[day.stayId]            : undefined;
   $: hotel      = hotelData       ? new AccommodationModel(hotelData) : null;
   $: excursion  = day.excursionId ? $activitiesMap[day.excursionId]   : undefined;
-  $: acts       = ($activitiesByDay[day.d] ?? []).map(a => new ActivityModel(a));
+  $: acts       = ($activitiesByDay[day.d] ?? [])
+    .filter(a => a.id !== day.excursionId)
+    .map(a => new ActivityModel(a));
 
   // Para excursiones multi-día: índice 0-based del día actual dentro del trek
   $: excDayIdx  = excursion?.endDayDm != null
@@ -49,6 +52,7 @@
   ]).sort((a, b) => a.sortKey - b.sortKey);
 
   let expanded    = false;
+  onMount(() => { if (day.d === todayDm()) expanded = true; });
   $: if ($flashId === day.id) expanded = true;
   let editingWarn = false;
   let warnDraft   = '';
@@ -83,7 +87,7 @@
     <div class="date-block" style="background:{model.cityGradient}">
       <div class="dow">{model.dow}</div>
       <div class="dnum font-serif">{model.dayNum}</div>
-      <div class="mon">oct</div>
+      <div class="mon">{model.monthLabel}</div>
     </div>
 
     <div class="day-main">
@@ -303,11 +307,6 @@
 
   .badges { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 7px; }
   .badge  { font-size: .74rem; font-weight: 600; padding: 2px 7px; border-radius: 6px; display: inline-flex; align-items: center; gap: 3px; }
-  :global(.b-fly)  { background: rgba(58,110,165,.14);  color: var(--sky); }
-  :global(.b-bed)  { background: rgba(63,125,100,.14);  color: var(--jade); }
-  :global(.b-act)  { background: rgba(198,90,52,.13);   color: var(--terra-deep); }
-  :global(.b-warn) { background: rgba(224,168,62,.2);   color: #9a6b12; }
-
   .chev { position: absolute; right: 10px; top: 12px; color: var(--ink-soft); transition: .25s; font-size: 1.05rem; line-height: 1; }
   .chev.open { transform: rotate(90deg); }
 

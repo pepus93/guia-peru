@@ -110,6 +110,7 @@ export interface Accommodation {
   stars?: number;
   rating?: number;
   addr: string;
+  mapsQuery?: string;
   tel: string;
   checkIn: string;
   checkOut: string;

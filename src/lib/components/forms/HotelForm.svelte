@@ -2,7 +2,7 @@
   import type { Accommodation } from '$lib/models/types';
   import { saveAccommodation, tripDays } from '$lib/stores/trip';
   import { closeModal } from '$lib/stores/ui';
-  import { nanoid } from '$lib/utils/maps';
+  import { nanoid } from '$lib/utils/nanoid';
   import { dmToLabel, dmToDateRange } from '$lib/utils/dates';
   import { TRIP_ID } from '$lib/config';
 

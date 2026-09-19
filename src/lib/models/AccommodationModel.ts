@@ -5,7 +5,7 @@ import { dmToDate } from '$lib/utils/dates';
 export class AccommodationModel {
   constructor(readonly data: Accommodation) {}
 
-  get mapsUrl()       { return mapsUrl(this.data.addr); }
+  get mapsUrl()       { return mapsUrl(this.data.mapsQuery ?? this.data.name); }
   get checkInLabel()  { return `Check-in ${this.data.checkIn}`; }
   get checkOutLabel() { return `Check-out ${this.data.checkOut}`; }
 
