@@ -1,0 +1,15 @@
+# Build output
+build/
+.svelte-kit/
+
+# Dependencies
+node_modules/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# OS
+.DS_Store
+Thumbs.db
