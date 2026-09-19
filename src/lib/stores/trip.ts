@@ -1,7 +1,7 @@
 import { writable, derived, get } from 'svelte/store';
-import type { Trip, TripDay, Activity, Flight, Accommodation, Traveler, Excursion } from '$lib/models/types';
-import { trips, days, activities, flights, accommodations, travelers, excursions } from '$lib/firebase/services';
-import { SEED_TRIP, SEED_DAYS, SEED_ACTIVITIES, SEED_FLIGHTS, SEED_ACCOMMODATIONS, SEED_TRAVELERS, SEED_EXCURSIONS } from '$lib/data/seed';
+import type { Trip, TripDay, Activity, Flight, Accommodation, Traveler } from '$lib/models/types';
+import { trips, days, activities, flights, accommodations, travelers } from '$lib/firebase/services';
+import { SEED_TRIP, SEED_DAYS, SEED_ACTIVITIES, SEED_FLIGHTS, SEED_ACCOMMODATIONS, SEED_TRAVELERS } from '$lib/data/seed';
 import { TRIP_ID } from '$lib/config';
 
 // ── State ──────────────────────────────────────────────────
@@ -12,7 +12,6 @@ export const activityList   = writable<Activity[]>([]);
 export const flightList     = writable<Flight[]>([]);
 export const stayList       = writable<Accommodation[]>([]);
 export const travelerList   = writable<Traveler[]>([]);
-export const excursionList  = writable<Excursion[]>([]);
 export const loading        = writable(false);
 
 // ── Derived ────────────────────────────────────────────────
@@ -24,6 +23,10 @@ export const activitiesByDay = derived(activityList, ($acts) =>
   }, {})
 );
 
+export const activitiesMap = derived(activityList, ($acts) =>
+  Object.fromEntries($acts.map(a => [a.id, a]))
+);
+
 export const flightsMap = derived(flightList, ($fl) =>
   Object.fromEntries($fl.map(f => [f.id, f]))
 );
@@ -32,8 +35,8 @@ export const staysMap = derived(stayList, ($sl) =>
   Object.fromEntries($sl.map(s => [s.id, s]))
 );
 
-export const excursionsMap = derived(excursionList, ($el) =>
-  Object.fromEntries($el.map(e => [e.id, e]))
+export const dayByDm = derived(tripDays, ($days) =>
+  Object.fromEntries($days.map(d => [d.d, d.id]))
 );
 
 // ── Load ───────────────────────────────────────────────────
@@ -54,20 +57,18 @@ export async function loadTrip() {
 
     trip.set(t);
 
-    const [d, a, f, s, tv, ex] = await Promise.all([
+    const [d, a, f, s, tv] = await Promise.all([
       days.getByTrip(TRIP_ID).catch(() => SEED_DAYS),
       activities.getByTrip(TRIP_ID).catch(() => SEED_ACTIVITIES),
       flights.getByTrip(TRIP_ID).catch(() => SEED_FLIGHTS),
       accommodations.getByTrip(TRIP_ID).catch(() => SEED_ACCOMMODATIONS),
       travelers.getByTrip(TRIP_ID).catch(() => SEED_TRAVELERS),
-      excursions.getByTrip(TRIP_ID).catch(() => SEED_EXCURSIONS),
     ]);
     tripDays.set(d);
     activityList.set(a);
     flightList.set(f);
     stayList.set(s);
     travelerList.set(tv);
-    excursionList.set(ex);
   } finally {
     loading.set(false);
   }
@@ -81,7 +82,6 @@ async function seedFirestore() {
     ...SEED_FLIGHTS.map(f => flights.save(f)),
     ...SEED_ACCOMMODATIONS.map(s => accommodations.save(s)),
     ...SEED_TRAVELERS.map(t => travelers.save(t)),
-    ...SEED_EXCURSIONS.map(e => excursions.save(e)),
   ]);
 }
 

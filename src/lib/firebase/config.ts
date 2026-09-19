@@ -34,6 +34,7 @@ if (browser && apiKey && projectId) {
       localCache: persistentLocalCache({
         tabManager: persistentMultipleTabManager(),
       }),
+      ignoreUndefinedProperties: true,
     });
   } catch (e) {
     console.warn('Firebase init error:', e);

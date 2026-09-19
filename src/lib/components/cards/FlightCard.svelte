@@ -5,6 +5,7 @@
   import { deleteFlight } from '$lib/stores/trip';
   import { getBpImage } from '$lib/utils/bpStorage';
   import CardMenu from './CardMenu.svelte';
+  import Card     from './Card.svelte';
   import { flashId } from '$lib/stores/ui';
 
   export let flight: Flight;
@@ -28,20 +29,13 @@
   }
 
   let bpImages: Record<string, string | null> = { pepe: null, sunta: null };
-  $: if (flight.id) loadImages();
-
-  function loadImages() {
-    bpImages = {
-      pepe:  getBpImage(flight.id, 'pepe'),
-      sunta: getBpImage(flight.id, 'sunta'),
-    };
-  }
+  $: { flight.boardingPasses; bpImages = { pepe: getBpImage(flight.id, 'pepe'), sunta: getBpImage(flight.id, 'sunta') }; }
 
   // Full-screen image viewer
   let viewerSrc: string | null = null;
 </script>
 
-<div id={flight.id} class="card flight-card" class:is-intl={model.isInternational} class:flash={flashing} class:is-past={past}>
+<Card id={flight.id} {flashing} {past} flashColor="var(--sky)" cssClass="flight-card{model.isInternational ? ' is-intl' : ''}" dayDm={flight.dm}>
   <div class="flight-badge">{model.typeLabel}</div>
 
   <div class="flight-row">
@@ -100,7 +94,9 @@
             </div>
             <div class="bp-actions">
               {#if img}
-                <button class="bp-img-btn" on:click={() => (viewerSrc = img)} title="Ver QR">🖼</button>
+                <button class="bp-thumb-btn" on:click={() => (viewerSrc = img)} title="Ampliar QR">
+                  <img src={img} alt="Boarding pass" class="bp-thumb" />
+                </button>
               {/if}
               <button class="bp-edit-btn" on:click={() => openBpModal(flight, t.id, bp)}>Editar</button>
             </div>
@@ -111,7 +107,7 @@
       {/each}
     </div>
   {/if}
-</div>
+</Card>
 
 <!-- Full-screen image viewer -->
 {#if viewerSrc}
@@ -123,11 +119,6 @@
 {/if}
 
 <style>
-  .flight-card {
-    --flash-color: var(--sky);
-  }
-  .flight-card.is-past { filter: grayscale(.75); opacity: .55; }
-
   .flight-badge { font-size: .6rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--sky); margin-bottom: 10px; }
   .is-intl .flight-badge { color: var(--terra); }
 
@@ -203,13 +194,20 @@
     align-items: center;
     flex-shrink: 0;
   }
-  .bp-img-btn {
-    font-size: 1rem;
+  .bp-thumb-btn {
     background: none;
-    border: none;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    padding: 0;
     cursor: pointer;
-    padding: 2px;
-    line-height: 1;
+    overflow: hidden;
+    width: 38px; height: 38px;
+    flex-shrink: 0;
+  }
+  .bp-thumb {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
   }
   .bp-edit-btn {
     font-size: .72rem;
@@ -244,9 +242,10 @@
     justify-content: center;
   }
   .viewer-img {
-    max-width: 100%;
-    max-height: 100dvh;
+    width: 100%;
+    height: 100dvh;
     object-fit: contain;
+    touch-action: pinch-zoom;
   }
   .viewer-close {
     position: absolute;

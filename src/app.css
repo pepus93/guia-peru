@@ -177,13 +177,17 @@ a.maps {
   margin-bottom: 10px;
 }
 
+/* ── CALENDAR LINK ──────────────────────────────────────── */
+.card.has-cal { padding-bottom: 30px; }
+
 /* ── FLASH ANIMATION ────────────────────────────────────── */
 @keyframes card-flash {
   0%   { box-shadow: 0 0 0 0   var(--flash-color, var(--terra)); }
   30%  { box-shadow: 0 0 0 3px var(--flash-color, var(--terra)); }
   100% { box-shadow: var(--shadow); }
 }
-.flash { animation: card-flash 1.8s ease-out; }
+.flash    { animation: card-flash 1.8s ease-out; }
+.is-past  { filter: grayscale(.75); opacity: .55; }
 
 /* ── FORMS (shared across all form modals) ──────────────── */
 .form-title { font-size: 1rem; font-weight: 700; margin-bottom: 16px; }

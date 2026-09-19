@@ -5,7 +5,7 @@ import {
   serverTimestamp,
 } from 'firebase/firestore';
 import { db } from './config';
-import type { Activity, Flight, Accommodation, TripDay, Trip, Traveler, Excursion } from '$lib/models/types';
+import type { Activity, Flight, Accommodation, TripDay, Trip, Traveler } from '$lib/models/types';
 
 // ── Generic helpers ────────────────────────────────────────
 
@@ -91,14 +91,6 @@ export const accommodations = {
   getByTrip: (tripId: string) => queryByTrip<Accommodation>('accommodations', tripId, 'startDm'),
   save:   (a: Accommodation) => upsert('accommodations', a),
   delete: (id: string) => remove('accommodations', id),
-};
-
-// ── Excursion ──────────────────────────────────────────────
-
-export const excursions = {
-  getByTrip: (tripId: string) => queryByTrip<Excursion>('excursions', tripId, 'dayDm'),
-  save:   (e: Excursion) => upsert('excursions', e),
-  delete: (id: string) => remove('excursions', id),
 };
 
 // ── Traveler ───────────────────────────────────────────────

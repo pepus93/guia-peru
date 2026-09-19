@@ -49,6 +49,17 @@ export interface Activity extends BaseActivity {
   tel?: string;
   mapsQuery?: string;
   bookingUrl?: string;
+  // campos de excursión/tour organizado (opcionales)
+  bookingCode?: string;
+  pin?: string;
+  provider?: string;
+  providerTel?: string;
+  price?: string;
+  includes?: string[];
+  notIncludes?: string[];
+  days?: ExcursionDay[];
+  cancelBefore?: string;
+  warn?: string;
 }
 
 // ── FLIGHT ───────────────────────────────────────────────────
@@ -105,27 +116,10 @@ export interface Accommodation {
   notes?: string;
 }
 
-// ── EXCURSION ─────────────────────────────────────────────────
-// Extiende BaseActivity y convierte algunos opcionales en obligatorios
+// ── EXCURSION DAY (itinerario multi-día) ──────────────────────
 export interface ExcursionDay {
-  title: string;   // ruta / hitos principales del día
-  sub?: string;    // info extra (alojamiento, altitud, etc.)
-}
-
-export interface Excursion extends BaseActivity {
-  time: string;        // obligatorio (en BaseActivity es opcional)
-  duration: string;    // obligatorio
-  meet: string;        // obligatorio
-  bookingCode: string;
-  pin?: string;
-  provider: string;
-  providerTel: string;
-  price: string;
-  includes: string[];
-  notIncludes: string[];
-  days?: ExcursionDay[];    // itinerario día a día (excursiones multi-día)
-  cancelBefore?: string;
-  warn?: string;
+  title: string;
+  sub?: string;
 }
 
 // ── TRIP DAY ──────────────────────────────────────────────────

@@ -6,8 +6,8 @@
   import { ActivityModel }      from '$lib/models/ActivityModel';
   import DayRow                 from '$lib/components/cards/DayRow.svelte';
   import { dmToDate }           from '$lib/utils/dates';
-  import { activitiesByDay, flightsMap, staysMap, excursionsMap, saveDayWarn } from '$lib/stores/trip';
-  import { openModal } from '$lib/stores/ui';
+  import { activitiesByDay, flightsMap, staysMap, activitiesMap, saveDayWarn } from '$lib/stores/trip';
+  import { openModal, flashId } from '$lib/stores/ui';
   import { slide } from 'svelte/transition';
   import { TRIP_ID } from '$lib/config';
 
@@ -20,7 +20,7 @@
       .map(f => new FlightModel(f));
   $: hotelData  = day.stayId      ? $staysMap[day.stayId]            : undefined;
   $: hotel      = hotelData       ? new AccommodationModel(hotelData) : null;
-  $: excursion  = day.excursionId ? $excursionsMap[day.excursionId]   : undefined;
+  $: excursion  = day.excursionId ? $activitiesMap[day.excursionId]   : undefined;
   $: acts       = ($activitiesByDay[day.d] ?? []).map(a => new ActivityModel(a));
 
   // Para excursiones multi-día: índice 0-based del día actual dentro del trek
@@ -49,6 +49,7 @@
   ]).sort((a, b) => a.sortKey - b.sortKey);
 
   let expanded    = false;
+  $: if ($flashId === day.id) expanded = true;
   let editingWarn = false;
   let warnDraft   = '';
 
@@ -74,7 +75,7 @@
   }
 </script>
 
-<article class="day" class:today={model.isToday()} class:is-past={model.isPast} id="day-{day.d}">
+<article class="day" class:today={model.isToday()} class:is-past={model.isPast} id={day.id}>
 
   <!-- HEAD ─────────────────────────────────────────────── -->
   <button class="day-head" on:click={toggle} aria-expanded={expanded}>

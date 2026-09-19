@@ -6,6 +6,14 @@ import { BaseDayModel } from './BaseDayModel';
 export class ActivityModel extends BaseDayModel<Activity> {
   // meetUrl, endUrl y timeLabel heredados de BaseDayModel
 
+  get telHref() { return this.data.providerTel ? `tel:${this.data.providerTel}` : ''; }
+
+  get waHref() {
+    if (!this.data.providerTel) return '';
+    const num = this.data.providerTel.replace(/\D/g, '');
+    return `https://wa.me/${num}`;
+  }
+
   get typeInfo() {
     return ACTIVITY_TYPES[this.data.type] ?? { icon: '📌', bg: 'rgba(42,26,18,.07)', label: this.data.type };
   }
@@ -58,6 +66,13 @@ export class ActivityModel extends BaseDayModel<Activity> {
       case 'transporte':
         if (this.data.duration)
           b.push({ label: `🚌 ${this.data.duration}`, cls: 'pill-info' });
+        break;
+
+      case 'excursion':
+        if (this.data.bookingCode)
+          b.push({ label: `🎫 ${this.data.bookingCode}`, cls: 'pill-green' });
+        if (this.data.price)
+          b.push({ label: this.data.price, cls: 'pill-info' });
         break;
     }
 

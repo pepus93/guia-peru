@@ -1,7 +1,8 @@
 <script lang="ts">
   import { tick } from 'svelte';
   import { tripDays, loading } from '$lib/stores/trip';
-  import DayCard from '$lib/components/cards/DayCard.svelte';
+  import DayCard      from '$lib/components/cards/DayCard.svelte';
+  import FlashHandler from '$lib/components/ui/FlashHandler.svelte';
   import { todayDm } from '$lib/utils/dates';
 
   let scrolled = false;
@@ -9,11 +10,13 @@
   $: if (!$loading && !scrolled) {
     scrolled = true;
     tick().then(() => {
-      const el = document.getElementById(`day-${todayDm()}`);
-      el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const today = $tripDays.find(d => d.d === todayDm());
+      if (today) document.getElementById(today.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   }
 </script>
+
+<FlashHandler {loading} />
 
 {#if $loading}
   <p class="empty-msg">Cargando…</p>

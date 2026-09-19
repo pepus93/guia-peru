@@ -1,4 +1,4 @@
-import type { Trip, TripDay, Activity, Flight, Accommodation, Traveler, Excursion } from '$lib/models/types';
+import type { Trip, TripDay, Activity, Flight, Accommodation, Traveler } from '$lib/models/types';
 
 const TRIP_ID = 'peru-2026';
 
@@ -324,11 +324,23 @@ export const SEED_DAYS: TripDay[] = [
   },
 ];
 
-// ── Excursions ─────────────────────────────────────────────
+// ── Activities ─────────────────────────────────────────────
 
-export const SEED_EXCURSIONS: Excursion[] = [
+export const SEED_ACTIVITIES: Activity[] = [
+  {
+    id: 'a1010_0', tripId: TRIP_ID, dayDm: 1010, city: 'arequipa',
+    type: 'tour',
+    name: 'Free Tour Miraflores',
+    time: '10:00', duration: '~2h',
+    note: 'Civitatis · propina voluntaria',
+    meet: 'Óvalo de Miraflores',
+    end: 'Parque del Amor',
+    meetQuery: 'Óvalo de Miraflores, Miraflores, Lima',
+    endQuery: 'Parque del Amor, Miraflores, Lima',
+  },
   {
     id: 'exc1016', tripId: TRIP_ID, dayDm: 1016, endDayDm: 1019, city: 'cusco',
+    type: 'excursion',
     name: 'Salkantay Trek 4 Días — Machu Picchu con Sky Domes',
     time: '3:30', duration: '4 días / 3 noches',
     meet: 'Recogida en el hotel (SAM Travel confirma la noche anterior)',
@@ -357,28 +369,17 @@ export const SEED_EXCURSIONS: Excursion[] = [
       'Propinas',
     ],
     days: [
-      {
-        title: 'Cusco → Challacancha → Lago Humantay (4.200m) → Soraypampa',
-        sub: 'Sky Domes · noche 1 (~3.850m)',
-      },
-      {
-        title: 'Soraypampa → Paso Salkantay (4.650m) → Huayracmachay → Collpapampa',
-        sub: 'Sky Domes · noche 2 · punto más alto del viaje',
-      },
-      {
-        title: 'Collpapampa → Ruinas Llactapata → Hidroeléctrica → Aguas Calientes',
-        sub: 'Hotel incluido · noche 3 · tren opcional',
-      },
-      {
-        title: 'Aguas Calientes → Machu Picchu → tren → Cusco',
-        sub: 'Circuito 2B · entrada a las 14:00 · vuelta en tren',
-      },
+      { title: 'Cusco → Challacancha → Lago Humantay (4.200m) → Soraypampa', sub: 'Sky Domes · noche 1 (~3.850m)' },
+      { title: 'Soraypampa → Paso Salkantay (4.650m) → Huayracmachay → Collpapampa', sub: 'Sky Domes · noche 2 · punto más alto del viaje' },
+      { title: 'Collpapampa → Ruinas Llactapata → Hidroeléctrica → Aguas Calientes', sub: 'Hotel incluido · noche 3 · tren opcional' },
+      { title: 'Aguas Calientes → Machu Picchu → tren → Cusco', sub: 'Circuito 2B · entrada a las 14:00 · vuelta en tren' },
     ],
     note: 'Habitación matrimonial (cama grande). Circuito #2B Machu Picchu el 19 oct a las 14:00. Servicio grupal.',
     warn: '$514 pendientes en efectivo — entregar al guía el día 1. Llevar soles o dólares en billete.',
   },
   {
     id: 'exc1012', tripId: TRIP_ID, dayDm: 1012, city: 'arequipa',
+    type: 'excursion',
     name: 'Cañón del Colca — Día completo',
     time: '3:00', duration: '~14h',
     meet: 'Recogida en hotel Bon Repos (C. Bolivar 405-407)',
@@ -405,6 +406,7 @@ export const SEED_EXCURSIONS: Excursion[] = [
   },
   {
     id: 'exc1015', tripId: TRIP_ID, dayDm: 1015, city: 'cusco',
+    type: 'excursion',
     name: 'Valle Sagrado — Pisac · Ollantaytambo · Maras',
     time: '6:20', duration: '~12h',
     meet: 'Plaza de Armas de Cusco, junto a la fuente',
@@ -433,6 +435,7 @@ export const SEED_EXCURSIONS: Excursion[] = [
   },
   {
     id: 'exc1020', tripId: TRIP_ID, dayDm: 1020, city: 'cusco',
+    type: 'excursion',
     name: '7 Lagunas de Ausangate + Aguas Termales',
     time: '4:30', duration: '~día completo',
     meet: 'Recogida en el hotel (espera en el vestíbulo)',
@@ -460,6 +463,7 @@ export const SEED_EXCURSIONS: Excursion[] = [
   },
   {
     id: 'exc1021', tripId: TRIP_ID, dayDm: 1021, city: 'cusco',
+    type: 'excursion',
     name: 'Montaña Arcoíris (Vinicunca) + Valle Rojo',
     time: '4:25', duration: '~10,5h',
     meet: 'F2M9+5X2, Cusco (zona Plaza Mayor) — llegar antes de las 4:10',
@@ -486,21 +490,5 @@ export const SEED_EXCURSIONS: Excursion[] = [
     ],
     cancelBefore: '4:25 del 20 de octubre',
     warn: '¡Llegar antes de las 4:10! Llevar efectivo en soles: 30 S/ p/p entrada Arcoíris + 30 S/ opcional Valle Rojo.',
-  },
-];
-
-// ── Activities ─────────────────────────────────────────────
-
-export const SEED_ACTIVITIES: Activity[] = [
-  {
-    id: 'a1010_0', tripId: TRIP_ID, dayDm: 1010, city: 'arequipa',
-    type: 'tour',
-    name: 'Free Tour Miraflores',
-    time: '10:00', duration: '~2h',
-    note: 'Civitatis · propina voluntaria',
-    meet: 'Óvalo de Miraflores',
-    end: 'Parque del Amor',
-    meetQuery: 'Óvalo de Miraflores, Miraflores, Lima',
-    endQuery: 'Parque del Amor, Miraflores, Lima',
   },
 ];

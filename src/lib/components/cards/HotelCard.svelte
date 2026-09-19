@@ -4,6 +4,7 @@
   import { openModal, flashId } from '$lib/stores/ui';
   import { deleteAccommodation } from '$lib/stores/trip';
   import CardMenu from './CardMenu.svelte';
+  import Card     from './Card.svelte';
 
   export let hotel: Accommodation;
   export let compact = false;
@@ -16,7 +17,7 @@
   async function remove() { await deleteAccommodation(hotel.id); }
 </script>
 
-<div id={hotel.id} class="card hotel-card" class:flash={flashing} class:is-past={past}>
+<Card id={hotel.id} {flashing} {past} flashColor="var(--jade)" cssClass="hotel-card" dayDm={hotel.startDm}>
   <div class="hotel-header">
     <div class="hotel-info">
       <span class="hotel-name">{hotel.name}</span>
@@ -42,13 +43,9 @@
     {/if}
     <a class="maps" href={model.mapsUrl} target="_blank" rel="noreferrer">📍 Mapa</a>
   </div>
-</div>
+</Card>
 
 <style>
-  .hotel-card {
-    --flash-color: var(--jade);
-  }
-  .hotel-card.is-past { filter: grayscale(.75); opacity: .55; }
   .hotel-header { display: flex; gap: 8px; align-items: flex-start; }
   .hotel-info { display: flex; flex-direction: column; gap: 2px; flex: 1; }
   .hotel-name  { font-size: .85rem; font-weight: 700; color: var(--ink); }

@@ -1,24 +1,25 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import { bpModal, closeBpModal } from '$lib/stores/ui';
   import { saveBoardingPass } from '$lib/stores/trip';
   import { getBpImage, setBpImage, removeBpImage, fileToDataUrl } from '$lib/utils/bpStorage';
-  import { onMount } from 'svelte';
 
   const TRAVELER_LABEL: Record<string, string> = { pepe: 'Pepe', sunta: 'Sunta' };
-
-  let seat        = '';
-  let gate        = '';
-  let terminal    = '';
-  let boardingTime = '';
-  let locator     = '';
-  let imagePreview: string | null = null;
-  let imageChanged = false;
-  let saving = false;
 
   $: flight     = $bpModal.flight;
   $: travelerId = $bpModal.travelerId;
   $: existing   = $bpModal.existing;
 
+  let seat         = '';
+  let gate         = '';
+  let terminal     = '';
+  let boardingTime = '';
+  let locator      = '';
+  let imagePreview: string | null = null;
+  let imageChanged = false;
+  let saving = false;
+
+  // onMount runs after reactive declarations, so existing/flight/travelerId are populated
   onMount(() => {
     if (existing) {
       seat         = existing.seat         ?? '';
@@ -54,11 +55,11 @@
       }
       await saveBoardingPass(flight.id, {
         travelerId,
-        seat:         seat.trim()         || undefined,
-        gate:         gate.trim()         || undefined,
-        terminal:     terminal.trim()     || undefined,
-        boardingTime: boardingTime.trim() || undefined,
-        locator:      locator.trim()      || undefined,
+        seat:         seat.trim()  || undefined,
+        gate:         gate.trim()  || undefined,
+        terminal:     terminal.trim() || undefined,
+        boardingTime: boardingTime || undefined,
+        locator:      locator.trim()  || undefined,
       });
       closeBpModal();
     } finally {
@@ -95,7 +96,7 @@
     </label>
     <label class="field">
       <span>Embarque</span>
-      <input type="text" bind:value={boardingTime} placeholder="10:30" />
+      <input type="time" bind:value={boardingTime} />
     </label>
   </div>
 
@@ -104,7 +105,6 @@
     <input type="text" bind:value={seat} placeholder="23A" autocapitalize="characters" />
   </label>
 
-  <!-- Image section -->
   <div class="field">
     <span>Foto / QR</span>
     {#if imagePreview}
@@ -130,66 +130,34 @@
 
 <style>
   .form-title {
-    font-size: 1rem;
-    font-weight: 700;
-    margin-bottom: 4px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    font-size: 1rem; font-weight: 700; margin-bottom: 4px;
+    display: flex; align-items: center; gap: 8px;
   }
   .traveler-chip {
-    font-size: .72rem;
-    background: var(--paper-2);
-    border: 1px solid var(--line);
-    border-radius: 99px;
-    padding: 2px 10px;
-    font-weight: 600;
-    color: var(--ink-soft);
+    font-size: .72rem; background: var(--paper-2); border: 1px solid var(--line);
+    border-radius: 99px; padding: 2px 10px; font-weight: 600; color: var(--ink-soft);
   }
-  .flight-ref {
-    font-size: .72rem;
-    color: var(--ink-soft);
-    margin-bottom: 14px;
-  }
-  /* ── Image ─────────────────────────────────────────────── */
+  .flight-ref { font-size: .72rem; color: var(--ink-soft); margin-bottom: 14px; }
+
   .img-preview-wrap {
-    position: relative;
-    width: 100%;
-    border-radius: 10px;
-    overflow: hidden;
-    border: 1px solid var(--line);
+    position: relative; width: 100%; border-radius: 10px;
+    overflow: hidden; border: 1px solid var(--line);
   }
   .img-preview {
-    width: 100%;
-    display: block;
-    max-height: 220px;
-    object-fit: contain;
-    background: var(--paper-2);
+    width: 100%; display: block; max-height: 220px;
+    object-fit: contain; background: var(--paper-2);
   }
   .img-remove {
-    position: absolute;
-    top: 6px; right: 6px;
-    background: rgba(0,0,0,.55);
-    color: #fff;
-    border: none;
-    border-radius: 50%;
-    width: 26px; height: 26px;
-    font-size: .8rem;
-    cursor: pointer;
+    position: absolute; top: 6px; right: 6px;
+    background: rgba(0,0,0,.55); color: #fff; border: none;
+    border-radius: 50%; width: 26px; height: 26px;
+    font-size: .8rem; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
   }
   .img-upload-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 14px;
-    border: 1.5px dashed var(--line);
-    border-radius: 10px;
-    cursor: pointer;
-    color: var(--ink-soft);
-    font-size: .84rem;
-    font-weight: 600;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 14px; border: 1.5px dashed var(--line); border-radius: 10px;
+    cursor: pointer; color: var(--ink-soft); font-size: .84rem; font-weight: 600;
     transition: border-color .15s;
   }
   .img-upload-btn:active { border-color: var(--clay); }
