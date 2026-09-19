@@ -86,32 +86,26 @@
   <a class="emerg-row" href="tel:117">
     <span class="emerg-icon">🚑</span>
     <div class="emerg-body"><strong>117</strong><span>Emergencias médicas (SAMU)</span></div>
-    <span class="emerg-call">📞</span>
   </a>
   <a class="emerg-row" href="tel:105">
     <span class="emerg-icon">👮</span>
     <div class="emerg-body"><strong>105</strong><span>Policía Nacional</span></div>
-    <span class="emerg-call">📞</span>
   </a>
   <a class="emerg-row" href="tel:116">
     <span class="emerg-icon">🚒</span>
     <div class="emerg-body"><strong>116</strong><span>Bomberos</span></div>
-    <span class="emerg-call">📞</span>
   </a>
   <a class="emerg-row" href="tel:0800441111">
     <span class="emerg-icon">🏛️</span>
     <div class="emerg-body"><strong>0800-44-1111</strong><span>Embajada española en Lima</span></div>
-    <span class="emerg-call">📞</span>
   </a>
   <a class="emerg-row" href="tel:080022100">
     <span class="emerg-icon">ℹ️</span>
     <div class="emerg-body"><strong>0800-22-100</strong><span>iPerú — Atención al turista (gratuito)</span></div>
-    <span class="emerg-call">📞</span>
   </a>
   <a class="emerg-row" href="tel:+5114765165">
     <span class="emerg-icon">🆘</span>
     <div class="emerg-body"><strong>+51 1 476 5165</strong><span>INDECI — Defensa Civil</span></div>
-    <span class="emerg-call">📞</span>
   </a>
 </div>
 
@@ -231,10 +225,6 @@
   .emerg-body { flex: 1; display: flex; flex-direction: column; gap: 1px; }
   .emerg-body strong { font-size: .92rem; font-weight: 700; }
   .emerg-body span   { font-size: .76rem; color: var(--ink-soft); }
-  .emerg-call {
-    font-size: 1.3rem;
-    flex: 0 0 auto;
-  }
 
   /* ── Info útil ── */
   .info-row {
