@@ -4,7 +4,11 @@
   import { FlightModel }        from '$lib/models/FlightModel';
   import { AccommodationModel } from '$lib/models/AccommodationModel';
   import { ActivityModel }      from '$lib/models/ActivityModel';
-  import DayRow                 from '$lib/components/cards/DayRow.svelte';
+  import DayRow          from '$lib/components/cards/DayRow.svelte';
+  import FlightEntry     from '$lib/components/cards/FlightEntry.svelte';
+  import HotelEntry      from '$lib/components/cards/HotelEntry.svelte';
+  import ActivityEntry   from '$lib/components/cards/ActivityEntry.svelte';
+  import ExcursionEntry  from '$lib/components/cards/ExcursionEntry.svelte';
   import { dmToDate, todayDm } from '$lib/utils/dates';
   import { activitiesByDay, flightsMap, staysMap, activitiesMap, saveDayWarn } from '$lib/stores/trip';
   import { openModal, flashId } from '$lib/stores/ui';
@@ -31,6 +35,7 @@
     ? Math.round((dmToDate(day.d).getTime() - dmToDate(excursion.dayDm).getTime()) / 86_400_000)
     : -1;
   $: excDayInfo = excursion?.days?.[excDayIdx] ?? null;
+
 
   function timeToMinutes(t: string | undefined): number {
     if (!t) return 840; // sin hora → mediodía como fallback
@@ -111,114 +116,13 @@
         {#each dayItems as item}
 
           {#if item.kind === 'flight'}
-            <DayRow
-              icon="✈"
-              iconBg="rgba(58,110,165,.14)"
-              label={item.flight.typeLabel}
-              title="{item.flight.data.from} {item.flight.data.dep} → {item.flight.data.to} {item.flight.data.arr}"
-              detail={item.flight.data.airline}
-              titleSerif={true}
-            >
-              <svelte:fragment slot="pills">
-                {#if item.flight.infoBadges.length}
-                  <div class="pill-line">
-                    {#each item.flight.infoBadges as b}<span class="pill {b.cls}">{b.label}</span>{/each}
-                  </div>
-                {/if}
-              </svelte:fragment>
-              <svelte:fragment slot="actions">
-                <div class="row-actions">
-                  <a class="btn-nav" href="/vuelos?flash={item.flight.data.id}">✈ Ver vuelo</a>
-                </div>
-              </svelte:fragment>
-            </DayRow>
-
+            <FlightEntry flight={item.flight} />
           {:else if item.kind === 'excursion' && excursion}
-            {#if excDayInfo}
-              <DayRow
-                icon="🥾"
-                iconBg="rgba(120,80,160,.14)"
-                label="Trek · Día {excDayIdx + 1} de {excursion.days?.length}"
-                title={excDayInfo.title}
-                detail={excDayInfo.sub ?? ''}
-              >
-                <svelte:fragment slot="actions">
-                  <div class="row-actions">
-                    <a class="call" href="tel:{excursion.providerTel}">📞 {excursion.provider}</a>
-                    <a class="btn-nav" href="/planes?flash={excursion.id}">🥾 Ver plan</a>
-                  </div>
-                </svelte:fragment>
-              </DayRow>
-            {:else}
-              <DayRow
-                icon="🥾"
-                iconBg="rgba(120,80,160,.14)"
-                label="Excursión · {excursion.time} ({excursion.duration})"
-                title={excursion.name}
-                detail="📍 {excursion.meet}"
-              >
-                <svelte:fragment slot="pills">
-                  <div class="pill-line">
-                    <span class="pill pill-green">🎫 {excursion.bookingCode}</span>
-                    <span class="pill pill-info">{excursion.price}</span>
-                  </div>
-                </svelte:fragment>
-                <svelte:fragment slot="actions">
-                  <div class="row-actions">
-                    <a class="call" href="tel:{excursion.providerTel}">📞 {excursion.provider}</a>
-                    <a class="btn-nav" href="/planes?flash={excursion.id}">🥾 Ver plan</a>
-                  </div>
-                </svelte:fragment>
-              </DayRow>
-            {/if}
-
+            <ExcursionEntry {excursion} {excDayIdx} />
           {:else if item.kind === 'activity'}
-            <DayRow
-              icon={item.act.typeInfo.icon}
-              iconBg={item.act.typeInfo.bg}
-              label="{item.act.typeInfo.label}{item.act.timeLabel ? ` · ${item.act.timeLabel}` : ''}"
-              title={item.act.data.name}
-              detail={item.act.data.meet ? `📍 ${item.act.data.meet}` : ''}
-            >
-              <svelte:fragment slot="pills">
-                {#if item.act.infoBadges.length}
-                  <div class="pill-line">
-                    {#each item.act.infoBadges.slice(0, 2) as b}<span class="pill {b.cls}">{b.label}</span>{/each}
-                  </div>
-                {/if}
-              </svelte:fragment>
-              <svelte:fragment slot="actions">
-                <div class="row-actions">
-                  {#if item.act.meetUrl}<a class="maps" href={item.act.meetUrl} target="_blank" rel="noreferrer">📍 Mapa</a>{/if}
-                  {#if item.act.data.tel}<a class="call" href="tel:{item.act.data.tel}">📞</a>{/if}
-                  <a class="btn-nav" href="/planes?flash={item.act.data.id}">🎯 Ver plan</a>
-                </div>
-              </svelte:fragment>
-            </DayRow>
-
+            <ActivityEntry act={item.act} />
           {:else if item.kind === 'hotel' && hotel}
-            <DayRow
-              icon="🛏"
-              iconBg="rgba(63,125,100,.14)"
-              label="Dónde dormir"
-              title={hotel.data.name}
-              detail={hotel.data.addr}
-            >
-              <svelte:fragment slot="pills">
-                {#if hotel.infoBadges.length}
-                  <div class="pill-line">
-                    {#each hotel.infoBadges as b}<span class="pill {b.cls}">{b.label}</span>{/each}
-                  </div>
-                {/if}
-              </svelte:fragment>
-              <svelte:fragment slot="actions">
-                <div class="row-actions">
-                  {#if hotel.data.tel}<a class="call" href="tel:{hotel.data.tel}">📞 Llamar</a>{/if}
-                  <a class="maps" href={hotel.mapsUrl} target="_blank" rel="noreferrer">📍 Mapa</a>
-                  <a class="btn-nav" href="/hoteles?flash={day.stayId}">🏨 Ver alojamiento</a>
-                </div>
-              </svelte:fragment>
-            </DayRow>
+            <HotelEntry {hotel} dayDm={day.d} />
           {/if}
 
         {/each}

@@ -13,7 +13,7 @@
         <span class="title-sub">Pepe & Sunta</span>
       </a>
       <a class="info-btn" href="/info" aria-label="Información">
-        <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 20 20" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="10" cy="10" r="8.5"/>
           <line x1="10" y1="9" x2="10" y2="14"/>
           <circle cx="10" cy="6.5" r=".8" fill="currentColor" stroke="none"/>

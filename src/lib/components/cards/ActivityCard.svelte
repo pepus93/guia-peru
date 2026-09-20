@@ -3,9 +3,9 @@
   import { ActivityModel } from '$lib/models/ActivityModel';
   import { openModal, flashId } from '$lib/stores/ui';
   import { deleteActivity } from '$lib/stores/trip';
-  import CardHeader from './CardHeader.svelte';
-  import Card       from './Card.svelte';
-  import IconWhatsApp from '$lib/components/ui/IconWhatsApp.svelte';
+  import CardHeader  from './CardHeader.svelte';
+  import Card        from './Card.svelte';
+  import ContactInfo from '$lib/components/ui/ContactInfo.svelte';
 
   export let activity: Activity;
   export let compact = false;
@@ -27,6 +27,7 @@
     type="{typeInfo.label}{activity.time ? ` · ${activity.time}` : ''}{activity.duration ? ` (${activity.duration})` : ''} · {model.dateLabel}"
     name={activity.name}
     place={activity.meet ? `📍 ${activity.meet}${activity.end ? ` → 🏁 ${activity.end}` : ''}` : ''}
+    placeUrl={model.meetUrl || model.mapsUrl || undefined}
   >
     <svelte:fragment slot="pills">
       {#if model.infoBadges.length}
@@ -81,34 +82,18 @@
       <div class="exc-warn">⚠ {activity.warn}</div>
     {/if}
 
-    <div class="row-actions">
-      {#if model.meetUrl}
-        <a class="maps" href={model.meetUrl} target="_blank" rel="noreferrer">📍 Mapa inicio</a>
-      {/if}
-      {#if model.endUrl}
-        <a class="maps" href={model.endUrl} target="_blank" rel="noreferrer">🏁 Mapa fin</a>
-      {/if}
-      {#if model.mapsUrl && !model.meetUrl}
-        <a class="maps" href={model.mapsUrl} target="_blank" rel="noreferrer">📍 Mapa</a>
-      {/if}
-      {#if activity.tel}
-        <a class="call" href="tel:{activity.tel}">📞 Llamar</a>
-      {/if}
-      {#if activity.providerTel}
-        <a class="call" href={model.telHref}>📞 {activity.provider ?? 'Proveedor'}</a>
-        <a class="btn-nav wa" href={model.waHref} target="_blank" rel="noreferrer"><IconWhatsApp /> WhatsApp</a>
-      {/if}
-      {#if activity.bookingUrl}
-        <a class="btn-nav" href={activity.bookingUrl} target="_blank" rel="noreferrer">🎫 Ver reserva</a>
-      {/if}
-    </div>
+    <ContactInfo
+      tel={activity.tel || undefined}
+      providerName={activity.provider || undefined}
+      providerTel={activity.providerTel || undefined}
+      waHref={model.waHref || undefined}
+      bookingUrl={activity.bookingUrl || undefined}
+    />
   </svelte:fragment>
 </Card>
 
 <style>
   .badges-row { margin-top: 5px; }
-
-  .wa { background: transparent; color: #128c4a; border-color: rgba(18,140,74,.3); }
 
   /* Itinerario */
   .exc-days-list {
