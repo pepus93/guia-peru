@@ -7,7 +7,6 @@
     { href: '/hoteles', icon: '🏨', label: 'Hoteles' },
     { href: '/planes',  icon: '🎯', label: 'Planes' },
     { href: '/cambio',  icon: '💱', label: 'Cambio' },
-    { href: '/info',    icon: '📋', label: 'Info' },
   ];
 </script>
 

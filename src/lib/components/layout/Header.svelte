@@ -7,10 +7,19 @@
 
 <header class="app-header">
   <div class="header-top">
-    <a class="header-title" href="/dias">
-      <span class="title-main font-serif">Perú 2026</span>
-      <span class="title-sub">Pepe & Sunta</span>
-    </a>
+    <div class="header-left">
+      <a class="header-title" href="/dias">
+        <span class="title-main font-serif">Perú 2026</span>
+        <span class="title-sub">Pepe & Sunta</span>
+      </a>
+      <a class="info-btn" href="/info" aria-label="Información">
+        <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="10" cy="10" r="8.5"/>
+          <line x1="10" y1="9" x2="10" y2="14"/>
+          <circle cx="10" cy="6.5" r=".8" fill="currentColor" stroke="none"/>
+        </svg>
+      </a>
+    </div>
     <div class="dual-clock">
       <div class="clock-pair">
         <span class="clock-flag">🇵🇪</span>
@@ -49,12 +58,32 @@
     padding-bottom: 12px;
   }
 
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
   .header-title {
     display: flex;
     flex-direction: column;
     gap: 2px;
     text-decoration: none;
   }
+
+  .info-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(243,233,219,.55);
+    text-decoration: none;
+    padding: 4px;
+    border-radius: 50%;
+    transition: color .15s;
+    touch-action: manipulation;
+  }
+  .info-btn:hover  { color: var(--paper); }
+  .info-btn:active { color: var(--gold); }
 
   .title-main {
     font-size: 1.5rem;
