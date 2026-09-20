@@ -263,11 +263,29 @@
     border: 1px solid var(--line);
     border-radius: var(--radius-sm);
     margin-bottom: 10px;
-    overflow: hidden;
+    position: relative;
     box-shadow: var(--shadow);
     transition: box-shadow .2s ease, transform .2s ease, border-color .2s ease;
   }
-  .day.today   { border-color: var(--terra); box-shadow: 0 0 0 2px rgba(198,90,52,.25), var(--shadow); }
+  .day.today {
+    border-color: rgba(198,90,52,.5);
+    box-shadow: 0 0 0 1px rgba(198,90,52,.15), var(--shadow);
+  }
+  .day.today::before {
+    content: 'HOY';
+    position: absolute;
+    top: -1px;
+    right: 14px;
+    transform: translateY(-50%);
+    font-size: .58rem;
+    font-weight: 800;
+    letter-spacing: .14em;
+    color: var(--paper);
+    background: var(--terra);
+    padding: 2px 9px;
+    border-radius: 10px;
+    z-index: 1;
+  }
   .day.is-past { opacity: .45; filter: grayscale(.4); }
 
   @media (hover: hover) {
@@ -303,6 +321,8 @@
     padding: 0;
     position: relative;
     text-align: left;
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    overflow: hidden;
   }
 
   /* ── Date block ─────────────────────────────────────── */

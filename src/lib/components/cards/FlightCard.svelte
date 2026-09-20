@@ -4,10 +4,8 @@
   import { openModal, openBpModal } from '$lib/stores/ui';
   import { deleteFlight } from '$lib/stores/trip';
   import { getBpImage } from '$lib/utils/bpStorage';
-  import CardMenu from './CardMenu.svelte';
-  import Card     from './Card.svelte';
+  import Card from './Card.svelte';
   import { flashId } from '$lib/stores/ui';
-  import { inTrip, todayFlightIds } from '$lib/stores/today';
 
   export let flight: Flight;
   export let compact = false;
@@ -15,7 +13,6 @@
 
   $: model    = new FlightModel(flight);
   $: flashing = $flashId === flight.id;
-  $: isToday  = $inTrip && $todayFlightIds.has(flight.id);
 
   function edit() { openModal('flight', flight); }
   async function remove() { await deleteFlight(flight.id); }
@@ -37,7 +34,7 @@
   let viewerSrc: string | null = null;
 </script>
 
-<Card id={flight.id} {flashing} {past} {isToday} flashColor="var(--sky)" cssClass="flight-card{model.isInternational ? ' is-intl' : ''}" dayDm={flight.dm}>
+<Card id={flight.id} {flashing} {past} flashColor="var(--sky)" cssClass="flight-card{model.isInternational ? ' is-intl' : ''}" dayDm={flight.dm} onEdit={!compact ? edit : undefined} onDelete={!compact ? remove : undefined}>
   <div class="flight-badge">{model.typeLabel}</div>
 
   <div class="flight-row">
@@ -56,10 +53,6 @@
       <span class="city-name">{flight.toCity}</span>
       <span class="time font-serif">{flight.arr}</span>
     </div>
-
-    {#if !compact}
-      <CardMenu onEdit={edit} onDelete={remove} />
-    {/if}
   </div>
 
   {#if model.infoBadges.length}

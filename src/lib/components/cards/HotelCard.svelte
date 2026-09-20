@@ -3,9 +3,7 @@
   import { AccommodationModel } from '$lib/models/AccommodationModel';
   import { openModal, flashId } from '$lib/stores/ui';
   import { deleteAccommodation } from '$lib/stores/trip';
-  import { inTrip, todayStayId } from '$lib/stores/today';
-  import CardMenu from './CardMenu.svelte';
-  import Card     from './Card.svelte';
+  import Card from './Card.svelte';
 
   export let hotel: Accommodation;
   export let compact = false;
@@ -13,13 +11,12 @@
 
   $: model    = new AccommodationModel(hotel);
   $: flashing = $flashId === hotel.id;
-  $: isToday  = $inTrip && $todayStayId === hotel.id;
 
   function edit() { openModal('hotel', hotel); }
   async function remove() { await deleteAccommodation(hotel.id); }
 </script>
 
-<Card id={hotel.id} {flashing} {past} {isToday} flashColor="var(--jade)" cssClass="hotel-card" dayDm={hotel.startDm}>
+<Card id={hotel.id} {flashing} {past} flashColor="var(--jade)" cssClass="hotel-card" dayDm={hotel.startDm} endDm={hotel.endDm} onEdit={!compact ? edit : undefined} onDelete={!compact ? remove : undefined}>
   <div class="hotel-header">
     <div class="hotel-info">
       <span class="hotel-name">{hotel.name}</span>
@@ -34,9 +31,6 @@
         </div>
       {/if}
     </div>
-    {#if !compact}
-      <CardMenu onEdit={edit} onDelete={remove} />
-    {/if}
   </div>
 
   <div class="row-actions">

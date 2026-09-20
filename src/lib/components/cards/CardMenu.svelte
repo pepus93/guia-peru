@@ -1,5 +1,6 @@
 <script lang="ts">
   import { fly, fade } from 'svelte/transition';
+  import { portal } from '$lib/utils/portal';
 
   export let onEdit: () => void;
   export let onDelete: () => Promise<void>;
@@ -22,9 +23,10 @@
 
 {#if open}
   <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
-  <div class="cm-backdrop" transition:fade={{ duration: 180 }} on:click={hide}></div>
+  <div use:portal class="cm-backdrop" transition:fade={{ duration: 180 }} on:click={hide}></div>
 
-  <div class="cm-sheet" transition:fly={{ y: 260, duration: 220 }}>
+  <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
+  <div use:portal class="cm-sheet" transition:fly={{ y: 260, duration: 220 }}>
     <div class="cm-handle"></div>
 
     {#if !confirming}
