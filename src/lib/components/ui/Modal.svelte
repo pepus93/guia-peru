@@ -5,6 +5,13 @@
   import HotelForm         from '$lib/components/forms/HotelForm.svelte';
   import BoardingPassForm  from '$lib/components/forms/BoardingPassForm.svelte';
   import { fly, fade }     from 'svelte/transition';
+  import { onDestroy }     from 'svelte';
+  import { beforeNavigate } from '$app/navigation';
+
+  beforeNavigate(() => {
+    if ($modal.open)   closeModal();
+    if ($bpModal.open) closeBpModal();
+  });
 
   function onBackdrop(e: MouseEvent) {
     if (e.target === e.currentTarget) closeModal();
@@ -12,6 +19,32 @@
   function onBpBackdrop(e: MouseEvent) {
     if (e.target === e.currentTarget) closeBpModal();
   }
+
+  // ── Scroll lock ───────────────────────────────────────────
+  let scrollY = 0;
+
+  function lockScroll() {
+    scrollY = window.scrollY;
+    document.body.style.position   = 'fixed';
+    document.body.style.top        = `-${scrollY}px`;
+    document.body.style.left       = '0';
+    document.body.style.right      = '0';
+    document.body.style.overflowY  = 'scroll'; // keeps scrollbar width stable
+  }
+
+  function unlockScroll() {
+    document.body.style.position  = '';
+    document.body.style.top       = '';
+    document.body.style.left      = '';
+    document.body.style.right     = '';
+    document.body.style.overflowY = '';
+    window.scrollTo(0, scrollY);
+  }
+
+  $: if ($modal.open || $bpModal.open) lockScroll();
+  else unlockScroll();
+
+  onDestroy(unlockScroll);
 
   // ── Drag-to-dismiss ───────────────────────────────────────
   let dragY    = 0;
