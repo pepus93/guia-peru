@@ -7,8 +7,8 @@
   import { loadTrip } from '$lib/stores/trip';
   import { startClocks, modal } from '$lib/stores/ui';
   import { page } from '$app/stores';
-  import { fade } from 'svelte/transition';
-  import { goto } from '$app/navigation';
+  import { cubicOut } from 'svelte/easing';
+  import { goto, beforeNavigate } from '$app/navigation';
   import { dev } from '$app/environment';
 
   const ROUTES = ['/dias', '/vuelos', '/hoteles', '/planes', '/cambio', '/info'];
@@ -40,6 +40,41 @@
     }
   }
 
+  // ── Slide direction ──────────────────────────────────────
+  let slideDir = 1; // 1 = izquierda (pestaña siguiente), -1 = derecha (anterior)
+
+  beforeNavigate(({ from, to }) => {
+    const fromIdx = ROUTES.indexOf(from?.url.pathname ?? '');
+    const toIdx   = ROUTES.indexOf(to?.url.pathname   ?? '');
+    if (fromIdx !== -1 && toIdx !== -1) {
+      slideDir = toIdx > fromIdx ? 1 : -1;
+    }
+  });
+
+  function slideIn(node: Element) {
+    const x = slideDir * 420;
+    return {
+      duration: 280,
+      easing: cubicOut,
+      css: (_t: number, u: number) => `transform: translateX(${u * x}px)`
+    };
+  }
+
+  function slideOut(node: Element) {
+    const x = slideDir * -420;
+    const { width } = node.getBoundingClientRect();
+    return {
+      duration: 280,
+      easing: cubicOut,
+      css: (_t: number, u: number) => `
+        position: absolute; top: 0; left: 0;
+        width: ${width}px;
+        transform: translateX(${u * x}px)
+      `
+    };
+  }
+
+  // ── Touch gesture ────────────────────────────────────────
   let touchStartX = 0;
   let touchStartY = 0;
 
@@ -50,11 +85,8 @@
 
   function onTouchEnd(e: TouchEvent) {
     if ($modal.open) return;
-
     const dx = e.changedTouches[0].clientX - touchStartX;
     const dy = e.changedTouches[0].clientY - touchStartY;
-
-    // Ignorar si no es predominantemente horizontal o si el desplazamiento es muy corto
     if (Math.abs(dx) < 60 || Math.abs(dy) > Math.abs(dx) * 0.6) return;
 
     const idx = ROUTES.indexOf($page.url.pathname);
@@ -91,7 +123,7 @@
   <Header />
   <main class="page">
     {#key $page.url.pathname}
-      <div in:fade={{ duration: 160, delay: 60 }}>
+      <div in:slideIn out:slideOut>
         <slot />
       </div>
     {/key}
