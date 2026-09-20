@@ -7,7 +7,7 @@
   import { loadTrip } from '$lib/stores/trip';
   import { startClocks, modal } from '$lib/stores/ui';
   import { page } from '$app/stores';
-  import { cubicOut } from 'svelte/easing';
+  import { fade } from 'svelte/transition';
   import { goto, beforeNavigate } from '$app/navigation';
   import { dev } from '$app/environment';
 
@@ -38,40 +38,6 @@
       pinInput = '';
       setTimeout(() => (pinError = false), 800);
     }
-  }
-
-  // ── Slide direction ──────────────────────────────────────
-  let slideDir = 1; // 1 = izquierda (pestaña siguiente), -1 = derecha (anterior)
-
-  beforeNavigate(({ from, to }) => {
-    const fromIdx = ROUTES.indexOf(from?.url.pathname ?? '');
-    const toIdx   = ROUTES.indexOf(to?.url.pathname   ?? '');
-    if (fromIdx !== -1 && toIdx !== -1) {
-      slideDir = toIdx > fromIdx ? 1 : -1;
-    }
-  });
-
-  function slideIn(node: Element) {
-    const x = slideDir * 420;
-    return {
-      duration: 280,
-      easing: cubicOut,
-      css: (_t: number, u: number) => `transform: translateX(${u * x}px)`
-    };
-  }
-
-  function slideOut(node: Element) {
-    const x = slideDir * -420;
-    const { width } = node.getBoundingClientRect();
-    return {
-      duration: 280,
-      easing: cubicOut,
-      css: (_t: number, u: number) => `
-        position: absolute; top: 0; left: 0;
-        width: ${width}px;
-        transform: translateX(${u * x}px)
-      `
-    };
   }
 
   // ── Touch gesture ────────────────────────────────────────
@@ -123,7 +89,7 @@
   <Header />
   <main class="page">
     {#key $page.url.pathname}
-      <div in:slideIn out:slideOut>
+      <div in:fade={{ duration: 80 }}>
         <slot />
       </div>
     {/key}
