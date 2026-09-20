@@ -3,6 +3,7 @@
   import { tripDays, loading } from '$lib/stores/trip';
   import DayCard      from '$lib/components/cards/DayCard.svelte';
   import FlashHandler from '$lib/components/ui/FlashHandler.svelte';
+  import PageTitle    from '$lib/components/ui/PageTitle.svelte';
   import { todayDm } from '$lib/utils/dates';
 
   let scrolled = false;
@@ -17,6 +18,7 @@
 </script>
 
 <FlashHandler {loading} />
+<PageTitle title="Días" eyebrow="Perú 2026" />
 
 {#if $loading}
   <p class="empty-msg">Cargando…</p>

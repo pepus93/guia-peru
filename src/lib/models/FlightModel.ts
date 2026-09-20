@@ -6,7 +6,7 @@ export class FlightModel {
   get isInternational() { return !!this.data.intl; }
   get routeLabel()      { return `${this.data.from} → ${this.data.to}`; }
   get timeLabel()       { return `${this.data.dep} → ${this.data.arr}`; }
-  get typeLabel()       { return this.isInternational ? '🌍 Internacional' : '🇵🇪 Vuelo interno'; }
+  get typeLabel()       { return this.isInternational ? 'Internacional' : 'Vuelo interno'; }
   get earlyLabel()      { return this.isInternational ? '3h antes · vuelo internacional' : '1h 30min antes · vuelo interno'; }
 
   get flightRadar24Url() {
@@ -24,7 +24,7 @@ export class FlightModel {
     if (this.data.stops) {
       const isDirect = /directo/i.test(this.data.stops);
       b.push({
-        label: isDirect ? '✈ Directo' : `↔ ${this.data.stops}`,
+        label: isDirect ? 'Directo' : this.data.stops,
         cls:   isDirect ? 'pill-green' : 'pill-warn',
       });
     }

@@ -309,7 +309,56 @@ a.call:active, a.maps:active, .chip:active {
   text-transform: uppercase;
   color: var(--ink-soft);
   margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
+
+/* ── MAP / ADDRESS ROW (shared: HotelCard, ActivityCard) ── */
+.addr-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+.addr-text {
+  flex: 1;
+  font-size: .76rem;
+  color: var(--ink-soft);
+  line-height: 1.3;
+}
+.addr-map-btn {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px; height: 32px;
+  background: rgba(63,125,100,.12);
+  border-radius: 8px;
+  color: var(--jade);
+  text-decoration: none;
+  transition: background .15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.addr-map-btn:active { background: rgba(63,125,100,.28); }
+@media (hover: hover) {
+  .addr-map-btn:hover { background: rgba(63,125,100,.22); }
+}
+.addr-map-ic {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px; height: 32px;
+  color: var(--ink-soft);
+  opacity: .35;
+}
+
+/* ── BADGES ROW ─────────────────────────────────────────── */
+.badges-row { margin-top: 8px; }
+
+/* ── FORM CHECKBOX ──────────────────────────────────────── */
+.field-check { flex-direction: row !important; align-items: center; gap: 8px; }
 
 /* ── FOOTER NOTE ────────────────────────────────────────── */
 .foot { text-align: center; font-size: .76rem; color: var(--ink-soft); padding: 20px 0 8px; opacity: .7; }

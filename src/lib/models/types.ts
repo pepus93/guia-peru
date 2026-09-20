@@ -6,16 +6,16 @@ export type ActivityType =
   | 'tour' | 'restaurant' | 'museo' | 'transporte'
   | 'mirador' | 'playa' | 'compras' | 'ocio' | 'excursion';
 
-export const ACTIVITY_TYPES: Record<ActivityType, { icon: string; bg: string; label: string }> = {
-  tour:       { icon: 'star',         bg: 'rgba(63,125,100,.14)',  label: 'Tour' },
-  restaurant: { icon: 'utensils',     bg: 'rgba(224,168,62,.18)', label: 'Restaurante' },
-  museo:      { icon: 'landmark',     bg: 'rgba(58,110,165,.14)', label: 'Museo' },
-  transporte: { icon: 'bus',          bg: 'rgba(217,139,69,.18)', label: 'Transporte' },
-  mirador:    { icon: 'eye',          bg: 'rgba(63,125,100,.12)', label: 'Mirador' },
-  playa:      { icon: 'waves',        bg: 'rgba(58,110,165,.12)', label: 'Playa' },
-  compras:    { icon: 'shopping-bag', bg: 'rgba(198,90,52,.12)',  label: 'Compras' },
-  ocio:       { icon: 'music',        bg: 'rgba(224,168,62,.14)', label: 'Ocio' },
-  excursion:  { icon: 'mountain',     bg: 'rgba(120,80,160,.14)', label: 'Excursión' },
+export const ACTIVITY_TYPES: Record<ActivityType, { icon: string; bg: string; label: string; color: string }> = {
+  tour:       { icon: 'star',         bg: 'rgba(63,125,100,.14)',  label: 'Tour',        color: 'var(--jade)' },
+  restaurant: { icon: 'utensils',     bg: 'rgba(224,168,62,.18)', label: 'Restaurante', color: 'var(--clay)' },
+  museo:      { icon: 'landmark',     bg: 'rgba(58,110,165,.14)', label: 'Museo',       color: 'var(--sky)' },
+  transporte: { icon: 'bus',          bg: 'rgba(217,139,69,.18)', label: 'Transporte',  color: 'var(--ink-soft)' },
+  mirador:    { icon: 'eye',          bg: 'rgba(63,125,100,.12)', label: 'Mirador',     color: 'var(--jade)' },
+  playa:      { icon: 'waves',        bg: 'rgba(58,110,165,.12)', label: 'Playa',       color: 'var(--sky)' },
+  compras:    { icon: 'shopping-bag', bg: 'rgba(198,90,52,.12)',  label: 'Compras',     color: 'var(--terra)' },
+  ocio:       { icon: 'music',        bg: 'rgba(224,168,62,.14)', label: 'Ocio',        color: '#c08a14' },
+  excursion:  { icon: 'mountain',     bg: 'rgba(120,80,160,.14)', label: 'Excursión',   color: '#7850a0' },
 };
 
 // ── INFO BADGE ────────────────────────────────────────────────

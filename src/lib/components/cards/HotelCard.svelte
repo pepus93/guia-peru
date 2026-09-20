@@ -185,38 +185,6 @@
     line-height: 1.2;
   }
 
-  .addr-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 6px;
-  }
-
-  .addr-text {
-    flex: 1;
-    font-size: .76rem;
-    color: var(--ink-soft);
-    line-height: 1.3;
-  }
-
-  .addr-map-btn {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px; height: 32px;
-    background: rgba(63,125,100,.12);
-    border-radius: 8px;
-    color: var(--jade);
-    text-decoration: none;
-    transition: background .15s;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .addr-map-btn:active { background: rgba(63,125,100,.28); }
-  @media (hover: hover) {
-    .addr-map-btn:hover { background: rgba(63,125,100,.22); }
-  }
-
   /* ── Detalle ───────────────────────────────────────── */
   .hotel-notes { font-size: .76rem; color: var(--jade); margin: 6px 0 0; line-height: 1.4; }
 

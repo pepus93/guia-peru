@@ -1,7 +1,5 @@
 <script lang="ts">
   import { peruTime, spainTime, timeDiff } from '$lib/stores/ui';
-  import { trip } from '$lib/stores/trip';
-  import { daysUntil } from '$lib/utils/dates';
   import Icon from '$lib/components/ui/Icon.svelte';
 
 </script>
@@ -42,9 +40,10 @@
     position: sticky;
     top: 0;
     z-index: 10;
-    background: var(--ink);
-    color: var(--paper);
-    padding: 14px 16px 0;
+    background: var(--card);
+    border-bottom: 1px solid var(--line);
+    box-shadow: 0 4px 20px -10px rgba(42,26,18,.15);
+    padding: 12px 16px;
   }
 
   .header-top {
@@ -52,7 +51,6 @@
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    padding-bottom: 12px;
   }
 
   .header-left {
@@ -72,69 +70,71 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: rgba(243,233,219,.55);
+    color: var(--ink-soft);
+    opacity: .5;
     text-decoration: none;
     padding: 4px;
     border-radius: 50%;
-    transition: color .15s;
+    transition: opacity .15s;
     touch-action: manipulation;
   }
-  .info-btn:hover  { color: var(--paper); }
-  .info-btn:active { color: var(--gold); }
+  .info-btn:hover  { opacity: .9; }
+  .info-btn:active { opacity: 1; color: var(--terra); }
 
   .title-main {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: 700;
     line-height: 1;
-    color: var(--paper);
+    color: var(--ink);
   }
 
   .title-sub {
-    font-size: .8rem;
+    font-size: .72rem;
     letter-spacing: .1em;
     text-transform: uppercase;
-    color: rgba(243,233,219,.6);
+    color: var(--ink-soft);
+    opacity: .6;
   }
 
   .dual-clock {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
   }
 
   .clock-pair {
     display: flex;
     align-items: center;
     gap: 5px;
-    font-size: .9rem;
   }
 
-  .clock-flag { font-size: 1.1rem; }
+  .clock-flag { font-size: 1rem; }
 
   .clock-label {
-    color: rgba(243,233,219,.55);
-    font-size: .82rem;
+    color: var(--ink-soft);
+    opacity: .6;
+    font-size: .7rem;
     line-height: 1;
     letter-spacing: .04em;
     text-transform: uppercase;
   }
 
   .clock-time {
-    font-size: .96rem;
+    font-size: .9rem;
     font-weight: 700;
-    color: var(--paper);
-    letter-spacing: .02em;
+    color: var(--ink);
+    letter-spacing: .01em;
     line-height: 1.2;
   }
 
   .clock-diff {
-    font-size: .8rem;
-    color: var(--gold);
+    font-size: .75rem;
+    color: var(--terra-deep);
     font-weight: 700;
     white-space: nowrap;
-    background: rgba(224,168,62,.18);
-    padding: 2px 6px;
-    border-radius: 5px;
+    background: rgba(198,90,52,.1);
+    padding: 2px 7px;
+    border-radius: 6px;
   }
 
 </style>

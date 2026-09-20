@@ -3,7 +3,8 @@
   import HotelCard    from '$lib/components/cards/HotelCard.svelte';
   import FlashHandler from '$lib/components/ui/FlashHandler.svelte';
   import PastToggle   from '$lib/components/ui/PastToggle.svelte';
-  import FAB          from '$lib/components/ui/FAB.svelte';
+  import FAB           from '$lib/components/ui/FAB.svelte';
+  import PageTitle     from '$lib/components/ui/PageTitle.svelte';
   import { openModal } from '$lib/stores/ui';
   import { todayDm } from '$lib/utils/dates';
 
@@ -27,6 +28,7 @@
 
 <FlashHandler {loading} />
 <FAB on:click={() => openModal('hotel')} />
+<PageTitle title="Hoteles" />
 
 {#if $loading}
   <p class="empty-msg">Cargando…</p>

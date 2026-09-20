@@ -1,6 +1,5 @@
 import type { Trip, TripDay, Activity, Flight, Accommodation, Traveler } from '$lib/models/types';
-
-const TRIP_ID = 'peru-2026';
+import { TRIP_ID } from '$lib/config';
 
 // ── Trip ───────────────────────────────────────────────────
 

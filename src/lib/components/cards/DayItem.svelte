@@ -12,8 +12,7 @@
 </script>
 
 <script lang="ts">
-  import Icon, { type IconName } from '$lib/components/ui/Icon.svelte';
-  const asIcon = (s: string): IconName => s as unknown as IconName;
+  import Icon, { type IconName, asIcon } from '$lib/components/ui/Icon.svelte';
   export let href: string;
   export let icon: string;
   export let iconBg: string = 'var(--paper-2)';

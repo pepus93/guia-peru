@@ -2,39 +2,66 @@
   import { activityList, tripDays, loading } from '$lib/stores/trip';
   import ActivityCard  from '$lib/components/cards/ActivityCard.svelte';
   import FlashHandler  from '$lib/components/ui/FlashHandler.svelte';
+  import PastToggle    from '$lib/components/ui/PastToggle.svelte';
   import FAB           from '$lib/components/ui/FAB.svelte';
+  import PageTitle     from '$lib/components/ui/PageTitle.svelte';
   import { openModal } from '$lib/stores/ui';
-  import { dmToLabel } from '$lib/utils/dates';
+  import { dmToLabel, todayDm } from '$lib/utils/dates';
 
-  $: byDay = $activityList.reduce<Record<number, typeof $activityList>>((acc, a) => {
-    (acc[a.dayDm] ??= []).push(a);
-    return acc;
-  }, {});
+  const today = todayDm();
 
-  $: dayKeys = Object.keys(byDay).map(Number).sort((a, b) => a - b);
+  $: upcoming = $activityList.filter(a => (a.endDayDm ?? a.dayDm) >= today);
+  $: past     = $activityList.filter(a => (a.endDayDm ?? a.dayDm) <  today);
 
-  function dayTitle(dm: number) {
-    const day = $tripDays.find(d => d.d === dm);
-    return day ? `${dmToLabel(dm)} · ${day.title}` : dmToLabel(dm);
+  function groupByDm(list: typeof $activityList) {
+    const map = new Map<number, typeof $activityList>();
+    for (const a of list) {
+      if (!map.has(a.dayDm)) map.set(a.dayDm, []);
+      map.get(a.dayDm)!.push(a);
+    }
+    return [...map.entries()].sort((a, b) => a[0] - b[0]);
   }
+
+  $: groupedUpcoming = groupByDm(upcoming);
+  $: groupedPast     = groupByDm(past);
+
+  function sectionLabel(dm: number) {
+    const day = $tripDays.find(d => d.d === dm);
+    return day ? `${dmToLabel(dm)} · ${day.dow} · ${day.title}` : dmToLabel(dm);
+  }
+
+  let pastOpen = false;
 </script>
 
 <FlashHandler {loading} />
-
 <FAB on:click={() => openModal('activity')} />
+<PageTitle title="Planes" />
 
 {#if $loading}
   <p class="empty-msg">Cargando…</p>
-{:else if dayKeys.length === 0}
+{:else if $activityList.length === 0}
   <p class="empty-msg">Aún no hay planes.</p>
 {:else}
-  {#each dayKeys as dm}
+  {#each groupedUpcoming as [dm, activities]}
     <div class="day-group">
-      <div class="section-label">{dayTitle(dm)}</div>
-      {#each byDay[dm] as activity (activity.id)}
+      <div class="section-label">{sectionLabel(dm)}</div>
+      {#each activities as activity (activity.id)}
         <ActivityCard {activity} />
       {/each}
     </div>
   {/each}
-{/if}
 
+  {#if past.length > 0}
+    <PastToggle count={past.length} label="Planes pasados" bind:open={pastOpen} />
+    {#if pastOpen}
+      {#each groupedPast as [dm, activities]}
+        <div class="day-group">
+          <div class="section-label">{sectionLabel(dm)}</div>
+          {#each activities as activity (activity.id)}
+            <ActivityCard {activity} past={true} />
+          {/each}
+        </div>
+      {/each}
+    {/if}
+  {/if}
+{/if}

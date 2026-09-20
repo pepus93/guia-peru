@@ -10,6 +10,8 @@
     | 'pencil' | 'phone' | 'pill' | 'plane' | 'plus'
     | 'shield' | 'shopping-bag' | 'star' | 'thermometer' | 'ticket' | 'trash'
     | 'utensils' | 'waves' | 'wifi' | 'x' | 'zap';
+
+  export const asIcon = (s: string): IconName => s as unknown as IconName;
 </script>
 
 <script lang="ts">

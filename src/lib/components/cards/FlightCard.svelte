@@ -134,7 +134,7 @@
 
 <style>
   .flight-badge { font-size: .7rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--sky); margin-bottom: 10px; }
-  .is-intl .flight-badge { color: var(--terra); }
+  :global(.is-intl) .flight-badge { color: var(--terra); }
 
   .flight-row { display: flex; align-items: center; gap: 8px; }
 
@@ -198,8 +198,6 @@
     max-width: 100%;
   }
 
-  .badges-row { margin-top: 8px; }
-  .card-section-title { display: flex; align-items: center; gap: 5px; }
   .flight-transport { display: flex; flex-direction: column; gap: 4px; margin-top: 4px; }
   .transport-how   { font-size: .84rem; color: var(--ink-soft); }
   .transport-early { font-size: .82rem; font-weight: 700; color: var(--terra); display: flex; align-items: center; gap: 4px; }

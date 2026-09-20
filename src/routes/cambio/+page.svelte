@@ -57,10 +57,7 @@
   }
 </script>
 
-<div class="section-label">Calculadora de cambio</div>
-
 <div class="converter-card">
-  <h2 class="conv-title font-serif"><Icon name="arrow-left-right" size={18} /> EUR ↔ PEN</h2>
 
   <!-- Main converter -->
   <div class="conv-row">
@@ -146,16 +143,7 @@
     box-shadow: var(--shadow);
   }
 
-  .conv-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 7px;
-  }
-
-  /* ── Main converter ─────────────────────────────────────── */
+/* ── Main converter ─────────────────────────────────────── */
   .conv-row {
     display: grid;
     grid-template-columns: 1fr auto 1fr;

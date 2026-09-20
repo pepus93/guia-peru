@@ -1,6 +1,5 @@
 <script lang="ts">
-  import Icon, { type IconName } from '$lib/components/ui/Icon.svelte';
-  const asIcon = (s: string): IconName => s as unknown as IconName;
+  import Icon, { asIcon } from '$lib/components/ui/Icon.svelte';
   export let icon: string;
   export let type: string;
   export let name: string;
@@ -14,11 +13,16 @@
     <span class="ch-type">{type}</span>
     <span class="ch-name">{name}</span>
     {#if place}
-      {#if placeUrl}
-        <a class="ch-place ch-place-link" href={placeUrl} target="_blank" rel="noreferrer">{place}</a>
-      {:else}
-        <span class="ch-place">{place}</span>
-      {/if}
+      <div class="ch-addr">
+        {#if placeUrl}
+          <a class="ch-map-btn" href={placeUrl} target="_blank" rel="noreferrer" aria-label="Ver en mapa">
+            <Icon name="map-pin" size={13} />
+          </a>
+        {:else}
+          <span class="ch-map-ic"><Icon name="map-pin" size={13} /></span>
+        {/if}
+        <span class="ch-place-text">{place}</span>
+      </div>
     {/if}
     <slot name="pills" />
   </div>
@@ -31,6 +35,32 @@
   .ch-body { display: flex; flex-direction: column; gap: 1px; flex: 1; min-width: 0; }
   .ch-type  { font-size: .62rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); }
   .ch-name  { font-size: .82rem; font-weight: 700; color: var(--ink); line-height: 1.2; }
-  .ch-place { font-size: .68rem; color: var(--ink-soft); margin-top: 2px; }
-  .ch-place-link { text-decoration: none; color: var(--sky); }
+  .ch-addr {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 4px;
+  }
+  .ch-map-btn {
+    display: flex; align-items: center; justify-content: center;
+    width: 24px; height: 24px;
+    background: rgba(63,125,100,.12);
+    border-radius: 6px;
+    color: var(--jade);
+    text-decoration: none;
+    flex-shrink: 0;
+    transition: background .15s;
+  }
+  .ch-map-btn:active { background: rgba(63,125,100,.28); }
+  .ch-map-ic {
+    display: flex;
+    color: var(--ink-soft);
+    opacity: .45;
+    flex-shrink: 0;
+  }
+  .ch-place-text {
+    font-size: .72rem;
+    color: var(--ink-soft);
+    line-height: 1.3;
+  }
 </style>

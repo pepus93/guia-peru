@@ -4,6 +4,7 @@
   import FlashHandler  from '$lib/components/ui/FlashHandler.svelte';
   import PastToggle    from '$lib/components/ui/PastToggle.svelte';
   import FAB           from '$lib/components/ui/FAB.svelte';
+  import PageTitle     from '$lib/components/ui/PageTitle.svelte';
   import { openModal } from '$lib/stores/ui';
   import { dmToLabel, dmToDow, todayDm } from '$lib/utils/dates';
 
@@ -32,6 +33,7 @@
 
 <FlashHandler {loading} />
 <FAB on:click={() => openModal('flight')} />
+<PageTitle title="Vuelos" />
 
 {#if $loading}
   <p class="empty-msg">Cargando…</p>

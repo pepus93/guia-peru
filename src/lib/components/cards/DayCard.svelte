@@ -12,9 +12,8 @@
   import { dmToDate, todayDm } from '$lib/utils/dates';
   import { activitiesByDay, flightsMap, staysMap, activitiesMap, saveDayWarn } from '$lib/stores/trip';
   import { openModal, flashId } from '$lib/stores/ui';
-  import Icon, { type IconName } from '$lib/components/ui/Icon.svelte';
+  import Icon, { asIcon } from '$lib/components/ui/Icon.svelte';
   import { slide } from 'svelte/transition';
-  const asIcon = (s: string): IconName => s as unknown as IconName;
   import { TRIP_ID } from '$lib/config';
   import { onMount } from 'svelte';
 

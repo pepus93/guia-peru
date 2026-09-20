@@ -32,7 +32,7 @@ export class ActivityModel extends BaseDayModel<Activity> {
       b.push({ label: this.data.duration, cls: 'pill-info' });
 
     if (this.data.bookingUrl)
-      b.push({ label: '🎫 Reservado', cls: 'pill-green' });
+      b.push({ label: 'Reservado', cls: 'pill-green' });
 
     switch (this.data.type) {
       case 'tour':
@@ -65,12 +65,12 @@ export class ActivityModel extends BaseDayModel<Activity> {
 
       case 'transporte':
         if (this.data.duration)
-          b.push({ label: `🚌 ${this.data.duration}`, cls: 'pill-info' });
+          b.push({ label: this.data.duration, cls: 'pill-info' });
         break;
 
       case 'excursion':
         if (this.data.bookingCode)
-          b.push({ label: `🎫 ${this.data.bookingCode}`, cls: 'pill-green' });
+          b.push({ label: this.data.bookingCode, cls: 'pill-green' });
         if (this.data.price)
           b.push({ label: this.data.price, cls: 'pill-info' });
         break;
