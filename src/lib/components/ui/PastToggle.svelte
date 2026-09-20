@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from '$lib/components/ui/Icon.svelte';
   export let count: number;
   export let label: string;
   export let open = false;
@@ -6,7 +7,7 @@
 
 <button class="past-toggle" on:click={() => (open = !open)}>
   <span>{label} ({count})</span>
-  <span class="chev" class:open>›</span>
+  <span class="chev" class:open><Icon name="chevron-right" size={14} /></span>
 </button>
 
 <style>
@@ -29,9 +30,8 @@
     cursor: pointer;
   }
   .chev {
-    font-size: 1rem;
+    display: flex;
     transition: transform .2s;
-    display: inline-block;
   }
   .chev.open { transform: rotate(90deg); }
 </style>

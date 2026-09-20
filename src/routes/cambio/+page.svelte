@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import Icon from '$lib/components/ui/Icon.svelte';
 
   const DEFAULT_RATE = 4.10;
   const QUICK_EUR    = [1, 5, 10, 20, 50, 100];
@@ -59,7 +60,7 @@
 <div class="section-label">Calculadora de cambio</div>
 
 <div class="converter-card">
-  <h2 class="conv-title font-serif">💱 EUR ↔ PEN</h2>
+  <h2 class="conv-title font-serif"><Icon name="arrow-left-right" size={18} /> EUR ↔ PEN</h2>
 
   <!-- Main converter -->
   <div class="conv-row">
@@ -128,9 +129,9 @@
 
 <!-- Info tip -->
 <div class="tip-card">
-  <p>💵 Cambia euros en las <strong>casas de cambio</strong> de la calle. Mejor tipo que cajeros. Evita el aeropuerto.</p>
-  <p>🏧 Cajeros: <strong>BCP</strong> e <strong>Interbank</strong> tienen las comisiones más bajas.</p>
-  <p>📱 El tipo de cambio real lo puedes ver en la app <strong>XE Currency</strong> cuando tengas WiFi.</p>
+  <p><Icon name="credit-card" size={14} /> Cambia euros en las <strong>casas de cambio</strong> de la calle. Mejor tipo que cajeros. Evita el aeropuerto.</p>
+  <p><Icon name="credit-card" size={14} /> Cajeros: <strong>BCP</strong> e <strong>Interbank</strong> tienen las comisiones más bajas.</p>
+  <p><Icon name="wifi" size={14} /> El tipo de cambio real lo puedes ver en la app <strong>XE Currency</strong> cuando tengas WiFi.</p>
 </div>
 
 <p class="foot">El tipo de cambio se guarda en el dispositivo · funciona sin conexión</p>
@@ -284,6 +285,7 @@
     gap: 8px;
     margin-bottom: 12px;
   }
-  .tip-card p { font-size: .8rem; color: var(--ink-soft); line-height: 1.45; }
+  .tip-card p { font-size: .8rem; color: var(--ink-soft); line-height: 1.45; display: flex; align-items: flex-start; gap: 8px; }
+  .tip-card p :global(svg) { flex-shrink: 0; margin-top: 1px; }
   .tip-card strong { color: var(--ink); }
 </style>

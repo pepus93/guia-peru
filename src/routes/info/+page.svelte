@@ -1,5 +1,6 @@
 <script lang="ts">
   import { travelerList, loading } from '$lib/stores/trip';
+  import Icon from '$lib/components/ui/Icon.svelte';
 </script>
 
 <!-- ── VIAJEROS ──────────────────────────────────────────────── -->
@@ -56,13 +57,13 @@
   <div class="ins-coverages-title">Contacto de emergencia (24h)</div>
   <div class="ins-contacts">
     <a class="ins-contact-btn call" href="tel:+34934857735">
-      📞 <span>+34 93 485 77 35</span><small>Teléfono 24h</small>
+      <Icon name="phone" size={16} /><span>+34 93 485 77 35</span><small>Teléfono 24h</small>
     </a>
     <a class="ins-contact-btn wa" href="https://wa.me/34673885576" target="_blank" rel="noreferrer">
-      💬 <span>+34 673 885 576</span><small>WhatsApp</small>
+      <Icon name="message-circle" size={16} /><span>+34 673 885 576</span><small>WhatsApp</small>
     </a>
     <a class="ins-contact-btn mail" href="mailto:iatimedicos@arag.es">
-      ✉ <span>iatimedicos@arag.es</span><small>Email urgencias</small>
+      <Icon name="mail" size={16} /><span>iatimedicos@arag.es</span><small>Email urgencias</small>
     </a>
   </div>
 
@@ -71,10 +72,10 @@
   <div class="ins-coverages-title">Documentos</div>
   <div class="ins-docs">
     <a class="ins-doc-btn" href="/docs/seguro_certificado.pdf" download="Certificado_Seguro_IATI.pdf">
-      📄 Certificado de seguro
+      <Icon name="file" size={15} /> Certificado de seguro
     </a>
     <a class="ins-doc-btn" href="/docs/seguro_poliza.pdf" download="Poliza_IATI_Backpacker.pdf">
-      📑 Póliza completa
+      <Icon name="file-text" size={15} /> Póliza completa
     </a>
   </div>
 </div>
@@ -84,27 +85,27 @@
 
 <div class="info-card">
   <a class="emerg-row" href="tel:117">
-    <span class="emerg-icon">🚑</span>
+    <span class="emerg-icon"><Icon name="alert-circle" size={20} /></span>
     <div class="emerg-body"><strong>117</strong><span>Emergencias médicas (SAMU)</span></div>
   </a>
   <a class="emerg-row" href="tel:105">
-    <span class="emerg-icon">👮</span>
+    <span class="emerg-icon"><Icon name="shield" size={20} /></span>
     <div class="emerg-body"><strong>105</strong><span>Policía Nacional</span></div>
   </a>
   <a class="emerg-row" href="tel:116">
-    <span class="emerg-icon">🚒</span>
+    <span class="emerg-icon"><Icon name="flame" size={20} /></span>
     <div class="emerg-body"><strong>116</strong><span>Bomberos</span></div>
   </a>
   <a class="emerg-row" href="tel:0800441111">
-    <span class="emerg-icon">🏛️</span>
+    <span class="emerg-icon"><Icon name="flag" size={20} /></span>
     <div class="emerg-body"><strong>0800-44-1111</strong><span>Embajada española en Lima</span></div>
   </a>
   <a class="emerg-row" href="tel:080022100">
-    <span class="emerg-icon">ℹ️</span>
+    <span class="emerg-icon"><Icon name="info" size={20} /></span>
     <div class="emerg-body"><strong>0800-22-100</strong><span>iPerú — Atención al turista (gratuito)</span></div>
   </a>
   <a class="emerg-row" href="tel:+5114765165">
-    <span class="emerg-icon">🆘</span>
+    <span class="emerg-icon"><Icon name="alert-triangle" size={20} /></span>
     <div class="emerg-body"><strong>+51 1 476 5165</strong><span>INDECI — Defensa Civil</span></div>
   </a>
 </div>
@@ -113,12 +114,12 @@
 <div class="section-label" style="margin-top: 28px">Información útil</div>
 
 <div class="info-card">
-  <div class="info-row">🏧 <span>Moneda: Sol peruano (PEN). 1€ ≈ 4.1 PEN</span></div>
-  <div class="info-row">📶 <span>SIM local en aeropuerto. Operadoras: Bitel, Claro, Entel</span></div>
-  <div class="info-row">🌡 <span>Lima: 18–22°C. Cusco: 5–18°C. Selva: 25–35°C</span></div>
-  <div class="info-row">🦟 <span>Repelente obligatorio en la selva. Malaria baja altitud</span></div>
-  <div class="info-row">💊 <span>Soroche (mal de altura): ibuprofeno + hidratación + descanso</span></div>
-  <div class="info-row">🏔 <span>Cusco: 3400 m. Primeras 24h ritmo tranquilo</span></div>
+  <div class="info-row"><Icon name="credit-card" size={15} /><span>Moneda: Sol peruano (PEN). 1€ ≈ 4.1 PEN</span></div>
+  <div class="info-row"><Icon name="wifi" size={15} /><span>SIM local en aeropuerto. Operadoras: Bitel, Claro, Entel</span></div>
+  <div class="info-row"><Icon name="thermometer" size={15} /><span>Lima: 18–22°C. Cusco: 5–18°C. Selva: 25–35°C</span></div>
+  <div class="info-row"><Icon name="zap" size={15} /><span>Repelente obligatorio en la selva. Malaria baja altitud</span></div>
+  <div class="info-row"><Icon name="pill" size={15} /><span>Soroche (mal de altura): ibuprofeno + hidratación + descanso</span></div>
+  <div class="info-row"><Icon name="mountain" size={15} /><span>Cusco: 3400 m. Primeras 24h ritmo tranquilo</span></div>
 </div>
 
 <p class="foot">Perú 2026 · Pepe & Sunta</p>
@@ -220,16 +221,17 @@
     text-decoration: none; color: var(--ink);
   }
   .emerg-row:last-child { border-bottom: none; }
-  .emerg-icon { font-size: 1.3rem; flex: 0 0 auto; }
+  .emerg-icon { display: flex; align-items: center; flex: 0 0 auto; }
   .emerg-body { flex: 1; display: flex; flex-direction: column; gap: 1px; }
   .emerg-body strong { font-size: .92rem; font-weight: 700; }
   .emerg-body span   { font-size: .76rem; color: var(--ink-soft); }
 
   /* ── Info útil ── */
   .info-row {
-    display: flex; gap: 10px; font-size: .84rem;
+    display: flex; align-items: center; gap: 10px; font-size: .84rem;
     padding: 7px 0; border-bottom: 1px solid var(--line);
     color: var(--ink-soft);
   }
+  .info-row :global(svg) { flex-shrink: 0; }
   .info-row:last-child { border-bottom: none; }
 </style>

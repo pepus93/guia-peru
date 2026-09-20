@@ -18,9 +18,10 @@
     endDm:    data?.endDm    ?? ($tripDays[0]?.d || 1009),
     addr:     data?.addr     || '',
     tel:      data?.tel      || '',
-    checkIn:  data?.checkIn  || '',
-    checkOut: data?.checkOut || '',
-    notes:    data?.notes    || '',
+    checkIn:   data?.checkIn   || '',
+    checkOut:  data?.checkOut  || '',
+    breakfast: data?.breakfast ?? false,
+    notes:     data?.notes     || '',
   };
 
   // Sincroniza ciudad y fechas cuando cambian los selectores de día
@@ -92,9 +93,14 @@
     </label>
   </div>
 
+  <label class="field field-check">
+    <input type="checkbox" bind:checked={form.breakfast} />
+    <span>Desayuno incluido</span>
+  </label>
+
   <label class="field">
     <span>Notas</span>
-    <input type="text" bind:value={form.notes} placeholder="Desayuno incluido, etc." />
+    <input type="text" bind:value={form.notes} placeholder="Aparcamiento gratuito, etc." />
   </label>
 
   <div class="form-footer">

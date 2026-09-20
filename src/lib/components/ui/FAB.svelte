@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { createEventDispatcher } from 'svelte';
+  import Icon from '$lib/components/ui/Icon.svelte';
 
   const dispatch = createEventDispatcher<{ click: void }>();
 
@@ -25,7 +26,7 @@
     on:click={() => dispatch('click')}
     aria-label="Añadir"
   >
-    <span class="fab-icon">+</span>
+    <Icon name="plus" size={20} strokeWidth={2.5} />
   </button>
 </div>
 
@@ -64,13 +65,6 @@
   .fab:active {
     transform: scale(.92);
     box-shadow: 0 2px 8px rgba(42,26,18,.25);
-  }
-
-  .fab-icon {
-    font-size: 1.45rem;
-    font-weight: 300;
-    line-height: 1;
-    margin-top: -1px;
   }
 
   .fab-hidden {

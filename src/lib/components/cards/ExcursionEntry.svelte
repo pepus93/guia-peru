@@ -1,39 +1,31 @@
 <script lang="ts">
-  import type { Activity } from '$lib/models/types';
+  import type { DayItemProps } from './DayItem.svelte';
   import DayItem from './DayItem.svelte';
+  import type { Activity } from '$lib/models/types';
 
   export let excursion: Activity;
   export let excDayIdx: number;
 
   $: excDayInfo = excursion.days?.[excDayIdx] ?? null;
-  $: isMultiDay = excDayIdx >= 0 && excDayInfo !== null;
+
+  $: props = (excDayIdx >= 0 && excDayInfo)
+    ? {
+        href:   `/planes?flash=${excursion.id}`,
+        icon:   'mountain',
+        iconBg: 'rgba(120,80,160,.14)',
+        label:  `Trek · Día ${excDayIdx + 1} de ${excursion.days?.length}`,
+        title:  excDayInfo.title,
+        detail: excDayInfo.sub ?? '',
+      } satisfies DayItemProps
+    : {
+        href:   `/planes?flash=${excursion.id}`,
+        icon:   'mountain',
+        iconBg: 'rgba(120,80,160,.14)',
+        label:  'Excursión',
+        title:  excursion.name,
+        detail: excursion.meet ? `📍 ${excursion.meet}` : '',
+        time:   excursion.time || undefined,
+      } satisfies DayItemProps;
 </script>
 
-{#if isMultiDay && excDayInfo}
-  <DayItem
-    href="/planes?flash={excursion.id}"
-    icon="🥾"
-    iconBg="rgba(120,80,160,.14)"
-    label="Trek · Día {excDayIdx + 1} de {excursion.days?.length}"
-    title={excDayInfo.title}
-    detail={excDayInfo.sub ?? ''}
-  />
-{:else}
-  <DayItem
-    href="/planes?flash={excursion.id}"
-    icon="🥾"
-    iconBg="rgba(120,80,160,.14)"
-    label="Excursión · {excursion.time} ({excursion.duration})"
-    title={excursion.name}
-    detail="📍 {excursion.meet}"
-  >
-    <svelte:fragment slot="pills">
-      {#if excursion.bookingCode || excursion.price}
-        <div class="pill-line">
-          {#if excursion.bookingCode}<span class="pill pill-green">🎫 {excursion.bookingCode}</span>{/if}
-          {#if excursion.price}<span class="pill pill-info">{excursion.price}</span>{/if}
-        </div>
-      {/if}
-    </svelte:fragment>
-  </DayItem>
-{/if}
+<DayItem {...props} />

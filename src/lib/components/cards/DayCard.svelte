@@ -12,7 +12,9 @@
   import { dmToDate, todayDm } from '$lib/utils/dates';
   import { activitiesByDay, flightsMap, staysMap, activitiesMap, saveDayWarn } from '$lib/stores/trip';
   import { openModal, flashId } from '$lib/stores/ui';
+  import Icon, { type IconName } from '$lib/components/ui/Icon.svelte';
   import { slide } from 'svelte/transition';
+  const asIcon = (s: string): IconName => s as unknown as IconName;
   import { TRIP_ID } from '$lib/config';
   import { onMount } from 'svelte';
 
@@ -100,7 +102,10 @@
       <div class="day-sub">{day.sub}</div>
       <div class="badges">
         {#each model.badgeInfos as b}
-          <span class="badge {b.cls}">{b.label}</span>
+          <span class="badge {b.cls}">
+            <Icon name={asIcon(b.icon)} size={11} strokeWidth={2.5} />
+            {b.text}
+          </span>
         {/each}
       </div>
     </div>
@@ -130,7 +135,7 @@
         <!-- ⚠ Aviso del día -->
         {#if editingWarn}
           <div class="warn-edit-block">
-            <div class="warn-label">⚠ ¡Ojo!</div>
+            <div class="warn-label"><Icon name="alert-triangle" size={13} /> ¡Ojo!</div>
             <textarea
               class="warn-textarea"
               bind:value={warnDraft}
@@ -143,18 +148,18 @@
             </div>
           </div>
         {:else if day.warn}
-          <DayRow icon="⚠" iconBg="rgba(224,168,62,.18)" label="¡Ojo!" title={day.warn}>
+          <DayRow icon="alert-triangle" iconBg="rgba(224,168,62,.18)" label="¡Ojo!" title={day.warn}>
             <svelte:fragment slot="actions">
               <div class="row-actions">
-                <button class="btn-nav" on:click={startWarnEdit}>✏️ Editar aviso</button>
+                <button class="btn-nav" on:click={startWarnEdit}><Icon name="pencil" size={13} /> Editar aviso</button>
               </div>
             </svelte:fragment>
           </DayRow>
         {:else}
-          <button class="add-warn-btn" on:click={startWarnEdit}>⚠ Añadir nota de aviso</button>
+          <button class="add-warn-btn" on:click={startWarnEdit}><Icon name="alert-triangle" size={13} /> Añadir nota de aviso</button>
         {/if}
 
-        <button class="add-plan-btn" on:click={addActivity}>+ Añadir plan</button>
+        <button class="add-plan-btn" on:click={addActivity}><Icon name="plus" size={13} /> Añadir plan</button>
       </div>
     </div>
   {/if}
@@ -270,6 +275,9 @@
     color: var(--ink-soft);
     font-weight: 600;
     margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
   }
 
   .warn-textarea {
@@ -317,6 +325,7 @@
     font-family: inherit;
     font-size: .78rem; font-weight: 600;
     cursor: pointer; transition: .15s;
+    display: flex; align-items: center; justify-content: center; gap: 5px;
   }
   .add-plan-btn:hover { background: var(--paper-2); }
 </style>

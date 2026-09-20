@@ -1,4 +1,6 @@
 <script lang="ts">
+  import Icon, { type IconName } from '$lib/components/ui/Icon.svelte';
+  const asIcon = (s: string): IconName => s as unknown as IconName;
   export let icon: string;
   export let iconBg: string = 'var(--paper-2)';
   export let label: string;
@@ -8,7 +10,7 @@
 </script>
 
 <div class="row">
-  <div class="ic" style="background:{iconBg}">{icon}</div>
+  <div class="ic" style="background:{iconBg}"><Icon name={asIcon(icon)} size={16} /></div>
   <div class="row-body">
     <div class="rt">{label}</div>
     <div class="rv" class:font-serif={titleSerif}>{title}</div>
@@ -32,7 +34,6 @@
     border-radius: 9px;
     display: grid;
     place-items: center;
-    font-size: .95rem;
   }
 
   .row-body { flex: 1; min-width: 0; }

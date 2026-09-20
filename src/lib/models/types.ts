@@ -7,15 +7,15 @@ export type ActivityType =
   | 'mirador' | 'playa' | 'compras' | 'ocio' | 'excursion';
 
 export const ACTIVITY_TYPES: Record<ActivityType, { icon: string; bg: string; label: string }> = {
-  tour:       { icon: '🎭', bg: 'rgba(63,125,100,.14)',  label: 'Tour' },
-  restaurant: { icon: '🍽️', bg: 'rgba(224,168,62,.18)', label: 'Restaurante' },
-  museo:      { icon: '🏛️', bg: 'rgba(58,110,165,.14)', label: 'Museo' },
-  transporte: { icon: '🚌', bg: 'rgba(217,139,69,.18)', label: 'Transporte' },
-  mirador:    { icon: '🔭', bg: 'rgba(63,125,100,.12)', label: 'Mirador' },
-  playa:      { icon: '🏖️', bg: 'rgba(58,110,165,.12)', label: 'Playa' },
-  compras:    { icon: '🛍️', bg: 'rgba(198,90,52,.12)',  label: 'Compras' },
-  ocio:       { icon: '🎉', bg: 'rgba(224,168,62,.14)', label: 'Ocio' },
-  excursion:  { icon: '🥾', bg: 'rgba(120,80,160,.14)', label: 'Excursión' },
+  tour:       { icon: 'star',         bg: 'rgba(63,125,100,.14)',  label: 'Tour' },
+  restaurant: { icon: 'utensils',     bg: 'rgba(224,168,62,.18)', label: 'Restaurante' },
+  museo:      { icon: 'landmark',     bg: 'rgba(58,110,165,.14)', label: 'Museo' },
+  transporte: { icon: 'bus',          bg: 'rgba(217,139,69,.18)', label: 'Transporte' },
+  mirador:    { icon: 'eye',          bg: 'rgba(63,125,100,.12)', label: 'Mirador' },
+  playa:      { icon: 'waves',        bg: 'rgba(58,110,165,.12)', label: 'Playa' },
+  compras:    { icon: 'shopping-bag', bg: 'rgba(198,90,52,.12)',  label: 'Compras' },
+  ocio:       { icon: 'music',        bg: 'rgba(224,168,62,.14)', label: 'Ocio' },
+  excursion:  { icon: 'mountain',     bg: 'rgba(120,80,160,.14)', label: 'Excursión' },
 };
 
 // ── INFO BADGE ────────────────────────────────────────────────
@@ -114,6 +114,7 @@ export interface Accommodation {
   tel: string;
   checkIn: string;
   checkOut: string;
+  breakfast?: boolean;
   notes?: string;
 }
 

@@ -2,6 +2,7 @@
   import { slide } from 'svelte/transition';
   import { cubicOut } from 'svelte/easing';
   import CalendarLink from '$lib/components/ui/CalendarLink.svelte';
+  import Icon from '$lib/components/ui/Icon.svelte';
   import { inTrip, TODAY_DM } from '$lib/stores/today';
 
   export let id: string;
@@ -134,18 +135,11 @@
       <div class="card-actions">
         {#if !confirming}
           <button class="ca-btn ca-edit" on:click={handleEdit}>
-            <svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M11.5 2.5a1.414 1.414 0 0 1 2 2L5 13H3v-2L11.5 2.5z"/>
-            </svg>
+            <Icon name="pencil" size={15} />
             <span class="ca-lbl">Editar</span>
           </button>
           <button class="ca-btn ca-del" on:click={askDelete}>
-            <svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <polyline points="2 4 14 4"/>
-              <path d="M5 4V2h6v2"/>
-              <path d="M6 7v5M10 7v5"/>
-              <rect x="3" y="4" width="10" height="9" rx="1"/>
-            </svg>
+            <Icon name="trash" size={15} />
             <span class="ca-lbl">Eliminar</span>
           </button>
         {:else}

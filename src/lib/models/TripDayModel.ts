@@ -1,11 +1,11 @@
 import type { TripDay, BadgeType } from './types';
 import { dmToDow, dmToLabel, dmToMonth, todayDm } from '$lib/utils/dates';
 
-const BADGE_MAP: Record<BadgeType, { cls: string; label: string }> = {
-  fly:  { cls: 'b-fly',  label: '✈ Vuelo' },
-  bed:  { cls: 'b-bed',  label: '🛏 Dormir' },
-  act:  { cls: 'b-act',  label: '🎯 Planes' },
-  warn: { cls: 'b-warn', label: '⚠ Ojo' },
+const BADGE_MAP: Record<BadgeType, { cls: string; icon: string; text: string }> = {
+  fly:  { cls: 'b-fly',  icon: 'plane',          text: 'Vuelo' },
+  bed:  { cls: 'b-bed',  icon: 'bed',             text: 'Dormir' },
+  act:  { cls: 'b-act',  icon: 'compass',         text: 'Planes' },
+  warn: { cls: 'b-warn', icon: 'alert-triangle',  text: 'Ojo' },
 };
 
 const CITY_GRADIENT: Record<string, string> = {

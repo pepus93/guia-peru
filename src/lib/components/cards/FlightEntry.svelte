@@ -1,24 +1,20 @@
 <script lang="ts">
-  import type { FlightModel } from '$lib/models/FlightModel';
+  import type { DayItemProps } from './DayItem.svelte';
   import DayItem from './DayItem.svelte';
+  import type { FlightModel } from '$lib/models/FlightModel';
 
   export let flight: FlightModel;
+
+  $: props = {
+    href:       `/vuelos?flash=${flight.data.id}`,
+    icon:       'plane',
+    iconBg:     'rgba(58,110,165,.14)',
+    label:      flight.typeLabel,
+    title:      `${flight.data.from} → ${flight.data.to}`,
+    detail:     `${flight.data.airline}${flight.data.arr ? ` · llega ${flight.data.arr}` : ''}`,
+    titleSerif: true,
+    time:       flight.data.dep,
+  } satisfies DayItemProps;
 </script>
 
-<DayItem
-  href="/vuelos?flash={flight.data.id}"
-  icon="✈"
-  iconBg="rgba(58,110,165,.14)"
-  label={flight.typeLabel}
-  title="{flight.data.from} {flight.data.dep} → {flight.data.to} {flight.data.arr}"
-  detail={flight.data.airline}
-  titleSerif={true}
->
-  <svelte:fragment slot="pills">
-    {#if flight.infoBadges.length}
-      <div class="pill-line">
-        {#each flight.infoBadges as b}<span class="pill {b.cls}">{b.label}</span>{/each}
-      </div>
-    {/if}
-  </svelte:fragment>
-</DayItem>
+<DayItem {...props} />

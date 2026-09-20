@@ -1,4 +1,19 @@
+<script context="module" lang="ts">
+  export interface DayItemProps {
+    href: string;
+    icon: string;
+    iconBg?: string;
+    label: string;
+    title: string;
+    detail?: string;
+    titleSerif?: boolean;
+    time?: string;
+  }
+</script>
+
 <script lang="ts">
+  import Icon, { type IconName } from '$lib/components/ui/Icon.svelte';
+  const asIcon = (s: string): IconName => s as unknown as IconName;
   export let href: string;
   export let icon: string;
   export let iconBg: string = 'var(--paper-2)';
@@ -6,19 +21,20 @@
   export let title: string;
   export let detail: string = '';
   export let titleSerif: boolean = false;
+  export let time: string = '';
 </script>
 
 <a {href} class="subcard">
-  <div class="sc-ic" style="background:{iconBg}">{icon}</div>
+  <div class="sc-left">
+    <div class="sc-ic" style="background:{iconBg}"><Icon name={asIcon(icon)} size={16} /></div>
+    {#if time}<div class="sc-time font-serif">{time}</div>{/if}
+  </div>
   <div class="sc-body">
     <div class="sc-label">{label}</div>
     <div class="sc-title" class:font-serif={titleSerif}>{title}</div>
     {#if detail}<div class="sc-detail">{detail}</div>{/if}
-    <slot name="pills" />
   </div>
-  <svg class="sc-chev" viewBox="0 0 8 14" width="8" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-    <polyline points="1 1 7 7 1 13"/>
-  </svg>
+  <span class="sc-chev"><Icon name="chevron-right" size={10} strokeWidth={2.5} /></span>
 </a>
 
 <style>
@@ -27,7 +43,7 @@
     align-items: center;
     gap: 10px;
     padding: 9px 10px;
-    background: var(--paper-2);
+    background: var(--paper);
     border-radius: var(--radius-sm);
     border: 1px solid var(--line);
     text-decoration: none;
@@ -39,7 +55,7 @@
 
   @media (hover: hover) {
     .subcard:hover {
-      background: var(--paper);
+      background: var(--paper-2);
       box-shadow: var(--shadow-sm);
     }
   }
@@ -49,13 +65,29 @@
     transition: transform .08s ease;
   }
 
+  .sc-left {
+    flex: 0 0 36px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
   .sc-ic {
-    flex: 0 0 32px;
+    width: 32px;
     height: 32px;
     border-radius: 8px;
     display: grid;
     place-items: center;
-    font-size: .92rem;
+    flex-shrink: 0;
+  }
+
+  .sc-time {
+    font-size: .7rem;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -.01em;
+    text-align: center;
   }
 
   .sc-body {
@@ -91,6 +123,7 @@
 
   .sc-chev {
     flex-shrink: 0;
+    display: flex;
     color: var(--ink-soft);
     opacity: .35;
   }

@@ -50,7 +50,7 @@ export const SEED_ACCOMMODATIONS: Accommodation[] = [
     mapsQuery: 'Bon Repos Boutique Hotel Arequipa Peru',
     tel: '+51948855727',
     checkIn: '13:00 – 23:30', checkOut: '10:30 – 11:00',
-    notes: 'Desayuno incluido',
+    breakfast: true,
   },
   {
     id: 'cusco1', tripId: TRIP_ID,

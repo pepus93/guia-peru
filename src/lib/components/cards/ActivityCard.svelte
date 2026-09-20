@@ -6,6 +6,7 @@
   import CardHeader  from './CardHeader.svelte';
   import Card        from './Card.svelte';
   import ContactInfo from '$lib/components/ui/ContactInfo.svelte';
+  import Icon        from '$lib/components/ui/Icon.svelte';
 
   export let activity: Activity;
   export let compact = false;
@@ -62,7 +63,7 @@
       <div class="card-section">
         <div class="card-section-title">Incluye</div>
         <ul class="exc-list exc-list-yes">
-          {#each activity.includes as item}<li>✓ {item}</li>{/each}
+          {#each activity.includes as item}<li><Icon name="check" size={13} />{item}</li>{/each}
         </ul>
       </div>
     {/if}
@@ -72,14 +73,14 @@
       <div class="card-section">
         <div class="card-section-title">No incluye</div>
         <ul class="exc-list exc-list-no">
-          {#each activity.notIncludes as item}<li>✗ {item}</li>{/each}
+          {#each activity.notIncludes as item}<li><Icon name="x" size={13} />{item}</li>{/each}
         </ul>
       </div>
     {/if}
 
     <!-- Aviso -->
     {#if activity.warn}
-      <div class="exc-warn">⚠ {activity.warn}</div>
+      <div class="exc-warn"><Icon name="alert-triangle" size={14} />{activity.warn}</div>
     {/if}
 
     <ContactInfo
@@ -116,12 +117,13 @@
 
   /* Listas incluye/no incluye */
   .exc-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 3px; }
-  .exc-list li { font-size: .84rem; line-height: 1.3; }
+  .exc-list li { font-size: .84rem; line-height: 1.3; display: flex; align-items: center; gap: 5px; }
   .exc-list-yes li { color: rgba(63,125,100,.9); }
   .exc-list-no  li { color: rgba(198,90,52,.85); }
 
   /* Aviso */
   .exc-warn {
+    display: flex; align-items: center; gap: 6px;
     margin-top: 6px; font-size: .82rem; font-weight: 600;
     color: #9a6b12; line-height: 1.4; padding: 6px 8px;
     background: rgba(224,168,62,.12); border-radius: 6px;

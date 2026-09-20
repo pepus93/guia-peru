@@ -1,19 +1,20 @@
 <script lang="ts">
   import { page } from '$app/stores';
+  import Icon, { type IconName } from '$lib/components/ui/Icon.svelte';
 
-  const TABS = [
-    { href: '/dias',    icon: '📅', label: 'Días' },
-    { href: '/vuelos',  icon: '✈️',  label: 'Vuelos' },
-    { href: '/hoteles', icon: '🏨', label: 'Hoteles' },
-    { href: '/planes',  icon: '🎯', label: 'Planes' },
-    { href: '/cambio',  icon: '💱', label: 'Cambio' },
+  const TABS: { href: string; icon: IconName; label: string }[] = [
+    { href: '/dias',    icon: 'calendar',         label: 'Días' },
+    { href: '/vuelos',  icon: 'plane',            label: 'Vuelos' },
+    { href: '/hoteles', icon: 'bed',              label: 'Hoteles' },
+    { href: '/planes',  icon: 'compass',          label: 'Planes' },
+    { href: '/cambio',  icon: 'arrow-left-right', label: 'Cambio' },
   ];
 </script>
 
 <nav class="bottom-nav">
   {#each TABS as tab}
     <a href={tab.href} class="nav-item" class:active={$page.url.pathname.startsWith(tab.href)}>
-      <span class="nav-icon">{tab.icon}</span>
+      <span class="nav-icon"><Icon name={tab.icon} size={22} /></span>
       <span class="nav-label">{tab.label}</span>
     </a>
   {/each}
@@ -57,7 +58,6 @@
     color: var(--terra-deep);
   }
 
-  /* Pill indicator behind active icon */
   .nav-item::before {
     content: '';
     position: absolute;
@@ -77,14 +77,16 @@
   }
 
   .nav-icon {
-    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     line-height: 1;
-    filter: grayscale(.5);
-    transition: filter .2s, transform .2s;
+    opacity: .45;
+    transition: opacity .2s, transform .2s;
     position: relative;
   }
   .nav-item.active .nav-icon {
-    filter: none;
+    opacity: 1;
     transform: translateY(-1px);
   }
 

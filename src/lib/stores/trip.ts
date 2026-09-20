@@ -4,6 +4,14 @@ import { trips, days, activities, flights, accommodations, travelers } from '$li
 import { SEED_TRIP, SEED_DAYS, SEED_ACTIVITIES, SEED_FLIGHTS, SEED_ACCOMMODATIONS, SEED_TRAVELERS } from '$lib/data/seed';
 import { TRIP_ID } from '$lib/config';
 
+// ── Sort helpers ───────────────────────────────────────────
+
+const sortFlights = (list: Flight[]) =>
+  [...list].sort((a, b) => a.dm !== b.dm ? a.dm - b.dm : (a.dep ?? '').localeCompare(b.dep ?? ''));
+
+const sortStays = (list: Accommodation[]) =>
+  [...list].sort((a, b) => a.startDm - b.startDm);
+
 // ── State ──────────────────────────────────────────────────
 
 export const trip           = writable<Trip | null>(null);
@@ -66,8 +74,8 @@ export async function loadTrip() {
     ]);
     tripDays.set(d);
     activityList.set(a);
-    flightList.set(f);
-    stayList.set(s);
+    flightList.set(sortFlights(f));
+    stayList.set(sortStays(s));
     travelerList.set(tv);
   } finally {
     loading.set(false);
@@ -118,7 +126,7 @@ export async function saveDayWarn(dayId: string, warn: string) {
 export async function saveFlight(f: Flight) {
   flightList.update(list => {
     const idx = list.findIndex(x => x.id === f.id);
-    return idx >= 0 ? list.with(idx, f) : [...list, f];
+    return sortFlights(idx >= 0 ? list.with(idx, f) : [...list, f]);
   });
   await flights.save(f).catch(() => {});
 }
@@ -141,7 +149,7 @@ export async function saveBoardingPass(flightId: string, bp: import('$lib/models
 export async function saveAccommodation(a: Accommodation) {
   stayList.update(list => {
     const idx = list.findIndex(x => x.id === a.id);
-    return idx >= 0 ? list.with(idx, a) : [...list, a];
+    return sortStays(idx >= 0 ? list.with(idx, a) : [...list, a]);
   });
   await accommodations.save(a).catch(() => {});
 }

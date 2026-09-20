@@ -13,7 +13,19 @@
   $: upcoming = $flightList.filter(f => f.dm >= today);
   $: past     = $flightList.filter(f => f.dm <  today);
 
-  function flightLabel(dm: number, dow: string) {
+  function groupByDm(flights: typeof $flightList) {
+    const map = new Map<number, typeof $flightList>();
+    for (const f of flights) {
+      if (!map.has(f.dm)) map.set(f.dm, []);
+      map.get(f.dm)!.push(f);
+    }
+    return [...map.entries()];
+  }
+
+  $: groupedUpcoming = groupByDm(upcoming);
+  $: groupedPast     = groupByDm(past);
+
+  function dayLabel(dm: number, dow: string) {
     return `${dmToLabel(dm)} · ${dow}`;
   }
 </script>
@@ -26,20 +38,24 @@
 {:else if $flightList.length === 0}
   <p class="empty-msg">No hay vuelos.</p>
 {:else}
-  {#each upcoming as flight (flight.id)}
+  {#each groupedUpcoming as [dm, flights]}
     <div class="day-group">
-      <div class="section-label">{flightLabel(flight.dm, flight.dow)}</div>
-      <FlightCard {flight} />
+      <div class="section-label">{dayLabel(dm, flights[0].dow)}</div>
+      {#each flights as flight (flight.id)}
+        <FlightCard {flight} />
+      {/each}
     </div>
   {/each}
 
   {#if past.length > 0}
     <PastToggle count={past.length} label="Vuelos pasados" bind:open={pastOpen} />
     {#if pastOpen}
-      {#each past as flight (flight.id)}
+      {#each groupedPast as [dm, flights]}
         <div class="day-group">
-          <div class="section-label">{flightLabel(flight.dm, flight.dow)}</div>
-          <FlightCard {flight} past={true} />
+          <div class="section-label">{dayLabel(dm, flights[0].dow)}</div>
+          {#each flights as flight (flight.id)}
+            <FlightCard {flight} past={true} />
+          {/each}
         </div>
       {/each}
     {/if}
