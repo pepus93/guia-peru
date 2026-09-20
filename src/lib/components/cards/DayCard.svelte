@@ -100,7 +100,6 @@
       </div>
     </div>
 
-    <div class="chev" class:open={expanded}>›</div>
   </button>
 
   <!-- DETAIL ───────────────────────────────────────────── -->
@@ -327,8 +326,6 @@
 
   .badges { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 7px; }
   .badge  { font-size: .74rem; font-weight: 600; padding: 2px 7px; border-radius: 6px; display: inline-flex; align-items: center; gap: 3px; }
-  .chev { position: absolute; right: 10px; top: 12px; color: var(--ink-soft); transition: .25s; font-size: 1.05rem; line-height: 1; }
-  .chev.open { transform: rotate(90deg); }
 
   /* ── Detail ─────────────────────────────────────────── */
   .detail-inner {
