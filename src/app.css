@@ -23,6 +23,7 @@
 
 /* ── RESET ─────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+a, button { touch-action: manipulation; }
 html { font-size: 17px; }
 html, body { height: 100%; overscroll-behavior-y: none; }
 
@@ -153,11 +154,13 @@ a.call {
   display: inline-flex; align-items: center; gap: 5px; text-decoration: none;
   background: var(--ink); color: var(--paper);
   font-size: .84rem; font-weight: 600; padding: 5px 11px; border-radius: 8px;
+  transition: .15s;
 }
 a.maps {
   display: inline-flex; align-items: center; gap: 5px; text-decoration: none;
   border: 1px solid var(--line); color: var(--ink);
   font-size: .84rem; font-weight: 600; padding: 5px 11px; border-radius: 8px;
+  transition: .15s;
 }
 .btn-nav {
   display: inline-flex; align-items: center; gap: 5px;
@@ -166,6 +169,22 @@ a.maps {
   cursor: pointer; font-family: inherit; text-decoration: none; transition: .15s;
 }
 .btn-nav:active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+/* ── BUTTON INTERACTIONS (universal) ────────────────────── */
+@media (hover: hover) {
+  .btn:hover, .btn-icon:hover, .btn-nav:hover,
+  a.call:hover, a.maps:hover, .chip:hover {
+    filter: brightness(.88);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px -3px rgba(42,26,18,.28);
+  }
+}
+
+.btn:active, .btn-icon:active, .btn-nav:active,
+a.call:active, a.maps:active, .chip:active {
+  transform: scale(0.94);
+  transition: transform .08s ease;
+}
 
 /* ── BASE CARD ──────────────────────────────────────────── */
 .card {
@@ -176,6 +195,21 @@ a.maps {
   padding: 14px;
   position: relative;
   margin-bottom: 10px;
+  transition: box-shadow .2s ease, transform .2s ease, border-color .2s ease;
+}
+
+@media (hover: hover) {
+  .card:hover {
+    box-shadow: 0 12px 28px -10px rgba(42,26,18,.5);
+    border-color: rgba(42,26,18,.2);
+    transform: translateY(-1px);
+  }
+}
+
+.card:active {
+  transform: scale(0.985);
+  box-shadow: 0 1px 6px -2px rgba(42,26,18,.22);
+  transition: transform .08s ease, box-shadow .08s ease;
 }
 
 /* ── CALENDAR LINK ──────────────────────────────────────── */

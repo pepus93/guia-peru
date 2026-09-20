@@ -153,7 +153,6 @@
     border-radius: var(--radius-md);
     padding: 16px;
     box-shadow: var(--shadow-sm);
-    border-left: 3px solid var(--jade);
   }
   .ins-header {
     display: flex; justify-content: space-between; align-items: flex-start;

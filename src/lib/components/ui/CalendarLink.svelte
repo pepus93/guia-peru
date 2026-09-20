@@ -27,6 +27,7 @@
     transition: opacity .15s;
     line-height: 0;
     text-decoration: none;
+    touch-action: manipulation;
   }
   .cal-link:hover { opacity: .9; }
 </style>

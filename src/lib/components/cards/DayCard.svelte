@@ -79,7 +79,7 @@
   }
 </script>
 
-<article class="day" class:today={model.isToday()} class:is-past={model.isPast} id={day.id}>
+<article class="day" class:today={model.isToday()} class:is-past={model.isPast} class:flash={$flashId === day.id} id={day.id}>
 
   <!-- HEAD ─────────────────────────────────────────────── -->
   <button class="day-head" on:click={toggle} aria-expanded={expanded}>
@@ -266,10 +266,30 @@
     margin-bottom: 10px;
     overflow: hidden;
     box-shadow: var(--shadow);
-    transition: .2s;
+    transition: box-shadow .2s ease, transform .2s ease, border-color .2s ease;
   }
   .day.today   { border-color: var(--terra); box-shadow: 0 0 0 2px rgba(198,90,52,.25), var(--shadow); }
   .day.is-past { opacity: .45; filter: grayscale(.4); }
+
+  @media (hover: hover) {
+    .day:hover {
+      box-shadow: 0 12px 28px -10px rgba(42,26,18,.5);
+      border-color: rgba(42,26,18,.2);
+      transform: translateY(-1px);
+    }
+    .day.today:hover {
+      box-shadow: 0 0 0 2px rgba(198,90,52,.25), 0 12px 28px -10px rgba(42,26,18,.5);
+    }
+  }
+
+  .day:active {
+    transform: scale(0.985);
+    box-shadow: 0 1px 6px -2px rgba(42,26,18,.22);
+    transition: transform .08s ease, box-shadow .08s ease;
+  }
+  .day.today:active {
+    box-shadow: 0 0 0 2px rgba(198,90,52,.25), 0 1px 6px -2px rgba(42,26,18,.22);
+  }
 
   /* ── Head ───────────────────────────────────────────── */
   .day-head {

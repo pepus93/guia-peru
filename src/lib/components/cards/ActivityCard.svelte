@@ -15,11 +15,14 @@
   $: typeInfo = model.typeInfo;
   $: flashing = $flashId === activity.id;
 
+  let expanded = false;
+  $: if ($flashId === activity.id) expanded = true;
+
   function edit() { openModal('activity', activity); }
   async function remove() { await deleteActivity(activity.id); }
 </script>
 
-<Card id={activity.id} {flashing} flashColor="var(--clay)" cssClass="act-card" dayDm={activity.dayDm}>
+<Card id={activity.id} {flashing} flashColor="var(--clay)" cssClass="act-card" dayDm={activity.dayDm} collapsible={!compact} bind:expanded>
   <CardHeader
     icon={typeInfo.icon}
     type="{typeInfo.label}{activity.time ? ` · ${activity.time}` : ''}{activity.duration ? ` (${activity.duration})` : ''} · {model.dateLabel}"
@@ -38,70 +41,72 @@
     </svelte:fragment>
   </CardHeader>
 
-  <!-- Itinerario multi-día -->
-  {#if activity.days?.length}
-    <div class="card-section">
-      <div class="card-section-title">Itinerario</div>
-      <ol class="exc-days-list">
-        {#each activity.days as d, i}
-          <li>
-            <span class="day-num">Día {i + 1}</span>
-            <div class="day-body">
-              <div class="day-route">{d.title}</div>
-              {#if d.sub}<div class="day-note">{d.sub}</div>{/if}
-            </div>
-          </li>
-        {/each}
-      </ol>
+  <svelte:fragment slot="detail">
+    <!-- Itinerario multi-día -->
+    {#if activity.days?.length}
+      <div class="card-section">
+        <div class="card-section-title">Itinerario</div>
+        <ol class="exc-days-list">
+          {#each activity.days as d, i}
+            <li>
+              <span class="day-num">Día {i + 1}</span>
+              <div class="day-body">
+                <div class="day-route">{d.title}</div>
+                {#if d.sub}<div class="day-note">{d.sub}</div>{/if}
+              </div>
+            </li>
+          {/each}
+        </ol>
+      </div>
+    {/if}
+
+    <!-- Incluye -->
+    {#if activity.includes?.length}
+      <div class="card-section">
+        <div class="card-section-title">Incluye</div>
+        <ul class="exc-list exc-list-yes">
+          {#each activity.includes as item}<li>✓ {item}</li>{/each}
+        </ul>
+      </div>
+    {/if}
+
+    <!-- No incluye -->
+    {#if activity.notIncludes?.length}
+      <div class="card-section">
+        <div class="card-section-title">No incluye</div>
+        <ul class="exc-list exc-list-no">
+          {#each activity.notIncludes as item}<li>✗ {item}</li>{/each}
+        </ul>
+      </div>
+    {/if}
+
+    <!-- Aviso -->
+    {#if activity.warn}
+      <div class="exc-warn">⚠ {activity.warn}</div>
+    {/if}
+
+    <div class="row-actions">
+      {#if model.meetUrl}
+        <a class="maps" href={model.meetUrl} target="_blank" rel="noreferrer">📍 Mapa inicio</a>
+      {/if}
+      {#if model.endUrl}
+        <a class="maps" href={model.endUrl} target="_blank" rel="noreferrer">🏁 Mapa fin</a>
+      {/if}
+      {#if model.mapsUrl && !model.meetUrl}
+        <a class="maps" href={model.mapsUrl} target="_blank" rel="noreferrer">📍 Mapa</a>
+      {/if}
+      {#if activity.tel}
+        <a class="call" href="tel:{activity.tel}">📞 Llamar</a>
+      {/if}
+      {#if activity.providerTel}
+        <a class="call" href={model.telHref}>📞 {activity.provider ?? 'Proveedor'}</a>
+        <a class="btn-nav wa" href={model.waHref} target="_blank" rel="noreferrer"><IconWhatsApp /> WhatsApp</a>
+      {/if}
+      {#if activity.bookingUrl}
+        <a class="btn-nav" href={activity.bookingUrl} target="_blank" rel="noreferrer">🎫 Ver reserva</a>
+      {/if}
     </div>
-  {/if}
-
-  <!-- Incluye -->
-  {#if activity.includes?.length}
-    <div class="card-section">
-      <div class="card-section-title">Incluye</div>
-      <ul class="exc-list exc-list-yes">
-        {#each activity.includes as item}<li>✓ {item}</li>{/each}
-      </ul>
-    </div>
-  {/if}
-
-  <!-- No incluye -->
-  {#if activity.notIncludes?.length}
-    <div class="card-section">
-      <div class="card-section-title">No incluye</div>
-      <ul class="exc-list exc-list-no">
-        {#each activity.notIncludes as item}<li>✗ {item}</li>{/each}
-      </ul>
-    </div>
-  {/if}
-
-  <!-- Aviso -->
-  {#if activity.warn}
-    <div class="exc-warn">⚠ {activity.warn}</div>
-  {/if}
-
-  <div class="row-actions">
-    {#if model.meetUrl}
-      <a class="maps" href={model.meetUrl} target="_blank" rel="noreferrer">📍 Mapa inicio</a>
-    {/if}
-    {#if model.endUrl}
-      <a class="maps" href={model.endUrl} target="_blank" rel="noreferrer">🏁 Mapa fin</a>
-    {/if}
-    {#if model.mapsUrl && !model.meetUrl}
-      <a class="maps" href={model.mapsUrl} target="_blank" rel="noreferrer">📍 Mapa</a>
-    {/if}
-    {#if activity.tel}
-      <a class="call" href="tel:{activity.tel}">📞 Llamar</a>
-    {/if}
-    {#if activity.providerTel}
-      <a class="call" href={model.telHref}>📞 {activity.provider ?? 'Proveedor'}</a>
-      <a class="btn-nav wa" href={model.waHref} target="_blank" rel="noreferrer"><IconWhatsApp /> WhatsApp</a>
-    {/if}
-    {#if activity.bookingUrl}
-      <a class="btn-nav" href={activity.bookingUrl} target="_blank" rel="noreferrer">🎫 Ver reserva</a>
-    {/if}
-  </div>
+  </svelte:fragment>
 </Card>
 
 <style>

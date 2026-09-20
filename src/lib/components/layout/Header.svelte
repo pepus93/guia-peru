@@ -7,10 +7,10 @@
 
 <header class="app-header">
   <div class="header-top">
-    <div class="header-title">
+    <a class="header-title" href="/dias">
       <span class="title-main font-serif">Perú 2026</span>
       <span class="title-sub">Pepe & Sunta</span>
-    </div>
+    </a>
     <div class="dual-clock">
       <div class="clock-pair">
         <span class="clock-flag">🇵🇪</span>
@@ -53,6 +53,7 @@
     display: flex;
     flex-direction: column;
     gap: 2px;
+    text-decoration: none;
   }
 
   .title-main {
