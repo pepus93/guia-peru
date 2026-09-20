@@ -11,6 +11,7 @@
   export let dayDm: number | undefined = undefined;
   export let collapsible = false;
   export let expanded    = false;
+  export let isToday     = false;
 </script>
 
 <div
@@ -19,6 +20,7 @@
   class:flash={flashing}
   class:is-past={past}
   class:has-cal={dayDm !== undefined}
+  class:is-today={isToday}
   style="--flash-color:{flashColor}"
 >
   {#if collapsible}

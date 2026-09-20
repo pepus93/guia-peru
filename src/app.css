@@ -186,6 +186,27 @@ a.call:active, a.maps:active, .chip:active {
   transition: transform .08s ease;
 }
 
+/* ── TODAY CARD ─────────────────────────────────────────── */
+.card.is-today {
+  border-color: rgba(198,90,52,.5);
+  box-shadow: 0 0 0 1px rgba(198,90,52,.15), var(--shadow);
+}
+.card.is-today::before {
+  content: 'HOY';
+  position: absolute;
+  top: -1px;
+  right: 14px;
+  transform: translateY(-50%);
+  font-size: .58rem;
+  font-weight: 800;
+  letter-spacing: .14em;
+  color: var(--paper);
+  background: var(--terra);
+  padding: 2px 9px;
+  border-radius: 10px;
+  z-index: 1;
+}
+
 /* ── BASE CARD ──────────────────────────────────────────── */
 .card {
   background: var(--card);

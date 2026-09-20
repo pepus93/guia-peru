@@ -2,6 +2,7 @@
   import type { Activity } from '$lib/models/types';
   import { ActivityModel } from '$lib/models/ActivityModel';
   import { openModal, flashId } from '$lib/stores/ui';
+  import { inTrip, TODAY_DM } from '$lib/stores/today';
   import { deleteActivity } from '$lib/stores/trip';
   import CardHeader   from './CardHeader.svelte';
   import CardMenu     from './CardMenu.svelte';
@@ -15,6 +16,7 @@
   $: typeInfo = model.typeInfo;
   $: flashing = $flashId === activity.id;
 
+  $: isToday  = $inTrip && activity.dayDm === TODAY_DM;
   let expanded = false;
   $: if ($flashId === activity.id) expanded = true;
 
@@ -22,7 +24,7 @@
   async function remove() { await deleteActivity(activity.id); }
 </script>
 
-<Card id={activity.id} {flashing} flashColor="var(--clay)" cssClass="act-card" dayDm={activity.dayDm} collapsible={!compact} bind:expanded>
+<Card id={activity.id} {flashing} {isToday} flashColor="var(--clay)" cssClass="act-card" dayDm={activity.dayDm} collapsible={!compact} bind:expanded>
   <CardHeader
     icon={typeInfo.icon}
     type="{typeInfo.label}{activity.time ? ` · ${activity.time}` : ''}{activity.duration ? ` (${activity.duration})` : ''} · {model.dateLabel}"
