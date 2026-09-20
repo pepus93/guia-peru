@@ -134,7 +134,7 @@
   .early-solo { margin-top: 6px; }
 
   /* ── Boarding passes ─────────────────────────────────────── */
-  .bp-section { margin-top: 12px; padding-top: 10px; }
+  .bp-section { margin-top: 12px; padding-top: 10px; padding-bottom: 14px; }
   .bp-row {
     display: flex;
     align-items: center;
