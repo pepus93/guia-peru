@@ -1,7 +1,7 @@
 import type { TripDay, BadgeType } from './types';
 import { dmToDow, dmToLabel, dmToMonth, todayDm } from '$lib/utils/dates';
 
-const BADGE_MAP: Record<BadgeType, { cls: string; icon: string; text: string }> = {
+export const BADGE_MAP: Record<BadgeType, { cls: string; icon: string; text: string }> = {
   fly:  { cls: 'b-fly',  icon: 'plane',          text: 'Vuelo' },
   bed:  { cls: 'b-bed',  icon: 'bed',             text: 'Dormir' },
   act:  { cls: 'b-act',  icon: 'compass',         text: 'Planes' },

@@ -294,7 +294,7 @@ a.call:active, a.maps:active, .chip:active {
 /* ── DAY BADGES ─────────────────────────────────────────── */
 .b-fly  { background: rgba(58,110,165,.14); color: var(--sky); }
 .b-bed  { background: rgba(63,125,100,.14); color: var(--jade); }
-.b-act  { background: rgba(198,90,52,.13);  color: var(--terra-deep); }
+.b-act  { background: rgba(120,80,160,.13); color: var(--lila); }
 .b-warn { background: rgba(224,168,62,.2);  color: #9a6b12; }
 
 /* ── CARD SECTIONS (shared across full cards) ───────────── */

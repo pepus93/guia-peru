@@ -2,13 +2,15 @@
   import type { DayItemProps } from './DayItem.svelte';
   import DayItem from './DayItem.svelte';
   import type { FlightModel } from '$lib/models/FlightModel';
+  import { DAY_ENTRY_STYLES } from '$lib/models/types';
 
   export let flight: FlightModel;
 
+  const s = DAY_ENTRY_STYLES.flight;
+
   $: props = {
     href:       `/vuelos?flash=${flight.data.id}`,
-    icon:       'plane',
-    iconBg:     'rgba(58,110,165,.14)',
+    ...s,
     label:      flight.typeLabel,
     title:      `${flight.data.from} → ${flight.data.to}`,
     detail:     `${flight.data.airline}${flight.data.arr ? ` · llega ${flight.data.arr}` : ''}`,

@@ -176,6 +176,16 @@ export interface Trip {
   totalDays: number;
 }
 
+// ── DAY ENTRY STYLES ──────────────────────────────────────
+// Fuente única de verdad para icono/color de cada tipo de entrada en DayCard
+export type DayEntryKind = 'flight' | 'hotel' | 'plan';
+
+export const DAY_ENTRY_STYLES: Record<DayEntryKind, { icon: string; iconBg: string; iconColor: string }> = {
+  flight: { icon: 'plane',   iconBg: 'rgba(58,110,165,.14)',  iconColor: 'var(--sky)'  },
+  hotel:  { icon: 'bed',     iconBg: 'rgba(63,125,100,.14)',  iconColor: 'var(--jade)' },
+  plan:   { icon: 'compass', iconBg: 'rgba(120,80,160,.14)', iconColor: 'var(--lila)' },
+};
+
 // ── CITY INFO ─────────────────────────────────────────────────
 export interface CityInfo {
   alt: string;

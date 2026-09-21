@@ -2,13 +2,15 @@
   import type { DayItemProps } from './DayItem.svelte';
   import DayItem from './DayItem.svelte';
   import type { ActivityModel } from '$lib/models/ActivityModel';
+  import { DAY_ENTRY_STYLES } from '$lib/models/types';
 
   export let act: ActivityModel;
 
+  const s = DAY_ENTRY_STYLES.plan;
+
   $: props = {
     href:   `/planes?flash=${act.data.id}`,
-    icon:   act.typeInfo.icon,
-    iconBg: act.typeInfo.bg,
+    ...s,
     label:  act.typeInfo.label,
     title:  act.data.name,
     detail: act.data.meet ? `📍 ${act.data.meet}` : '',

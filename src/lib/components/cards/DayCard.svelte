@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { TripDay } from '$lib/models/types';
-  import { TripDayModel }       from '$lib/models/TripDayModel';
+  import { TripDayModel, BADGE_MAP } from '$lib/models/TripDayModel';
   import { FlightModel }        from '$lib/models/FlightModel';
   import { AccommodationModel } from '$lib/models/AccommodationModel';
   import { ActivityModel }      from '$lib/models/ActivityModel';
@@ -49,6 +49,13 @@
     | { kind: 'hotel' }
     | { kind: 'excursion' }
     | { kind: 'activity'; act: ActivityModel };
+
+  $: badgeInfos = [
+    ...(flights.length > 0             ? [BADGE_MAP.fly]  : []),
+    ...(hotel                          ? [BADGE_MAP.bed]  : []),
+    ...((acts.length > 0 || excursion) ? [BADGE_MAP.act]  : []),
+    ...(day.warn                       ? [BADGE_MAP.warn] : []),
+  ];
 
   $: dayItems = ([
     ...flights.map(f  => ({ kind: 'flight'    as const, sortKey: timeToMinutes(f.data.dep), flight: f })),
@@ -100,7 +107,7 @@
       <div class="day-title font-serif">{day.title}</div>
       <div class="day-sub">{day.sub}</div>
       <div class="badges">
-        {#each model.badgeInfos as b}
+        {#each badgeInfos as b}
           <span class="badge {b.cls}">
             <Icon name={asIcon(b.icon)} size={11} strokeWidth={2.5} />
             {b.text}

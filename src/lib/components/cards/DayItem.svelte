@@ -3,6 +3,7 @@
     href: string;
     icon: string;
     iconBg?: string;
+    iconColor?: string;
     label: string;
     title: string;
     detail?: string;
@@ -16,6 +17,7 @@
   export let href: string;
   export let icon: string;
   export let iconBg: string = 'var(--paper-2)';
+  export let iconColor: string = 'var(--ink-soft)';
   export let label: string;
   export let title: string;
   export let detail: string = '';
@@ -25,7 +27,7 @@
 
 <a {href} class="subcard">
   <div class="sc-left">
-    <div class="sc-ic" style="background:{iconBg}"><Icon name={asIcon(icon)} size={16} /></div>
+    <div class="sc-ic" style="background:{iconBg};color:{iconColor}"><Icon name={asIcon(icon)} size={16} /></div>
     {#if time}<div class="sc-time font-serif">{time}</div>{/if}
   </div>
   <div class="sc-body">
