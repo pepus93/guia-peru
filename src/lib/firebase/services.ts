@@ -1,7 +1,7 @@
 import {
   collection, doc, getDocs, getDoc,
   setDoc, deleteDoc,
-  query, where, orderBy,
+  query, where,
   serverTimestamp,
 } from 'firebase/firestore';
 import { db } from './config';
@@ -36,10 +36,8 @@ async function remove(path: string, id: string): Promise<void> {
   await deleteDoc(ref(path, id));
 }
 
-async function queryByTrip<T>(path: string, tripId: string, orderField?: string): Promise<T[]> {
-  const constraints: import('firebase/firestore').QueryConstraint[] = [where('tripId', '==', tripId)];
-  if (orderField) constraints.push(orderBy(orderField));
-  const snap = await getDocs(query(col(path), ...constraints));
+async function queryByTrip<T>(path: string, tripId: string): Promise<T[]> {
+  const snap = await getDocs(query(col(path), where('tripId', '==', tripId)));
   return snap.docs.map(d => ({ id: d.id, ...d.data() }) as T);
 }
 
@@ -55,7 +53,7 @@ export const trips = {
 // ── TripDay ────────────────────────────────────────────────
 
 export const days = {
-  getByTrip: (tripId: string) => queryByTrip<TripDay>('days', tripId, 'd'),
+  getByTrip: (tripId: string) => queryByTrip<TripDay>('days', tripId),
   save:   (day: TripDay) => upsert('days', day),
   delete: (id: string) => remove('days', id),
 };
@@ -63,7 +61,7 @@ export const days = {
 // ── Activity ───────────────────────────────────────────────
 
 export const activities = {
-  getByTrip: (tripId: string) => queryByTrip<Activity>('activities', tripId, 'dayDm'),
+  getByTrip: (tripId: string) => queryByTrip<Activity>('activities', tripId),
   save:   (a: Activity) => upsert('activities', a),
   delete: (id: string) => remove('activities', id),
 };
@@ -71,7 +69,7 @@ export const activities = {
 // ── Flight ─────────────────────────────────────────────────
 
 export const flights = {
-  getByTrip: (tripId: string) => queryByTrip<Flight>('flights', tripId, 'dm'),
+  getByTrip: (tripId: string) => queryByTrip<Flight>('flights', tripId),
   save:   (f: Flight) => upsert('flights', f),
   delete: (id: string) => remove('flights', id),
 };
@@ -79,7 +77,7 @@ export const flights = {
 // ── Accommodation ──────────────────────────────────────────
 
 export const accommodations = {
-  getByTrip: (tripId: string) => queryByTrip<Accommodation>('accommodations', tripId, 'startDm'),
+  getByTrip: (tripId: string) => queryByTrip<Accommodation>('accommodations', tripId),
   save:   (a: Accommodation) => upsert('accommodations', a),
   delete: (id: string) => remove('accommodations', id),
 };
