@@ -5,6 +5,7 @@ import {
   persistentMultipleTabManager,
   type Firestore,
 } from 'firebase/firestore';
+import { getAuth, type Auth } from 'firebase/auth';
 import { browser } from '$app/environment';
 import {
   PUBLIC_FIREBASE_API_KEY,
@@ -15,9 +16,9 @@ import {
   PUBLIC_FIREBASE_APP_ID,
 } from '$env/static/public';
 
-let db: Firestore | null = null;
+let db:   Firestore | null = null;
+let auth: Auth      | null = null;
 
-// Solo inicializa si estamos en el navegador y hay config válida
 if (browser && PUBLIC_FIREBASE_API_KEY && PUBLIC_FIREBASE_PROJECT_ID) {
   const firebaseConfig = {
     apiKey:            PUBLIC_FIREBASE_API_KEY,
@@ -33,18 +34,19 @@ if (browser && PUBLIC_FIREBASE_API_KEY && PUBLIC_FIREBASE_PROJECT_ID) {
       ? getApps()[0]
       : initializeApp(firebaseConfig);
 
-    // Offline persistence con la API moderna de Firebase 10
     db = initializeFirestore(app, {
       localCache: persistentLocalCache({
         tabManager: persistentMultipleTabManager(),
       }),
       ignoreUndefinedProperties: true,
     });
+
+    auth = getAuth(app);
   } catch (e) {
     console.warn('Firebase init error:', e);
     db = null;
+    auth = null;
   }
 }
 
-export { db };
-export const firebaseReady = browser && db !== null;
+export { db, auth };

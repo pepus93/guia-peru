@@ -6,6 +6,7 @@
   import Modal      from '$lib/components/ui/Modal.svelte';
   import Icon       from '$lib/components/ui/Icon.svelte';
   import { loadTrip, unsubscribeListeners } from '$lib/stores/trip';
+  import { ensureAuth } from '$lib/firebase/auth';
   import { startClocks, modal } from '$lib/stores/ui';
   import { page } from '$app/stores';
   import { fade } from 'svelte/transition';
@@ -29,9 +30,12 @@
   onMount(() => {
     unlocked = dev || localStorage.getItem('pin_ok') === '1';
     let clockInterval: ReturnType<typeof setInterval> | undefined;
+
     if (unlocked) {
-      loadTrip();
-      clockInterval = startClocks();
+      ensureAuth().then(() => {
+        loadTrip();
+        clockInterval = startClocks();
+      });
     }
 
     const handleTouchMove = (e: TouchEvent) => {
@@ -52,10 +56,11 @@
 
   onDestroy(() => unsubscribeListeners());
 
-  function submitPin() {
+  async function submitPin() {
     if (pinInput === PIN) {
       localStorage.setItem('pin_ok', '1');
       unlocked = true;
+      await ensureAuth();
       loadTrip();
       startClocks();
     } else {
