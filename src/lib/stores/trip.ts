@@ -151,7 +151,7 @@ export async function saveAccommodation(a: Accommodation) {
     const idx = list.findIndex(x => x.id === a.id);
     return sortStays(idx >= 0 ? list.with(idx, a) : [...list, a]);
   });
-  await accommodations.save(a).catch(() => {});
+  await accommodations.save(a).catch((e) => console.error('[saveAccommodation]', e));
 }
 
 export async function deleteAccommodation(id: string) {
