@@ -60,6 +60,15 @@
     </div>
   {/if}
 
+  <!-- Amenities visibles sin desplegar -->
+  {#if hotel.breakfast}
+    <div class="pill-line" style="margin-top:6px">
+      <span class="pill pill-gold">
+        <Icon name="utensils" size={11} /> Desayuno incluido
+      </span>
+    </div>
+  {/if}
+
   <!-- Detalle expandible -->
   <svelte:fragment slot="detail">
     {#if hotel.notes}
@@ -67,13 +76,6 @@
     {/if}
 
     <ContactInfo tel={hotel.tel || undefined} />
-
-    {#if hotel.breakfast}
-      <div class="amenity-row">
-        <Icon name="coffee" size={14} />
-        <span class="amenity-label">Desayuno incluido</span>
-      </div>
-    {/if}
   </svelte:fragment>
 </Card>
 
@@ -128,16 +130,4 @@
   /* ── Detalle ───────────────────────────────────────── */
   .hotel-notes { font-size: .76rem; color: var(--jade); margin: 6px 0 0; line-height: 1.4; }
 
-  .amenity-row {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    margin-top: 2px;
-    color: var(--jade);
-  }
-  .amenity-label {
-    font-size: .78rem;
-    font-weight: 600;
-    color: var(--jade);
-  }
 </style>

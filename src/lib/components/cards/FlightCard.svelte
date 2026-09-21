@@ -72,23 +72,21 @@
     </div>
   {/if}
 
+  <!-- Aviso crítico: llegar con tiempo -->
+  <span class="transport-early"><Icon name="clock" size={13} /> {model.earlyLabel}</span>
+
   <!-- Detalle expandible -->
   <svelte:fragment slot="detail">
     <!-- Cómo llegar -->
-    <div class="card-section">
-      <div class="card-section-title">
-        <Icon name="car" size={14} />
-        Cómo llegar al aeropuerto
-      </div>
-      {#if flight.transport}
-        <div class="flight-transport">
-          <span class="transport-how">{flight.transport.how}</span>
-          <span class="transport-early"><Icon name="clock" size={13} /> {model.earlyLabel}</span>
+    {#if flight.transport}
+      <div class="card-section">
+        <div class="card-section-title">
+          <Icon name="car" size={14} />
+          Cómo llegar al aeropuerto
         </div>
-      {:else}
-        <span class="transport-early"><Icon name="clock" size={13} /> {model.earlyLabel}</span>
-      {/if}
-    </div>
+        <span class="transport-how">{flight.transport.how}</span>
+      </div>
+    {/if}
 
     <!-- Tarjetas de embarque -->
     <div class="card-section bp-section">
@@ -109,8 +107,8 @@
               <button class="bp-edit-btn" on:click={() => openBpModal(flight, t.id, bp)}>Editar</button>
             </div>
           {:else}
-            <button class="bp-add-btn" on:click={() => openBpModal(flight, t.id)}>
-              <Icon name="plus" size={12} /> Añadir foto
+            <button class="bp-add-btn" on:click={() => openBpModal(flight, t.id)} aria-label="Añadir tarjeta de embarque">
+              <Icon name="plus" size={16} />
             </button>
           {/if}
         </div>
@@ -140,9 +138,20 @@
   .city-name { font-size: .74rem; color: var(--ink-soft); }
   .time { font-size: .9rem; font-weight: 600; color: var(--sky); }
 
-  .flight-transport { display: flex; flex-direction: column; gap: 4px; margin-top: 4px; }
-  .transport-how   { font-size: .84rem; color: var(--ink-soft); }
-  .transport-early { font-size: .82rem; font-weight: 700; color: var(--terra); display: flex; align-items: center; gap: 4px; }
+  .transport-how { font-size: .84rem; color: var(--ink-soft); margin-top: 4px; display: block; }
+  .transport-early {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: .78rem;
+    font-weight: 700;
+    color: #b52a2a;
+    background: rgba(181,42,42,.1);
+    border-radius: 7px;
+    padding: 5px 9px;
+    margin-top: 4px;
+    width: fit-content;
+  }
 
   /* ── Boarding passes ─────────────────────────────────────── */
   .bp-section { margin-top: 12px; padding-top: 10px; padding-bottom: 14px; }
@@ -193,19 +202,23 @@
     cursor: pointer;
   }
   .bp-add-btn {
-    font-size: .72rem;
-    font-weight: 600;
-    color: var(--clay);
-    background: none;
-    border: 1px dashed var(--clay);
-    border-radius: 6px;
-    padding: 3px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(58,110,165,.12);
+    color: var(--sky);
+    border: none;
     cursor: pointer;
     margin-left: auto;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
+    flex-shrink: 0;
+    transition: background .15s;
+    -webkit-tap-highlight-color: transparent;
   }
+  .bp-add-btn:active { background: rgba(58,110,165,.28); }
+  @media (hover: hover) { .bp-add-btn:hover { background: rgba(58,110,165,.22); } }
 
   /* ── Full-screen viewer ──────────────────────────────────── */
   .viewer-backdrop {

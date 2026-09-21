@@ -180,10 +180,10 @@ export interface Trip {
 // Fuente única de verdad para icono/color de cada tipo de entrada en DayCard
 export type DayEntryKind = 'flight' | 'hotel' | 'plan';
 
-export const DAY_ENTRY_STYLES: Record<DayEntryKind, { icon: string; iconBg: string; iconColor: string }> = {
-  flight: { icon: 'plane',   iconBg: 'rgba(58,110,165,.14)',  iconColor: 'var(--sky)'  },
-  hotel:  { icon: 'bed',     iconBg: 'rgba(63,125,100,.14)',  iconColor: 'var(--jade)' },
-  plan:   { icon: 'compass', iconBg: 'rgba(120,80,160,.14)', iconColor: 'var(--lila)' },
+export const DAY_ENTRY_STYLES: Record<DayEntryKind, { icon: string; iconBg: string; iconColor: string; itemBg: string }> = {
+  flight: { icon: 'plane',   iconBg: 'rgba(58,110,165,.14)',  iconColor: 'var(--sky)',  itemBg: 'rgba(58,110,165,.06)'  },
+  hotel:  { icon: 'bed',     iconBg: 'rgba(63,125,100,.14)',  iconColor: 'var(--jade)', itemBg: 'rgba(63,125,100,.06)'  },
+  plan:   { icon: 'compass', iconBg: 'rgba(120,80,160,.14)',  iconColor: 'var(--lila)', itemBg: 'rgba(120,80,160,.06)' },
 };
 
 // ── CITY INFO ─────────────────────────────────────────────────
