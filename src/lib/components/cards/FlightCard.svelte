@@ -4,8 +4,9 @@
   import { openModal, openBpModal } from '$lib/stores/ui';
   import { deleteFlight } from '$lib/stores/trip';
   import { getBpImage } from '$lib/utils/bpStorage';
-  import Card from './Card.svelte';
-  import Icon from '$lib/components/ui/Icon.svelte';
+  import Card       from './Card.svelte';
+  import Icon       from '$lib/components/ui/Icon.svelte';
+  import RouteTrack from '$lib/components/ui/RouteTrack.svelte';
   import { flashId } from '$lib/stores/ui';
 
   export let flight: Flight;
@@ -41,7 +42,7 @@
 <Card id={flight.id} {flashing} {past} flashColor="var(--sky)" cssClass="flight-card{model.isInternational ? ' is-intl' : ''}" dayDm={flight.dm} collapsible={!compact} bind:expanded onEdit={!compact ? edit : undefined} onDelete={!compact ? remove : undefined}>
 
   <!-- Resumen siempre visible -->
-  <div class="flight-badge">{model.typeLabel}</div>
+  <div class="card-badge" style="color: {model.isInternational ? 'var(--terra)' : 'var(--sky)'}">{model.typeLabel}</div>
 
   <div class="flight-row">
     <div class="flight-city">
@@ -50,16 +51,13 @@
       <span class="time font-serif">{flight.dep}</span>
     </div>
 
-    <div class="flight-route">
-      <div class="route-track">
-        <div class="route-dot"></div>
-        <div class="route-line"></div>
-        <span class="route-plane"><Icon name="plane" size={15} /></span>
-        <div class="route-line"></div>
-        <div class="route-dot"></div>
-      </div>
-      <span class="route-info">{flight.airline}{flight.code ? ` · ${flight.code}` : ''}</span>
-    </div>
+    <RouteTrack
+      icon="plane"
+      color="var(--sky)"
+      info="{flight.airline}{flight.code ? ` · ${flight.code}` : ''}"
+      iconSize={15}
+      padding="0 6px"
+    />
 
     <div class="flight-city right">
       <span class="iata">{flight.to}</span>
@@ -133,9 +131,6 @@
 {/if}
 
 <style>
-  .flight-badge { font-size: .7rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--sky); margin-bottom: 10px; }
-  :global(.is-intl) .flight-badge { color: var(--terra); }
-
   .flight-row { display: flex; align-items: center; gap: 8px; }
 
   .flight-city { display: flex; flex-direction: column; gap: 1px; flex: 1; }
@@ -144,59 +139,6 @@
   .iata { font-size: 1.15rem; font-weight: 700; color: var(--ink); line-height: 1; }
   .city-name { font-size: .74rem; color: var(--ink-soft); }
   .time { font-size: .9rem; font-weight: 600; color: var(--sky); }
-
-  .flight-route {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 3px;
-    padding: 0 6px;
-    min-width: 0;
-  }
-
-  .route-track {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 3px;
-    color: var(--sky);
-  }
-
-  .route-dot {
-    flex-shrink: 0;
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: var(--sky);
-    opacity: .5;
-  }
-
-  .route-line {
-    flex: 1;
-    height: 1.5px;
-    background: repeating-linear-gradient(
-      to right,
-      rgba(58,110,165,.45) 0px,
-      rgba(58,110,165,.45) 5px,
-      transparent 5px,
-      transparent 9px
-    );
-  }
-
-  .route-plane {
-    flex-shrink: 0;
-    color: var(--sky);
-  }
-
-  .route-info {
-    font-size: .64rem;
-    color: var(--ink-soft);
-    letter-spacing: .03em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
-  }
 
   .flight-transport { display: flex; flex-direction: column; gap: 4px; margin-top: 4px; }
   .transport-how   { font-size: .84rem; color: var(--ink-soft); }

@@ -11,30 +11,41 @@
 
 {#if tel || providerTel || bookingUrl}
   <div class="ci">
+
     {#if tel}
-      <a class="ci-row" href="tel:{tel}">
-        <Icon name="phone" size={14} />
-        <span class="ci-val">{tel}</span>
-      </a>
+      <div class="ci-row">
+        <span class="ci-label">{tel}</span>
+        <div class="ci-actions">
+          <a class="ci-btn" href="tel:{tel}" aria-label="Llamar">
+            <Icon name="phone" size={15} />
+          </a>
+        </div>
+      </div>
     {/if}
+
     {#if providerTel}
-      <a class="ci-row" href="tel:{providerTel}">
-        <Icon name="phone" size={14} />
-        <span class="ci-val">{providerName ? `${providerName} · ` : ''}{providerTel}</span>
-      </a>
-      {#if waHref}
-        <a class="ci-row ci-wa" href={waHref} target="_blank" rel="noreferrer">
-          <IconWhatsApp size={14} />
-          <span class="ci-val ci-wa-val">WhatsApp</span>
-        </a>
-      {/if}
+      <div class="ci-row">
+        <span class="ci-label">{providerName ? `${providerName} · ` : ''}{providerTel}</span>
+        <div class="ci-actions">
+          <a class="ci-btn" href="tel:{providerTel}" aria-label="Llamar">
+            <Icon name="phone" size={15} />
+          </a>
+          {#if waHref}
+            <a class="ci-btn ci-btn-wa" href={waHref} target="_blank" rel="noreferrer" aria-label="WhatsApp">
+              <IconWhatsApp size={15} />
+            </a>
+          {/if}
+        </div>
+      </div>
     {/if}
+
     {#if bookingUrl}
       <a class="ci-booking" href={bookingUrl} target="_blank" rel="noreferrer">
         <Icon name="credit-card" size={14} />
         Ver reserva
       </a>
     {/if}
+
   </div>
 {/if}
 
@@ -42,7 +53,7 @@
   .ci {
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 4px;
     margin-top: 10px;
     padding-top: 8px;
     border-top: 1px solid var(--line);
@@ -51,20 +62,45 @@
   .ci-row {
     display: flex;
     align-items: center;
-    gap: 7px;
-    padding: 4px 2px;
-    text-decoration: none;
-    color: var(--ink-soft);
+    justify-content: flex-end;
+    gap: 8px;
   }
 
-  .ci-val {
+  .ci-label {
     font-size: .82rem;
     font-weight: 600;
     color: var(--sky);
+    white-space: nowrap;
   }
 
-  .ci-wa { color: #128c4a; }
-  .ci-wa-val { color: #128c4a; }
+  .ci-actions {
+    display: flex;
+    gap: 5px;
+    flex-shrink: 0;
+  }
+
+  .ci-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(58,110,165,.12);
+    color: var(--sky);
+    text-decoration: none;
+    transition: background .15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .ci-btn:active { background: rgba(58,110,165,.28); }
+  @media (hover: hover) { .ci-btn:hover { background: rgba(58,110,165,.22); } }
+
+  .ci-btn-wa {
+    background: rgba(18,140,74,.12);
+    color: #128c4a;
+  }
+  .ci-btn-wa:active { background: rgba(18,140,74,.28); }
+  @media (hover: hover) { .ci-btn-wa:hover { background: rgba(18,140,74,.22); } }
 
   .ci-booking {
     display: inline-flex;

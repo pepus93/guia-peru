@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Accommodation } from '$lib/models/types';
+  import { CITY_LABELS } from '$lib/models/types';
   import { AccommodationModel } from '$lib/models/AccommodationModel';
   import { openModal, flashId } from '$lib/stores/ui';
   import { deleteAccommodation } from '$lib/stores/trip';
@@ -7,21 +8,15 @@
   import Card        from './Card.svelte';
   import ContactInfo from '$lib/components/ui/ContactInfo.svelte';
   import Icon        from '$lib/components/ui/Icon.svelte';
+  import RouteTrack  from '$lib/components/ui/RouteTrack.svelte';
 
   export let hotel: Accommodation;
   export let compact = false;
   export let past    = false;
 
-  const CITY_LABEL: Record<string, string> = {
-    lima:     'Lima',
-    arequipa: 'Arequipa',
-    cusco:    'Cusco',
-    selva:    'Amazonia',
-  };
-
-  $: model    = new AccommodationModel(hotel);
-  $: flashing = $flashId === hotel.id;
-  $: cityLabel = CITY_LABEL[hotel.city] ?? hotel.city;
+  $: model     = new AccommodationModel(hotel);
+  $: flashing  = $flashId === hotel.id;
+  $: cityLabel = CITY_LABELS[hotel.city] ?? hotel.city;
 
   let expanded = false;
   $: if ($flashId === hotel.id) expanded = true;
@@ -32,8 +27,8 @@
 
 <Card id={hotel.id} {flashing} {past} flashColor="var(--jade)" cssClass="hotel-card" dayDm={hotel.startDm} endDm={hotel.endDm} collapsible={!compact} bind:expanded onEdit={!compact ? edit : undefined} onDelete={!compact ? remove : undefined}>
 
-  <!-- Badge -->
-  <div class="hotel-badge">{cityLabel}</div>
+  <!-- Badge ciudad -->
+  <div class="card-badge" style="color: var(--jade)">{cityLabel}</div>
 
   <!-- Timeline de estancia -->
   <div class="stay-row">
@@ -43,15 +38,7 @@
       {#if hotel.checkIn}<span class="stay-time font-serif">{hotel.checkIn}</span>{/if}
     </div>
 
-    <div class="stay-route">
-      <div class="route-track">
-        <div class="route-dot"></div>
-        <div class="route-line"></div>
-        <span class="route-icon"><Icon name="bed" size={14} /></span>
-        <div class="route-line"></div>
-        <div class="route-dot"></div>
-      </div>
-    </div>
+    <RouteTrack icon="bed" color="var(--jade)" />
 
     <div class="stay-side right">
       <span class="stay-date font-serif">{dmToLabel(hotel.endDm)}</span>
@@ -91,15 +78,6 @@
 </Card>
 
 <style>
-  .hotel-badge {
-    font-size: .7rem;
-    font-weight: 700;
-    letter-spacing: .07em;
-    text-transform: uppercase;
-    color: var(--jade);
-    margin-bottom: 10px;
-  }
-
   /* ── Timeline ──────────────────────────────────────── */
   .stay-row {
     display: flex;
@@ -112,7 +90,8 @@
     display: flex;
     flex-direction: column;
     gap: 2px;
-    flex: 0 0 auto;
+    flex: 1;
+    min-width: 0;
   }
   .stay-side.right { align-items: flex-end; }
 
@@ -124,7 +103,7 @@
   }
 
   .stay-label {
-    font-size: .64rem;
+    font-size: .72rem;
     color: var(--ink-soft);
     text-transform: uppercase;
     letter-spacing: .06em;
@@ -137,45 +116,6 @@
     color: var(--jade);
     line-height: 1;
   }
-
-  .stay-route {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0 4px;
-    min-width: 0;
-  }
-
-  .route-track {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 3px;
-    color: var(--jade);
-  }
-
-  .route-dot {
-    flex-shrink: 0;
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: var(--jade);
-    opacity: .5;
-  }
-
-  .route-line {
-    flex: 1;
-    height: 1.5px;
-    background: repeating-linear-gradient(
-      to right,
-      rgba(63,125,100,.45) 0px,
-      rgba(63,125,100,.45) 5px,
-      transparent 5px,
-      transparent 9px
-    );
-  }
-
-  .route-icon { flex-shrink: 0; color: var(--jade); }
 
   /* ── Nombre y dirección ────────────────────────────── */
   .hotel-name {

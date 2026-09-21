@@ -6,7 +6,7 @@
   import FAB           from '$lib/components/ui/FAB.svelte';
   import PageTitle     from '$lib/components/ui/PageTitle.svelte';
   import { openModal } from '$lib/stores/ui';
-  import { dmToLabel, todayDm } from '$lib/utils/dates';
+  import { dmToLabel, dmToDow, todayDm } from '$lib/utils/dates';
 
   const today = todayDm();
 
@@ -27,7 +27,8 @@
 
   function sectionLabel(dm: number) {
     const day = $tripDays.find(d => d.d === dm);
-    return day ? `${dmToLabel(dm)} · ${day.dow} · ${day.title}` : dmToLabel(dm);
+    const dow = day?.dow ?? dmToDow(dm);
+    return day ? `${dmToLabel(dm)} · ${dow} · ${day.title}` : dmToLabel(dm);
   }
 
   let pastOpen = false;
@@ -35,7 +36,7 @@
 
 <FlashHandler {loading} />
 <FAB on:click={() => openModal('activity')} />
-<PageTitle title="Planes" />
+<PageTitle title="Planes" accent="var(--lila)" />
 
 {#if $loading}
   <p class="empty-msg">Cargando…</p>

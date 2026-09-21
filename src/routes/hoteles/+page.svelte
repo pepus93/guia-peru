@@ -1,5 +1,6 @@
 <script lang="ts">
   import { stayList, loading } from '$lib/stores/trip';
+  import { CITY_LABELS } from '$lib/models/types';
   import HotelCard    from '$lib/components/cards/HotelCard.svelte';
   import FlashHandler from '$lib/components/ui/FlashHandler.svelte';
   import PastToggle   from '$lib/components/ui/PastToggle.svelte';
@@ -8,13 +9,6 @@
   import { openModal } from '$lib/stores/ui';
   import { todayDm } from '$lib/utils/dates';
 
-  const CITY_LABEL: Record<string, string> = {
-    lima:     'Lima',
-    arequipa: 'Arequipa',
-    cusco:    'Cusco',
-    selva:    'Amazonia',
-  };
-
   let pastOpen = false;
   const today  = todayDm();
 
@@ -22,13 +16,13 @@
   $: past     = $stayList.filter(h => h.endDm <  today);
 
   function hotelLabel(h: typeof $stayList[0]) {
-    return `${h.dates} · ${CITY_LABEL[h.city] ?? h.city}`;
+    return `${h.dates} · ${CITY_LABELS[h.city] ?? h.city}`;
   }
 </script>
 
 <FlashHandler {loading} />
 <FAB on:click={() => openModal('hotel')} />
-<PageTitle title="Hoteles" />
+<PageTitle title="Hoteles" accent="var(--jade)" />
 
 {#if $loading}
   <p class="empty-msg">Cargando…</p>

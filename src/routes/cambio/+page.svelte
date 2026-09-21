@@ -126,9 +126,9 @@
 
 <!-- Info tip -->
 <div class="tip-card">
-  <p><Icon name="credit-card" size={14} /> Cambia euros en las <strong>casas de cambio</strong> de la calle. Mejor tipo que cajeros. Evita el aeropuerto.</p>
-  <p><Icon name="credit-card" size={14} /> Cajeros: <strong>BCP</strong> e <strong>Interbank</strong> tienen las comisiones más bajas.</p>
-  <p><Icon name="wifi" size={14} /> El tipo de cambio real lo puedes ver en la app <strong>XE Currency</strong> cuando tengas WiFi.</p>
+  <p><Icon name="credit-card" size={14} /><span>Cambia euros en las <strong>casas de cambio</strong> de la calle. Mejor tipo que cajeros. Evita el aeropuerto.</span></p>
+  <p><Icon name="credit-card" size={14} /><span>Cajeros: <strong>BCP</strong> e <strong>Interbank</strong> tienen las comisiones más bajas.</span></p>
+  <p><Icon name="wifi" size={14} /><span>El tipo de cambio real lo puedes ver en la app <strong>XE Currency</strong> cuando tengas WiFi.</span></p>
 </div>
 
 <p class="foot">El tipo de cambio se guarda en el dispositivo · funciona sin conexión</p>
@@ -153,7 +153,7 @@
 
   .conv-field label {
     display: block;
-    font-size: .66rem;
+    font-size: .72rem;
     text-transform: uppercase;
     letter-spacing: .1em;
     color: var(--ink-soft);
@@ -194,7 +194,7 @@
 
   .rate-label { font-size: .72rem; color: var(--ink-soft); font-weight: 600; }
   .rate-value { font-size: .82rem; font-weight: 700; color: var(--ink); }
-  .rate-hint  { font-size: .66rem; color: var(--ink-soft); }
+  .rate-hint  { font-size: .72rem; color: var(--ink-soft); }
 
   .rate-input {
     width: 72px;
@@ -213,7 +213,7 @@
 
   /* ── Quick amounts ──────────────────────────────────────── */
   .quick-label {
-    font-size: .66rem;
+    font-size: .72rem;
     text-transform: uppercase;
     letter-spacing: .1em;
     color: var(--ink-soft);

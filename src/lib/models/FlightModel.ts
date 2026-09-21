@@ -41,6 +41,7 @@ export class FlightModel {
   }
 
   private _parseDuration(): string {
+    if (this.data.duration) return this.data.duration;
     if (!this.data.note) return '';
     const match = this.data.note.match(/(\d+h\s?\d*\s?m(?:in)?|\d+h)/i);
     return match ? match[0].replace(/\s+/g, '') : '';

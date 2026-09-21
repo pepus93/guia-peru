@@ -122,14 +122,14 @@ export async function saveActivity(a: Activity) {
     return idx >= 0 ? list.with(idx, a) : [...list, a];
   });
   _syncDayActivityBadge(a.dayDm);
-  await activities.save(a).catch(() => {});
+  await activities.save(a).catch((e) => console.error('[saveActivity]', e));
 }
 
 export async function deleteActivity(id: string) {
   const a = get(activityList).find(x => x.id === id);
   activityList.update(list => list.filter(x => x.id !== id));
   if (a) _syncDayActivityBadge(a.dayDm);
-  await activities.delete(id).catch(() => {});
+  await activities.delete(id).catch((e) => console.error('[deleteActivity]', e));
 }
 
 // ── Mutations: TripDay warn ────────────────────────────────
@@ -139,7 +139,7 @@ export async function saveDayWarn(dayId: string, warn: string) {
     list.map(d => d.id === dayId ? { ...d, warn: warn || undefined } : d)
   );
   const updated = get(tripDays).find(d => d.id === dayId);
-  if (updated) await days.save(updated).catch(() => {/* offline: se sincroniza luego */});
+  if (updated) await days.save(updated).catch((e) => console.error('[saveDayWarn]', e));
 }
 
 // ── Mutations: Flight ──────────────────────────────────────
@@ -149,12 +149,12 @@ export async function saveFlight(f: Flight) {
     const idx = list.findIndex(x => x.id === f.id);
     return sortFlights(idx >= 0 ? list.with(idx, f) : [...list, f]);
   });
-  await flights.save(f).catch(() => {});
+  await flights.save(f).catch((e) => console.error('[saveFlight]', e));
 }
 
 export async function deleteFlight(id: string) {
   flightList.update(list => list.filter(x => x.id !== id));
-  await flights.delete(id).catch(() => {});
+  await flights.delete(id).catch((e) => console.error('[deleteFlight]', e));
 }
 
 export async function saveBoardingPass(flightId: string, bp: import('$lib/models/types').BoardingPass) {
@@ -177,7 +177,7 @@ export async function saveAccommodation(a: Accommodation) {
 
 export async function deleteAccommodation(id: string) {
   stayList.update(list => list.filter(x => x.id !== id));
-  await accommodations.delete(id).catch(() => {});
+  await accommodations.delete(id).catch((e) => console.error('[deleteAccommodation]', e));
 }
 
 // ── Helpers ────────────────────────────────────────────────

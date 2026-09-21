@@ -63,7 +63,7 @@
     <span>Tipo</span>
     <select bind:value={form.type}>
       {#each Object.entries(ACTIVITY_TYPES) as [key, info]}
-        <option value={key}>{info.icon} {info.label}</option>
+        <option value={key}>{info.label}</option>
       {/each}
     </select>
   </label>

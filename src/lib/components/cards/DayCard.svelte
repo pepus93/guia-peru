@@ -185,7 +185,7 @@
     top: -1px;
     right: 14px;
     transform: translateY(-50%);
-    font-size: .58rem;
+    font-size: .72rem;
     font-weight: 800;
     letter-spacing: .14em;
     color: var(--paper);
@@ -242,10 +242,11 @@
     justify-content: center;
     padding: 10px 4px;
     gap: 1px;
+    box-shadow: 1px 0 0 rgba(42,26,18,.1);
   }
-  .dow  { font-size: .66rem; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-soft); font-weight: 600; }
-  .dnum { font-size: 1.6rem; font-weight: 600; line-height: 1; color: var(--ink); }
-  .mon  { font-size: .66rem; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-soft); font-weight: 600; }
+  .dow  { font-size: .72rem; text-transform: uppercase; letter-spacing: .1em; color: rgba(42,26,18,.55); font-weight: 700; }
+  .dnum { font-size: 1.6rem; font-weight: 700; line-height: 1; color: var(--ink); }
+  .mon  { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: rgba(42,26,18,.55); font-weight: 700; }
 
   /* ── Day main ───────────────────────────────────────── */
   .day-main { flex: 1; padding: 12px 32px 12px 12px; min-width: 0; }

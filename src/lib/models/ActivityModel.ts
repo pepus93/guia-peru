@@ -3,8 +3,31 @@ import { ACTIVITY_TYPES } from './types';
 import { mapsUrl } from '$lib/utils/maps';
 import { BaseDayModel } from './BaseDayModel';
 
+function parseDurationMins(s: string): number {
+  s = s.toLowerCase().replace(/aprox\.?\s*/g, '').trim();
+  let total = 0;
+  const hMatch = s.match(/(\d+)\s*h/);
+  const mMatch = s.match(/(\d+)\s*m(?:in)?/);
+  if (hMatch) total += parseInt(hMatch[1]) * 60;
+  if (mMatch) total += parseInt(mMatch[1]);
+  return total;
+}
+
 export class ActivityModel extends BaseDayModel<Activity> {
   // meetUrl, endUrl y timeLabel heredados de BaseDayModel
+
+  get estimatedEndTime(): string {
+    const { time, duration } = this.data;
+    if (!time || !duration) return '';
+    const [h, m] = time.split(':').map(Number);
+    if (isNaN(h) || isNaN(m)) return '';
+    const dMins = parseDurationMins(duration);
+    if (!dMins) return '';
+    const total = h * 60 + m + dMins;
+    const eH = Math.floor(total / 60) % 24;
+    const eM = total % 60;
+    return `~${String(eH).padStart(2, '0')}:${String(eM).padStart(2, '0')}`;
+  }
 
   get telHref() { return this.data.providerTel ? `tel:${this.data.providerTel}` : ''; }
 
@@ -27,9 +50,6 @@ export class ActivityModel extends BaseDayModel<Activity> {
   get infoBadges(): InfoBadge[] {
     const b: InfoBadge[] = [];
     const note = this.data.note?.toLowerCase() ?? '';
-
-    if (this.data.duration)
-      b.push({ label: this.data.duration, cls: 'pill-info' });
 
     if (this.data.bookingUrl)
       b.push({ label: 'Reservado', cls: 'pill-green' });

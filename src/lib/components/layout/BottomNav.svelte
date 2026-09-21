@@ -2,18 +2,18 @@
   import { page } from '$app/stores';
   import Icon, { type IconName } from '$lib/components/ui/Icon.svelte';
 
-  const TABS: { href: string; icon: IconName; label: string }[] = [
-    { href: '/dias',    icon: 'calendar',         label: 'Días' },
-    { href: '/vuelos',  icon: 'plane',            label: 'Vuelos' },
-    { href: '/hoteles', icon: 'bed',              label: 'Hoteles' },
-    { href: '/planes',  icon: 'compass',          label: 'Planes' },
-    { href: '/cambio',  icon: 'arrow-left-right', label: 'Cambio' },
+  const TABS: { href: string; icon: IconName; label: string; color: string }[] = [
+    { href: '/dias',    icon: 'calendar',         label: 'Días',    color: 'var(--terra)' },
+    { href: '/vuelos',  icon: 'plane',            label: 'Vuelos',  color: 'var(--sky)'   },
+    { href: '/hoteles', icon: 'bed',              label: 'Hoteles', color: 'var(--jade)'  },
+    { href: '/planes',  icon: 'compass',          label: 'Planes',  color: 'var(--lila)'  },
+    { href: '/cambio',  icon: 'arrow-left-right', label: 'Cambio',  color: 'var(--clay)'  },
   ];
 </script>
 
 <nav class="bottom-nav">
   {#each TABS as tab}
-    <a href={tab.href} class="nav-item" class:active={$page.url.pathname.startsWith(tab.href)}>
+    <a href={tab.href} class="nav-item" class:active={$page.url.pathname.startsWith(tab.href)} style="--tab-color: {tab.color}">
       <span class="nav-icon"><Icon name={tab.icon} size={22} /></span>
       <span class="nav-label">{tab.label}</span>
     </a>
@@ -55,7 +55,7 @@
   }
 
   .nav-item.active {
-    color: var(--terra-deep);
+    color: var(--tab-color);
   }
 
   .nav-item::before {
@@ -65,7 +65,7 @@
     left: 50%;
     width: 40px;
     height: 28px;
-    background: rgba(198, 90, 52, 0.12);
+    background: color-mix(in srgb, var(--tab-color) 14%, transparent);
     border-radius: 9px;
     transform: translateX(-50%) scale(0.6);
     opacity: 0;

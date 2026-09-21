@@ -1,6 +1,13 @@
 // ── CITY ────────────────────────────────────────────────────
 export type City = 'lima' | 'arequipa' | 'cusco' | 'selva';
 
+export const CITY_LABELS: Record<City, string> = {
+  lima:     'Lima',
+  arequipa: 'Arequipa',
+  cusco:    'Cusco',
+  selva:    'Amazonia',
+};
+
 // ── ACTIVITY TYPE ─────────────────────────────────────────────
 export type ActivityType =
   | 'tour' | 'restaurant' | 'museo' | 'transporte'
@@ -93,6 +100,7 @@ export interface Flight {
   code?: string;
   price?: string;
   note?: string;
+  duration?: string;
   stops?: string;
   transport?: FlightTransport;
   boardingPasses?: BoardingPass[];

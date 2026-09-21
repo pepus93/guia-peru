@@ -4,7 +4,7 @@
     | 'bed' | 'bug' | 'bus'
     | 'calendar' | 'car' | 'check' | 'chevron-down' | 'chevron-right' | 'clock' | 'coffee' | 'compass' | 'credit-card'
     | 'eye'
-    | 'file' | 'file-text' | 'flag' | 'flame'
+    | 'file' | 'file-text' | 'flag' | 'flame' | 'footprints'
     | 'info'
     | 'landmark' | 'mail' | 'map-pin' | 'message-circle' | 'mountain' | 'music'
     | 'pencil' | 'phone' | 'pill' | 'plane' | 'plus'
@@ -40,6 +40,7 @@
     'file':             `<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/>`,
     'file-text':        `<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>`,
     'flag':             `<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/>`,
+    'footprints':       `<path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5c0 6-3 6-3 10v1"/><path d="M20 16v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 2 14 3.8 14 5c0 6 3 6 3 10v1"/><path d="M4 20h1"/><path d="M20 20h1"/><path d="M7 20h2"/><path d="M17 20h2"/><path d="M9 20v-5"/><path d="M15 20v-5"/>`,
     'flame':            `<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>`,
     'info':             `<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>`,
     'landmark':         `<line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/>`,

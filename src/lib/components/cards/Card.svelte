@@ -198,7 +198,7 @@
     position: relative;
     transition: transform 0.22s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
-  .card-inner.has-cal { padding-bottom: 30px; }
+  .card-inner.has-cal { padding-bottom: 48px; }
 
   /* ── Revealed action buttons ──────────────────────────── */
   .card-actions {
@@ -251,7 +251,7 @@
   }
 
   .ca-lbl {
-    font-size: .62rem;
+    font-size: .72rem;
     font-weight: 700;
     letter-spacing: .06em;
     text-transform: uppercase;
