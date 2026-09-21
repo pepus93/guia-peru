@@ -1,6 +1,7 @@
 import { writable, derived, get } from 'svelte/store';
 import type { Trip, TripDay, Activity, Flight, Accommodation, Traveler } from '$lib/models/types';
 import { trips, days, activities, flights, accommodations, travelers } from '$lib/firebase/services';
+import { db } from '$lib/firebase/config';
 import { SEED_TRIP, SEED_DAYS, SEED_ACTIVITIES, SEED_FLIGHTS, SEED_ACCOMMODATIONS, SEED_TRAVELERS } from '$lib/data/seed';
 import { TRIP_ID } from '$lib/config';
 
@@ -47,39 +48,59 @@ export const dayByDm = derived(tripDays, ($days) =>
   Object.fromEntries($days.map(d => [d.d, d.id]))
 );
 
-// ── Load ───────────────────────────────────────────────────
+// ── Real-time listeners ────────────────────────────────────
 
+let _unsubs: Array<() => void> = [];
+
+export function unsubscribeListeners() {
+  _unsubs.forEach(fn => fn());
+  _unsubs = [];
+}
+
+// ── Load ───────────────────────────────────────────────────
 
 export async function loadTrip() {
   loading.set(true);
+  unsubscribeListeners();
+
+  // Step 1: ensure trip doc exists (one-time check)
   try {
     let t = await trips.get(TRIP_ID).catch(() => null);
-
     if (!t) {
-      // Firebase no disponible o primer arranque — intenta sembrar, si falla usa seed local
-      try {
-        await seedFirestore();
-      } catch { /* Sin Firebase: modo offline puro */ }
+      try { await seedFirestore(); } catch { /* offline — use seed */ }
       t = SEED_TRIP;
     }
-
     trip.set(t);
-
-    const [d, a, f, s, tv] = await Promise.all([
-      days.getByTrip(TRIP_ID).catch(() => SEED_DAYS),
-      activities.getByTrip(TRIP_ID).catch(() => SEED_ACTIVITIES),
-      flights.getByTrip(TRIP_ID).catch(() => SEED_FLIGHTS),
-      accommodations.getByTrip(TRIP_ID).catch(() => SEED_ACCOMMODATIONS),
-      travelers.getByTrip(TRIP_ID).catch(() => SEED_TRAVELERS),
-    ]);
-    tripDays.set(d);
-    activityList.set(a);
-    flightList.set(sortFlights(f));
-    stayList.set(sortStays(s));
-    travelerList.set(tv);
-  } finally {
-    loading.set(false);
+  } catch {
+    trip.set(SEED_TRIP);
   }
+
+  // Step 2: Firebase not available → seed data, no listeners
+  if (!db) {
+    tripDays.set(SEED_DAYS);
+    activityList.set(SEED_ACTIVITIES);
+    flightList.set(sortFlights(SEED_FLIGHTS));
+    stayList.set(sortStays(SEED_ACCOMMODATIONS));
+    travelerList.set(SEED_TRAVELERS);
+    loading.set(false);
+    return;
+  }
+
+  // Step 3: onSnapshot listeners — fire immediately with current data,
+  // then push every update from any session automatically.
+  const fired = new Set<string>();
+  const markReady = (key: string) => {
+    fired.add(key);
+    if (fired.size >= 5) loading.set(false);
+  };
+
+  _unsubs.push(
+    days.watch(TRIP_ID, (d) => { tripDays.set(d); markReady('days'); }),
+    activities.watch(TRIP_ID, (a) => { activityList.set(a); markReady('acts'); }),
+    flights.watch(TRIP_ID, (f) => { flightList.set(sortFlights(f)); markReady('flights'); }),
+    accommodations.watch(TRIP_ID, (s) => { stayList.set(sortStays(s)); markReady('stays'); }),
+    travelers.watch(TRIP_ID, (tv) => { travelerList.set(tv); markReady('travelers'); }),
+  );
 }
 
 async function seedFirestore() {

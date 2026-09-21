@@ -1,7 +1,7 @@
 import {
   collection, doc, getDocs, getDoc,
   setDoc, deleteDoc,
-  query, where,
+  query, where, onSnapshot,
   serverTimestamp,
 } from 'firebase/firestore';
 import { db } from './config';
@@ -41,7 +41,29 @@ async function queryByTrip<T>(path: string, tripId: string): Promise<T[]> {
   return snap.docs.map(d => ({ id: d.id, ...d.data() }) as T);
 }
 
-// ── Trip ───────────────────────────────────────────────────
+function watchByTrip<T>(
+  path: string,
+  tripId: string,
+  callback: (items: T[]) => void,
+): () => void {
+  const q = query(col(path), where('tripId', '==', tripId));
+  return onSnapshot(q, (snap) => {
+    callback(snap.docs.map(d => ({ id: d.id, ...d.data() }) as T));
+  }, (err) => console.error(`[watch ${path}]`, err));
+}
+
+// ── Generic collection service factory ────────────────────
+
+function createService<T extends { id: string }>(path: string) {
+  return {
+    getByTrip: (tripId: string) => queryByTrip<T>(path, tripId),
+    watch:     (tripId: string, cb: (items: T[]) => void) => watchByTrip<T>(path, tripId, cb),
+    save:      (item: T) => upsert(path, item),
+    delete:    (id: string) => remove(path, id),
+  };
+}
+
+// ── Trip (unique — no tripId filter needed) ────────────────
 
 export const trips = {
   getAll: () => getAll<Trip>('trips'),
@@ -50,42 +72,10 @@ export const trips = {
   delete: (id: string) => remove('trips', id),
 };
 
-// ── TripDay ────────────────────────────────────────────────
+// ── Collection services ────────────────────────────────────
 
-export const days = {
-  getByTrip: (tripId: string) => queryByTrip<TripDay>('days', tripId),
-  save:   (day: TripDay) => upsert('days', day),
-  delete: (id: string) => remove('days', id),
-};
-
-// ── Activity ───────────────────────────────────────────────
-
-export const activities = {
-  getByTrip: (tripId: string) => queryByTrip<Activity>('activities', tripId),
-  save:   (a: Activity) => upsert('activities', a),
-  delete: (id: string) => remove('activities', id),
-};
-
-// ── Flight ─────────────────────────────────────────────────
-
-export const flights = {
-  getByTrip: (tripId: string) => queryByTrip<Flight>('flights', tripId),
-  save:   (f: Flight) => upsert('flights', f),
-  delete: (id: string) => remove('flights', id),
-};
-
-// ── Accommodation ──────────────────────────────────────────
-
-export const accommodations = {
-  getByTrip: (tripId: string) => queryByTrip<Accommodation>('accommodations', tripId),
-  save:   (a: Accommodation) => upsert('accommodations', a),
-  delete: (id: string) => remove('accommodations', id),
-};
-
-// ── Traveler ───────────────────────────────────────────────
-
-export const travelers = {
-  getByTrip: (tripId: string) => queryByTrip<Traveler>('travelers', tripId),
-  save:   (t: Traveler) => upsert('travelers', t),
-  delete: (id: string) => remove('travelers', id),
-};
+export const days           = createService<TripDay>('days');
+export const activities     = createService<Activity>('activities');
+export const flights        = createService<Flight>('flights');
+export const accommodations = createService<Accommodation>('accommodations');
+export const travelers      = createService<Traveler>('travelers');
