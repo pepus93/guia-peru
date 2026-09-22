@@ -97,6 +97,7 @@
   <button class="day-head" on:click={toggle} aria-expanded={expanded}>
 
     <div class="date-block">
+      <span class="tl-dot" aria-hidden="true"></span>
       <div class="dow">{model.dow}</div>
       <div class="dnum font-serif">{model.dayNum}</div>
       <div class="mon">{model.monthLabel}</div>
@@ -115,9 +116,6 @@
           {/each}
         </div>
       {/if}
-    </div>
-    <div class="day-chev" class:open={expanded}>
-      <Icon name="chevron-down" size={16} strokeWidth={2} />
     </div>
   </button>
 
@@ -245,6 +243,26 @@
     padding: 12px 4px;
     gap: 1px;
     border-right: 1px solid var(--line);
+    position: relative;
+  }
+
+  /* Timeline dot — en la parte alta del date-block, donde el hilo "entra" en la card */
+  .tl-dot {
+    position: absolute;
+    left: 50%;
+    top: 7px;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--card);
+    border: 2px solid var(--line);
+    z-index: 2;
+    pointer-events: none;
+  }
+  .today .tl-dot {
+    border-color: var(--terra);
+    background: var(--terra);
   }
   .dow  { font-size: .72rem; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-soft); font-weight: 700; }
   .dnum { font-size: 1.6rem; font-weight: 700; line-height: 1; color: var(--ink); }
@@ -256,15 +274,6 @@
 
   .badges { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
   .badge  { font-size: .74rem; font-weight: 600; padding: 2px 7px; border-radius: 6px; display: inline-flex; align-items: center; gap: 3px; }
-
-  /* ── Chevron ─────────────────────────────────────────── */
-  .day-chev {
-    flex-shrink: 0;
-    color: var(--ink-soft);
-    opacity: .4;
-    transition: transform .22s ease;
-  }
-  .day-chev.open { transform: rotate(180deg); }
 
   /* ── Detail ─────────────────────────────────────────── */
   .detail-inner {
