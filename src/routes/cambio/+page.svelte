@@ -137,7 +137,7 @@
   .converter-card {
     background: var(--card);
     border: 1px solid var(--line);
-    border-radius: 16px;
+    border-radius: var(--radius-sm);
     padding: 18px;
     margin-bottom: 12px;
     box-shadow: var(--shadow);
@@ -165,7 +165,7 @@
     width: 100%;
     background: var(--paper-2);
     border: 1px solid var(--line);
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
     padding: 10px 12px;
     font-family: inherit;
     font-size: 1.2rem;
@@ -243,7 +243,7 @@
   .ref-card {
     background: var(--card);
     border: 1px solid var(--line);
-    border-radius: 16px;
+    border-radius: var(--radius-sm);
     padding: 4px 16px;
     margin-bottom: 12px;
     box-shadow: var(--shadow);
@@ -266,7 +266,7 @@
   .tip-card {
     background: rgba(63,125,100,.07);
     border: 1px solid rgba(63,125,100,.18);
-    border-radius: 14px;
+    border-radius: var(--radius-sm);
     padding: 14px 16px;
     display: flex;
     flex-direction: column;

@@ -31,15 +31,13 @@
     .filter(a => a.id !== day.excursionId)
     .map(a => new ActivityModel(a));
 
-  // Para excursiones multi-día: índice 0-based del día actual dentro del trek
   $: excDayIdx  = excursion?.endDayDm != null
     ? Math.round((dmToDate(day.d).getTime() - dmToDate(excursion.dayDm).getTime()) / 86_400_000)
     : -1;
   $: excDayInfo = excursion?.days?.[excDayIdx] ?? null;
 
-
   function timeToMinutes(t: string | undefined): number {
-    if (!t) return 840; // sin hora → mediodía como fallback
+    if (!t) return 840;
     const [h, m] = t.split(':').map(Number);
     return h * 60 + (m || 0);
   }
@@ -92,12 +90,13 @@
   }
 </script>
 
+<!-- Card -->
 <article class="day" class:today={model.isToday()} class:is-past={model.isPast} class:flash={$flashId === day.id} id={day.id}>
 
-  <!-- HEAD ─────────────────────────────────────────────── -->
+  <!-- HEAD -->
   <button class="day-head" on:click={toggle} aria-expanded={expanded}>
 
-    <div class="date-block" style="background:{model.cityGradient}">
+    <div class="date-block">
       <div class="dow">{model.dow}</div>
       <div class="dnum font-serif">{model.dayNum}</div>
       <div class="mon">{model.monthLabel}</div>
@@ -106,26 +105,28 @@
     <div class="day-main">
       <div class="day-title font-serif">{day.title}</div>
       <div class="day-sub">{day.sub}</div>
-      <div class="badges">
-        {#each badgeInfos as b}
-          <span class="badge {b.cls}">
-            <Icon name={asIcon(b.icon)} size={11} strokeWidth={2.5} />
-            {b.text}
-          </span>
-        {/each}
-      </div>
+      {#if badgeInfos.length}
+        <div class="badges">
+          {#each badgeInfos as b}
+            <span class="badge {b.cls}">
+              <Icon name={asIcon(b.icon)} size={11} strokeWidth={2.5} />
+              {b.text}
+            </span>
+          {/each}
+        </div>
+      {/if}
     </div>
-
+    <div class="day-chev" class:open={expanded}>
+      <Icon name="chevron-down" size={16} strokeWidth={2} />
+    </div>
   </button>
 
-  <!-- DETAIL ───────────────────────────────────────────── -->
+  <!-- DETAIL -->
   {#if expanded}
     <div class="detail" role="region" transition:slide={{ duration: 220 }}>
       <div class="detail-inner">
 
-        <!-- Filas ordenadas por hora -->
         {#each dayItems as item}
-
           {#if item.kind === 'flight'}
             <FlightEntry flight={item.flight} />
           {:else if item.kind === 'excursion' && excursion}
@@ -135,10 +136,9 @@
           {:else if item.kind === 'hotel' && hotel}
             <HotelEntry {hotel} dayDm={day.d} />
           {/if}
-
         {/each}
 
-        <!-- ⚠ Aviso del día -->
+        <!-- Aviso del día -->
         {#if editingWarn}
           <div class="warn-edit-block">
             <div class="warn-label"><Icon name="alert-triangle" size={13} /> ¡Ojo!</div>
@@ -177,7 +177,7 @@
     background: var(--card);
     border: 1px solid var(--line);
     border-radius: var(--radius-sm);
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     position: relative;
     box-shadow: var(--shadow);
     transition: box-shadow .2s ease, transform .2s ease, border-color .2s ease;
@@ -213,14 +213,10 @@
       box-shadow: 0 0 0 2px rgba(198,90,52,.25), 0 12px 28px -10px rgba(42,26,18,.5);
     }
   }
-
   .day:active {
     transform: scale(0.985);
     box-shadow: 0 1px 6px -2px rgba(42,26,18,.22);
     transition: transform .08s ease, box-shadow .08s ease;
-  }
-  .day.today:active {
-    box-shadow: 0 0 0 2px rgba(198,90,52,.25), 0 1px 6px -2px rgba(42,26,18,.22);
   }
 
   /* ── Head ───────────────────────────────────────────── */
@@ -234,7 +230,6 @@
     font-family: inherit;
     color: inherit;
     padding: 0;
-    position: relative;
     text-align: left;
     border-radius: var(--radius-sm) var(--radius-sm) 0 0;
     overflow: hidden;
@@ -247,21 +242,29 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 10px 4px;
+    padding: 12px 4px;
     gap: 1px;
-    box-shadow: 1px 0 0 rgba(42,26,18,.1);
+    border-right: 1px solid var(--line);
   }
-  .dow  { font-size: .72rem; text-transform: uppercase; letter-spacing: .1em; color: rgba(42,26,18,.55); font-weight: 700; }
+  .dow  { font-size: .72rem; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-soft); font-weight: 700; }
   .dnum { font-size: 1.6rem; font-weight: 700; line-height: 1; color: var(--ink); }
-  .mon  { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: rgba(42,26,18,.55); font-weight: 700; }
+  .mon  { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-soft); font-weight: 700; }
 
-  /* ── Day main ───────────────────────────────────────── */
-  .day-main { flex: 1; padding: 12px 32px 12px 12px; min-width: 0; }
+  .day-main { flex: 1; padding: 12px 8px 12px 12px; min-width: 0; }
   .day-title { font-size: 1.08rem; font-weight: 600; line-height: 1.15; letter-spacing: -.01em; }
-  .day-sub   { font-size: .84rem; color: var(--ink-soft); margin-top: 1px; }
+  .day-sub   { font-size: .84rem; color: var(--ink-soft); margin-top: 2px; line-height: 1.3; }
 
-  .badges { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 7px; }
+  .badges { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
   .badge  { font-size: .74rem; font-weight: 600; padding: 2px 7px; border-radius: 6px; display: inline-flex; align-items: center; gap: 3px; }
+
+  /* ── Chevron ─────────────────────────────────────────── */
+  .day-chev {
+    flex-shrink: 0;
+    color: var(--ink-soft);
+    opacity: .4;
+    transition: transform .22s ease;
+  }
+  .day-chev.open { transform: rotate(180deg); }
 
   /* ── Detail ─────────────────────────────────────────── */
   .detail-inner {
@@ -274,7 +277,6 @@
     padding: 10px 0;
     border-bottom: 1px solid var(--line);
   }
-
   .warn-label {
     font-size: .76rem;
     text-transform: uppercase;
@@ -286,7 +288,6 @@
     align-items: center;
     gap: 5px;
   }
-
   .warn-textarea {
     width: 100%;
     font-family: inherit;
@@ -301,7 +302,6 @@
     transition: .15s;
   }
   .warn-textarea:focus { border-color: var(--gold); }
-
   .warn-form-actions { display: flex; gap: 6px; margin-top: 6px; justify-content: flex-end; }
   .warn-save-btn { background: rgba(224,168,62,.2) !important; color: #7a5a10 !important; border-color: rgba(224,168,62,.3) !important; }
 

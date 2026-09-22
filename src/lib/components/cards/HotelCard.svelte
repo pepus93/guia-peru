@@ -5,10 +5,9 @@
   import { openModal, flashId } from '$lib/stores/ui';
   import { deleteAccommodation } from '$lib/stores/trip';
   import { dmToLabel } from '$lib/utils/dates';
-  import Card        from './Card.svelte';
-  import ContactInfo from '$lib/components/ui/ContactInfo.svelte';
-  import Icon        from '$lib/components/ui/Icon.svelte';
-  import RouteTrack  from '$lib/components/ui/RouteTrack.svelte';
+  import Card      from './Card.svelte';
+  import Icon      from '$lib/components/ui/Icon.svelte';
+  import RouteTrack from '$lib/components/ui/RouteTrack.svelte';
 
   export let hotel: Accommodation;
   export let compact = false;
@@ -18,14 +17,11 @@
   $: flashing  = $flashId === hotel.id;
   $: cityLabel = CITY_LABELS[hotel.city] ?? hotel.city;
 
-  let expanded = false;
-  $: if ($flashId === hotel.id) expanded = true;
-
   function edit() { openModal('hotel', hotel); }
   async function remove() { await deleteAccommodation(hotel.id); }
 </script>
 
-<Card id={hotel.id} {flashing} {past} flashColor="var(--jade)" cssClass="hotel-card" dayDm={hotel.startDm} endDm={hotel.endDm} collapsible={!compact} bind:expanded onEdit={!compact ? edit : undefined} onDelete={!compact ? remove : undefined}>
+<Card id={hotel.id} {flashing} {past} flashColor="var(--jade)" cssClass="hotel-card" dayDm={hotel.startDm} endDm={hotel.endDm} collapsible={false} onEdit={!compact ? edit : undefined} onDelete={!compact ? remove : undefined}>
 
   <!-- Badge ciudad -->
   <div class="card-badge" style="color: var(--jade)">{cityLabel}</div>
@@ -60,23 +56,29 @@
     </div>
   {/if}
 
-  <!-- Amenities visibles sin desplegar -->
+  <!-- Teléfono -->
+  {#if hotel.tel}
+    <div class="addr-row">
+      <a class="addr-map-btn" style="--addr-map-color: var(--sky)" href="tel:{hotel.tel}" aria-label="Llamar">
+        <Icon name="phone" size={15} />
+      </a>
+      <span class="addr-text">{hotel.tel}</span>
+    </div>
+  {/if}
+
+  <!-- Badges -->
   {#if hotel.breakfast}
-    <div class="pill-line" style="margin-top:6px">
+    <div class="pill-line" style="margin-top:8px">
       <span class="pill pill-gold">
         <Icon name="utensils" size={11} /> Desayuno incluido
       </span>
     </div>
   {/if}
 
-  <!-- Detalle expandible -->
-  <svelte:fragment slot="detail">
-    {#if hotel.notes}
-      <p class="hotel-notes">{hotel.notes}</p>
-    {/if}
+  {#if hotel.notes}
+    <p class="hotel-notes">{hotel.notes}</p>
+  {/if}
 
-    <ContactInfo tel={hotel.tel || undefined} />
-  </svelte:fragment>
 </Card>
 
 <style>
@@ -119,7 +121,7 @@
     line-height: 1;
   }
 
-  /* ── Nombre y dirección ────────────────────────────── */
+  /* ── Nombre ────────────────────────────────────────── */
   .hotel-name {
     font-size: .88rem;
     font-weight: 700;
@@ -127,7 +129,11 @@
     line-height: 1.2;
   }
 
-  /* ── Detalle ───────────────────────────────────────── */
-  .hotel-notes { font-size: .76rem; color: var(--jade); margin: 6px 0 0; line-height: 1.4; }
-
+  /* ── Notas ─────────────────────────────────────────── */
+  .hotel-notes {
+    font-size: .76rem;
+    color: var(--ink-soft);
+    margin: 8px 0 0;
+    line-height: 1.4;
+  }
 </style>
