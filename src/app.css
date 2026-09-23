@@ -80,7 +80,7 @@ body::before {
 }
 .section-label::after { content: ""; flex: 1; height: 1px; background: var(--line); }
 
-.day-group  { margin-bottom: 4px; }
+.day-group  { margin-bottom: 4px; scroll-margin-top: 90px; }
 .empty-msg  { text-align: center; color: var(--ink-soft); padding: 40px 0; font-size: .85rem; }
 
 /* ── FILTERS / CHIPS ────────────────────────────────────── */

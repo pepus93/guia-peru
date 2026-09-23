@@ -14,7 +14,8 @@ export async function scrollAndFlash(id: string): Promise<void> {
         if (Math.abs(top - prevTop) < 0.5) break;
         prevTop = top;
       }
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const target = el.closest<HTMLElement>('.day-group') ?? el;
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       flashElement(id);
       return;
     }
