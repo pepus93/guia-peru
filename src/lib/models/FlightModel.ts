@@ -1,4 +1,5 @@
 import type { Flight, InfoBadge } from './types';
+import { mapsUrl } from '$lib/utils/maps';
 
 export class FlightModel {
   constructor(readonly data: Flight) {}
@@ -8,6 +9,10 @@ export class FlightModel {
   get timeLabel()       { return `${this.data.dep} → ${this.data.arr}`; }
   get typeLabel()       { return this.isInternational ? 'Internacional' : 'Vuelo interno'; }
   get earlyLabel()      { return this.isInternational ? '3h antes · vuelo internacional' : '1h 30min antes · vuelo interno'; }
+
+  get airportMapsUrl() {
+    return mapsUrl(`Aeropuerto ${this.data.fromCity} ${this.data.from}`);
+  }
 
   get flightRadar24Url() {
     return this.data.code

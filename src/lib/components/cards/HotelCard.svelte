@@ -8,6 +8,7 @@
   import Card      from './Card.svelte';
   import Icon      from '$lib/components/ui/Icon.svelte';
   import RouteTrack from '$lib/components/ui/RouteTrack.svelte';
+  import MapLink   from '$lib/components/ui/MapLink.svelte';
 
   export let hotel: Accommodation;
   export let compact   = false;
@@ -49,12 +50,7 @@
 
   <!-- Dirección -->
   {#if hotel.addr}
-    <div class="addr-row">
-      <a class="addr-map-btn" href={model.mapsUrl} target="_blank" rel="noreferrer" aria-label="Ver en mapa">
-        <Icon name="map-pin" size={15} />
-      </a>
-      <span class="addr-text">{hotel.addr}</span>
-    </div>
+    <MapLink href={model.mapsUrl} label={hotel.addr} />
   {/if}
 
   <!-- Teléfono -->

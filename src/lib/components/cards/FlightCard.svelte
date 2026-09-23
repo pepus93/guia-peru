@@ -8,6 +8,7 @@
   import Card       from './Card.svelte';
   import Icon       from '$lib/components/ui/Icon.svelte';
   import RouteTrack from '$lib/components/ui/RouteTrack.svelte';
+  import MapLink    from '$lib/components/ui/MapLink.svelte';
   import { flashId } from '$lib/stores/ui';
 
   export let flight: Flight;
@@ -87,6 +88,11 @@
           Cómo llegar al aeropuerto
         </div>
         <span class="transport-how">{flight.transport.how}</span>
+        <MapLink
+          href={model.airportMapsUrl}
+          label="Aeropuerto {flight.fromCity} ({flight.from})"
+          color="var(--sky)"
+        />
       </div>
     {/if}
 

@@ -4,6 +4,7 @@
   import { openModal, flashId } from '$lib/stores/ui';
   import { deleteActivity } from '$lib/stores/trip';
   import { FLASH_COLOR, ACTIVITY_TYPES } from '$lib/config/ui';
+  import MapLink from '$lib/components/ui/MapLink.svelte';
   import Card        from './Card.svelte';
   import ContactInfo from '$lib/components/ui/ContactInfo.svelte';
   import Icon        from '$lib/components/ui/Icon.svelte';
@@ -65,16 +66,12 @@
 
   <!-- Ubicación (solo cuando no hay ruta completa) -->
   {#if activity.meet && !hasRoute}
-    <div class="addr-row">
-      {#if model.meetUrl || model.mapsUrl}
-        <a class="addr-map-btn" style="--addr-map-color: var(--lila)" href={model.meetUrl || model.mapsUrl} target="_blank" rel="noreferrer" aria-label="Ver en mapa">
-          <Icon name="map-pin" size={15} />
-        </a>
-      {:else}
-        <span class="addr-map-ic" style="color: var(--lila)"><Icon name="map-pin" size={15} /></span>
-      {/if}
-      <span class="addr-text" style="color: var(--lila)">{activity.meet}</span>
-    </div>
+    <MapLink
+      href={model.meetUrl || model.mapsUrl}
+      label={activity.meet}
+      color="var(--lila)"
+      textColor="var(--lila)"
+    />
   {/if}
 
   <!-- Pills -->
@@ -95,28 +92,14 @@
           Ubicaciones
         </div>
         {#if activity.meet}
-          <div class="addr-row">
-            {#if model.meetUrl || model.mapsUrl}
-              <a class="addr-map-btn" style="--addr-map-color: var(--lila)" href={model.meetUrl || model.mapsUrl} target="_blank" rel="noreferrer" aria-label="Ver en mapa">
-                <Icon name="map-pin" size={15} />
-              </a>
-            {:else}
-              <span class="addr-map-ic"><Icon name="map-pin" size={15} /></span>
-            {/if}
-            <span class="addr-text"><span class="addr-label-inline">Salida · </span>{activity.meet}</span>
-          </div>
+          <MapLink href={model.meetUrl || model.mapsUrl} color="var(--lila)">
+            <span class="addr-label-inline">Salida · </span>{activity.meet}
+          </MapLink>
         {/if}
         {#if activity.end}
-          <div class="addr-row">
-            {#if model.endUrl}
-              <a class="addr-map-btn" style="--addr-map-color: var(--lila)" href={model.endUrl} target="_blank" rel="noreferrer" aria-label="Ver en mapa">
-                <Icon name="map-pin" size={15} />
-              </a>
-            {:else}
-              <span class="addr-map-ic"><Icon name="map-pin" size={15} /></span>
-            {/if}
-            <span class="addr-text"><span class="addr-label-inline">Llegada · </span>{activity.end}</span>
-          </div>
+          <MapLink href={model.endUrl} color="var(--lila)">
+            <span class="addr-label-inline">Llegada · </span>{activity.end}
+          </MapLink>
         {/if}
       </div>
     {/if}
