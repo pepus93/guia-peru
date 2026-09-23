@@ -11,8 +11,18 @@
   import { afterNavigate } from '$app/navigation';
   import { scrollToCurrent } from '$lib/utils/scroll';
 
-  onMount(() => document.body.style.setProperty('--page-bg', 'color-mix(in srgb, #3f7d64 8%, #f7f2ea)'));
-  onDestroy(() => document.body.style.removeProperty('--page-bg'));
+  onMount(() => {
+    document.body.style.setProperty('--page-bg', 'color-mix(in srgb, var(--jade) 8%, var(--paper))');
+    document.body.style.setProperty('--tab-accent', 'var(--jade)');
+    document.body.style.backgroundImage = 'url("/patterns/hotels.svg")';
+    document.body.style.backgroundRepeat = 'repeat';
+  });
+  onDestroy(() => {
+    document.body.style.removeProperty('--page-bg');
+    document.body.style.removeProperty('--tab-accent');
+    document.body.style.backgroundImage = '';
+    document.body.style.backgroundRepeat = '';
+  });
 
   const today = todayDm();
 
@@ -41,7 +51,7 @@
   {#each $stayList as hotel (hotel.id)}
     <div class="day-group">
       <div class="section-label">{hotelLabel(hotel)}</div>
-      <HotelCard {hotel} past={hotel.endDm < today} />
+      <HotelCard {hotel} past={hotel.endDm < today} hasLabel={true} />
     </div>
   {/each}
 {/if}

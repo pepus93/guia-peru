@@ -10,8 +10,9 @@
   import { flashId } from '$lib/stores/ui';
 
   export let flight: Flight;
-  export let compact = false;
-  export let past    = false;
+  export let compact   = false;
+  export let past      = false;
+  export let hasLabel  = false;
 
   $: model    = new FlightModel(flight);
   $: flashing = $flashId === flight.id;
@@ -39,10 +40,10 @@
   let viewerSrc: string | null = null;
 </script>
 
-<Card id={flight.id} {flashing} {past} flashColor="var(--sky)" cssClass="flight-card{model.isInternational ? ' is-intl' : ''}" dayDm={flight.dm} collapsible={!compact} bind:expanded onEdit={!compact ? edit : undefined} onDelete={!compact ? remove : undefined}>
+<Card id={flight.id} {flashing} {past} {hasLabel} flashColor="var(--sky)" cssClass="flight-card{model.isInternational ? ' is-intl' : ''}" dayDm={flight.dm} collapsible={!compact} bind:expanded onEdit={!compact ? edit : undefined} onDelete={!compact ? remove : undefined}>
 
   <!-- Resumen siempre visible -->
-  <div class="card-badge" style="color: {model.isInternational ? 'var(--terra)' : 'var(--sky)'}">{model.typeLabel}</div>
+  <div class="card-badge" style="color: {model.isInternational ? 'var(--danger)' : 'var(--sky)'}">{model.typeLabel}</div>
 
   <div class="flight-row">
     <div class="flight-city">
@@ -145,8 +146,8 @@
     gap: 5px;
     font-size: .78rem;
     font-weight: 700;
-    color: #b52a2a;
-    background: rgba(181,42,42,.1);
+    color: var(--danger);
+    background: color-mix(in srgb, var(--danger) 10%, transparent);
     border-radius: 7px;
     padding: 5px 9px;
     margin-top: 4px;
@@ -208,7 +209,7 @@
     width: 32px;
     height: 32px;
     border-radius: 8px;
-    background: rgba(58,110,165,.12);
+    background: color-mix(in srgb, var(--sky) 12%, transparent);
     color: var(--sky);
     border: none;
     cursor: pointer;
@@ -217,8 +218,8 @@
     transition: background .15s;
     -webkit-tap-highlight-color: transparent;
   }
-  .bp-add-btn:active { background: rgba(58,110,165,.28); }
-  @media (hover: hover) { .bp-add-btn:hover { background: rgba(58,110,165,.22); } }
+  .bp-add-btn:active { background: color-mix(in srgb, var(--sky) 28%, transparent); }
+  @media (hover: hover) { .bp-add-btn:hover { background: color-mix(in srgb, var(--sky) 22%, transparent); } }
 
   /* ── Full-screen viewer ──────────────────────────────────── */
   .viewer-backdrop {

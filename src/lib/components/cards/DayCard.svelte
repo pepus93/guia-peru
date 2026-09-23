@@ -150,7 +150,7 @@
             </div>
           </div>
         {:else if day.warn}
-          <DayRow icon="alert-triangle" iconBg="rgba(224,168,62,.18)" label="¡Ojo!" title={day.warn}>
+          <DayRow icon="alert-triangle" iconBg="color-mix(in srgb, var(--gold) 18%, transparent)" label="¡Ojo!" title={day.warn}>
             <svelte:fragment slot="actions">
               <div class="row-actions">
                 <button class="btn-nav" on:click={startWarnEdit}><Icon name="pencil" size={13} /> Editar aviso</button>
@@ -169,24 +169,12 @@
 
 <style>
   /* ── Card shell ─────────────────────────────────────── */
-  .day { margin-bottom: 20px; }
+  .day { margin-bottom: 20px; --card-accent: var(--city-color); }
   .day.expanded {
     border-color: color-mix(in srgb, var(--city-color) 50%, transparent);
     box-shadow: 0 0 0 1px color-mix(in srgb, var(--city-color) 15%, transparent), var(--shadow);
   }
   .day.is-past { opacity: .45; filter: grayscale(.4); }
-
-  @media (hover: hover) {
-    .day:hover {
-      box-shadow: 0 12px 28px -10px rgba(42,26,18,.5);
-      border-color: color-mix(in srgb, var(--city-color) 40%, transparent);
-      transform: translateY(-1px);
-    }
-    .day.is-today:hover,
-    .day.expanded:hover {
-      box-shadow: 0 0 0 2px color-mix(in srgb, var(--city-color) 25%, transparent), 0 12px 28px -10px rgba(42,26,18,.5);
-    }
-  }
   /* ── Head ───────────────────────────────────────────── */
   .day-head {
     display: flex;
@@ -214,6 +202,10 @@
     gap: 1px;
     border-right: 1px solid var(--line);
     position: relative;
+    border-bottom-left-radius: var(--radius-sm);
+  }
+  .day.expanded .date-block {
+    border-bottom-left-radius: 0;
   }
 
   /* Timeline dot — en la parte alta del date-block, donde el hilo "entra" en la card */
@@ -288,22 +280,22 @@
   }
   .warn-textarea:focus { border-color: var(--gold); }
   .warn-form-actions { display: flex; gap: 6px; margin-top: 6px; justify-content: flex-end; }
-  .warn-save-btn { background: rgba(224,168,62,.2) !important; color: #7a5a10 !important; border-color: rgba(224,168,62,.3) !important; }
+  .warn-save-btn { background: color-mix(in srgb, var(--gold) 20%, transparent) !important; color: var(--gold-dark) !important; border-color: color-mix(in srgb, var(--gold) 30%, transparent) !important; }
 
   /* ── Add warn button ────────────────────────────────── */
   .add-warn-btn {
     display: flex; align-items: center; gap: 6px;
     margin-top: 6px; margin-bottom: 2px;
     padding: 5px 10px;
-    border: 1px dashed rgba(224,168,62,.4);
-    background: rgba(224,168,62,.06);
+    border: 1px dashed color-mix(in srgb, var(--gold) 40%, transparent);
+    background: color-mix(in srgb, var(--gold) 6%, transparent);
     border-radius: var(--radius-sm);
-    color: #9a6b12;
+    color: var(--gold-dark);
     font-family: inherit;
     font-size: .73rem; font-weight: 600;
     cursor: pointer; transition: .15s; width: 100%;
   }
-  .add-warn-btn:hover { background: rgba(224,168,62,.12); }
+  .add-warn-btn:hover { background: color-mix(in srgb, var(--gold) 12%, transparent); }
 
   /* ── Add plan button ────────────────────────────────── */
   .add-plan-btn {

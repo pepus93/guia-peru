@@ -8,6 +8,7 @@
   export let id: string;
   export let flashing    = false;
   export let past        = false;
+  export let hasLabel    = false;
   export let cssClass    = '';
   export let flashColor  = 'rgba(198,90,52,.5)';
   export let dayDm: number | undefined = undefined;
@@ -123,6 +124,7 @@
   class:flash={flashing}
   class:is-past={past}
   class:is-today={isToday}
+  class:has-label={hasLabel}
   style="--flash-color:{flashColor}"
 >
   <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -138,7 +140,7 @@
             <Icon name="pencil" size={22} />
           </button>
           <button class="ca-btn ca-del" on:click={askDelete} aria-label="Eliminar">
-            <Icon name="trash-2" size={22} />
+            <Icon name="trash" size={22} />
           </button>
         {:else}
           <button class="ca-btn ca-no"  on:click={cancelDelete} aria-label="Cancelar">
@@ -222,29 +224,29 @@
     -webkit-tap-highlight-color: transparent;
   }
   @media (hover: hover) {
-    .ca-edit:hover { background: rgba(217,139,69,.22); }
-    .ca-del:hover  { background: rgba(198,90,52,.22); color: var(--terra-deep); }
-    .ca-no:hover   { background: rgba(217,139,69,.22); }
-    .ca-yes:hover  { background: rgba(198,90,52,.22); color: var(--terra-deep); }
+    .ca-edit:hover { background: color-mix(in srgb, var(--clay)  22%, transparent); }
+    .ca-del:hover  { background: color-mix(in srgb, var(--terra) 22%, transparent); color: var(--terra-deep); }
+    .ca-no:hover   { background: color-mix(in srgb, var(--clay)  22%, transparent); }
+    .ca-yes:hover  { background: color-mix(in srgb, var(--terra) 22%, transparent); color: var(--terra-deep); }
   }
   .ca-btn:active { filter: brightness(.82); }
 
   .ca-edit {
-    background: rgba(217,139,69,.12);
+    background: color-mix(in srgb, var(--clay)  12%, transparent);
     color: var(--clay);
-    border-bottom: 1px solid rgba(217,139,69,.15);
+    border-bottom: 1px solid color-mix(in srgb, var(--clay) 15%, transparent);
   }
   .ca-del {
-    background: rgba(198,90,52,.1);
+    background: color-mix(in srgb, var(--terra) 10%, transparent);
     color: var(--terra);
   }
   .ca-no  {
-    background: rgba(217,139,69,.12);
+    background: color-mix(in srgb, var(--clay)  12%, transparent);
     color: var(--clay);
-    border-bottom: 1px solid rgba(217,139,69,.15);
+    border-bottom: 1px solid color-mix(in srgb, var(--clay) 15%, transparent);
   }
   .ca-yes {
-    background: rgba(198,90,52,.12);
+    background: color-mix(in srgb, var(--terra) 12%, transparent);
     color: var(--terra);
   }
 

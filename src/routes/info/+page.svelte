@@ -195,9 +195,9 @@
   }
   .ins-contact-btn span { font-size: .9rem; font-weight: 700; flex: 1; }
   .ins-contact-btn small { font-size: .72rem; color: inherit; opacity: .7; }
-  .ins-contact-btn.call { background: rgba(63,125,100,.12); color: var(--jade); }
-  .ins-contact-btn.wa   { background: rgba(37,211,102,.12); color: #1a7a3c; }
-  .ins-contact-btn.mail { background: rgba(58,110,165,.12); color: var(--sky); }
+  .ins-contact-btn.call { background: color-mix(in srgb, var(--jade)           12%, transparent); color: var(--jade); }
+  .ins-contact-btn.wa   { background: color-mix(in srgb, var(--whatsapp-light) 12%, transparent); color: var(--whatsapp-deep); }
+  .ins-contact-btn.mail { background: color-mix(in srgb, var(--sky)            12%, transparent); color: var(--sky); }
 
   .ins-docs { display: flex; gap: 8px; flex-wrap: wrap; }
   .ins-doc-btn {

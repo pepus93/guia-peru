@@ -11,8 +11,18 @@
   import { scrollToCurrent } from '$lib/utils/scroll';
   import { groupByKey } from '$lib/utils/group';
 
-  onMount(() => document.body.style.setProperty('--page-bg', 'color-mix(in srgb, #3a6ea5 8%, #f7f2ea)'));
-  onDestroy(() => document.body.style.removeProperty('--page-bg'));
+  onMount(() => {
+    document.body.style.setProperty('--page-bg', 'color-mix(in srgb, var(--sky) 8%, var(--paper))');
+    document.body.style.setProperty('--tab-accent', 'var(--sky)');
+    document.body.style.backgroundImage = 'url("/patterns/vuelos.svg")';
+    document.body.style.backgroundRepeat = 'repeat';
+  });
+  onDestroy(() => {
+    document.body.style.removeProperty('--page-bg');
+    document.body.style.removeProperty('--tab-accent');
+    document.body.style.backgroundImage = '';
+    document.body.style.backgroundRepeat = '';
+  });
 
   const today = todayDm();
 
@@ -43,8 +53,8 @@
   {#each grouped as [dm, flights]}
     <div class="day-group">
       <div class="section-label">{dayLabel(dm, flights[0].dow)}</div>
-      {#each flights as flight (flight.id)}
-        <FlightCard {flight} past={flight.dm < today} />
+      {#each flights as flight, i (flight.id)}
+        <FlightCard {flight} past={flight.dm < today} hasLabel={i === 0} />
       {/each}
     </div>
   {/each}

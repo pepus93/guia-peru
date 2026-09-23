@@ -9,8 +9,9 @@
   import RouteTrack  from '$lib/components/ui/RouteTrack.svelte';
 
   export let activity: Activity;
-  export let compact = false;
-  export let past    = false;
+  export let compact   = false;
+  export let past      = false;
+  export let hasLabel  = false;
 
   $: model    = new ActivityModel(activity);
   $: typeInfo = model.typeInfo;
@@ -24,7 +25,7 @@
   async function remove() { await deleteActivity(activity.id); }
 </script>
 
-<Card id={activity.id} {flashing} {past} flashColor="var(--lila)" cssClass="act-card" dayDm={activity.dayDm} collapsible={!compact} bind:expanded onEdit={!compact ? edit : undefined} onDelete={!compact ? remove : undefined}>
+<Card id={activity.id} {flashing} {past} {hasLabel} flashColor="var(--lila)" cssClass="act-card" dayDm={activity.dayDm} collapsible={!compact} bind:expanded onEdit={!compact ? edit : undefined} onDelete={!compact ? remove : undefined}>
 
   <!-- Badge tipo -->
   <div class="card-badge" style="color: var(--lila)">{typeInfo.label}</div>
@@ -251,7 +252,7 @@
   .day-num {
     flex: 0 0 38px; font-size: .72rem; font-weight: 700;
     letter-spacing: .05em; text-transform: uppercase;
-    color: rgba(120,80,160,.75); padding-top: 2px;
+    color: color-mix(in srgb, var(--lila) 75%, transparent); padding-top: 2px;
   }
   .day-body  { flex: 1; }
   .day-route { font-size: .84rem; font-weight: 600; color: var(--ink); line-height: 1.3; }
@@ -262,15 +263,15 @@
   .exc-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 4px; }
   .exc-list li { font-size: .82rem; line-height: 1.3; display: flex; align-items: flex-start; gap: 6px; }
   .exc-list li :global(svg) { flex-shrink: 0; margin-top: 2px; }
-  .exc-list-yes li { color: rgba(63,125,100,.9); }
-  .exc-list-no  li { color: rgba(198,90,52,.85); }
+  .exc-list-yes li { color: color-mix(in srgb, var(--jade)  90%, transparent); }
+  .exc-list-no  li { color: color-mix(in srgb, var(--terra) 85%, transparent); }
 
   /* ── Aviso ─────────────────────────────────────────────────── */
   .exc-warn {
     display: flex; align-items: flex-start; gap: 7px;
     margin-top: 8px; font-size: .82rem; font-weight: 600;
-    color: #9a6b12; line-height: 1.4; padding: 8px 10px;
-    background: rgba(224,168,62,.12); border-radius: 8px;
+    color: var(--gold-dark); line-height: 1.4; padding: 8px 10px;
+    background: color-mix(in srgb, var(--gold) 12%, transparent); border-radius: 8px;
   }
   .exc-warn :global(svg) { flex-shrink: 0; margin-top: 2px; }
 </style>

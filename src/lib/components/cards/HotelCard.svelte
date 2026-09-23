@@ -10,8 +10,9 @@
   import RouteTrack from '$lib/components/ui/RouteTrack.svelte';
 
   export let hotel: Accommodation;
-  export let compact = false;
-  export let past    = false;
+  export let compact   = false;
+  export let past      = false;
+  export let hasLabel  = false;
 
   $: model     = new AccommodationModel(hotel);
   $: flashing  = $flashId === hotel.id;
@@ -21,7 +22,7 @@
   async function remove() { await deleteAccommodation(hotel.id); }
 </script>
 
-<Card id={hotel.id} {flashing} {past} flashColor="var(--jade)" cssClass="hotel-card" dayDm={hotel.startDm} endDm={hotel.endDm} collapsible={false} onEdit={!compact ? edit : undefined} onDelete={!compact ? remove : undefined}>
+<Card id={hotel.id} {flashing} {past} {hasLabel} flashColor="var(--jade)" cssClass="hotel-card" dayDm={hotel.startDm} endDm={hotel.endDm} collapsible={false} onEdit={!compact ? edit : undefined} onDelete={!compact ? remove : undefined}>
 
   <!-- Badge ciudad -->
   <div class="card-badge" style="color: var(--jade)">{cityLabel}</div>

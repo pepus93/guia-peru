@@ -21,11 +21,19 @@
   let penVal = '';
 
   onMount(() => {
-    document.body.style.setProperty('--page-bg', 'color-mix(in srgb, #d98b45 8%, #f7f2ea)');
+    document.body.style.setProperty('--page-bg', 'color-mix(in srgb, var(--clay) 8%, var(--paper))');
+    document.body.style.setProperty('--tab-accent', 'var(--clay)');
+    document.body.style.backgroundImage = 'url("/patterns/cambio.svg")';
+    document.body.style.backgroundRepeat = 'repeat';
     const saved = localStorage.getItem('eur_pen_rate');
     if (saved) rate = parseFloat(saved);
   });
-  onDestroy(() => document.body.style.removeProperty('--page-bg'));
+  onDestroy(() => {
+    document.body.style.removeProperty('--page-bg');
+    document.body.style.removeProperty('--tab-accent');
+    document.body.style.backgroundImage = '';
+    document.body.style.backgroundRepeat = '';
+  });
 
   function onEurInput(e: Event) {
     const v = (e.target as HTMLInputElement).value;
@@ -248,6 +256,7 @@
   .ref-card {
     background: var(--card);
     border: 1px solid var(--line);
+    border-top-left-radius: 0;
     border-radius: var(--radius-sm);
     padding: 4px 16px;
     margin-bottom: 12px;
@@ -269,8 +278,8 @@
 
   /* ── Tips ───────────────────────────────────────────────── */
   .tip-card {
-    background: rgba(63,125,100,.07);
-    border: 1px solid rgba(63,125,100,.18);
+    background: var(--card);
+    border: 1px solid color-mix(in srgb, var(--jade) 22%, transparent);
     border-radius: var(--radius-sm);
     padding: 14px 16px;
     display: flex;

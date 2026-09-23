@@ -7,6 +7,12 @@
   --card:       #fdf9f4;
   --terra:      #c65a34;
   --terra-deep: #9c3f22;
+  --danger:        #b52a2a;
+  --gold-dark:     #9a6b12;
+  --whatsapp:      #128c4a;
+  --whatsapp-light:#25d366;
+  --whatsapp-deep: #1a7a3c;
+  --overlay:       rgba(42,26,18,.55);
   --clay:       #d98b45;
   --jade:       #3f7d64;
   --sky:        #3a6ea5;
@@ -66,21 +72,34 @@ body::before {
   padding-bottom: calc(var(--nav-height) + var(--safe-bottom) + 20px);
 }
 
-/* ── SECTION LABEL ──────────────────────────────────────── */
+/* ── SECTION LABEL (folder tab) ─────────────────────────── */
 .section-label {
-  font-size: .76rem;
-  letter-spacing: .24em;
+  display: block;
+  width: fit-content;
+  font-size: .7rem;
+  letter-spacing: .14em;
   text-transform: uppercase;
-  color: var(--ink-soft);
-  font-weight: 600;
-  margin: 24px 6px 10px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  color: var(--paper);
+  font-weight: 700;
+  margin: 28px 0 0;
+  padding: 5px 14px 6px;
+  background: var(--tab-accent, var(--ink-soft));
+  border: 1px solid var(--tab-accent, rgba(42,26,18,.18));
+  border-bottom: none;
+  border-radius: 5px 5px 0 0;
+  transition: filter .2s ease, box-shadow .2s ease;
 }
-.section-label::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.section-label::after { display: none; }
 
 .day-group  { margin-bottom: 4px; scroll-margin-top: 90px; }
+.card.has-label { border-top-left-radius: 0; }
+
+@media (hover: hover) {
+  .day-group:hover .section-label {
+    filter: brightness(1.08) saturate(1.15);
+    box-shadow: 0 -3px 8px -4px color-mix(in srgb, var(--tab-accent, var(--line)) 35%, transparent);
+  }
+}
 .empty-msg  { text-align: center; color: var(--ink-soft); padding: 40px 0; font-size: .85rem; }
 
 /* ── FILTERS / CHIPS ────────────────────────────────────── */
@@ -130,10 +149,10 @@ body::before {
 .btn-primary   { background: var(--ink); color: var(--paper); font-size: .84rem; padding: 7px 14px; }
 .btn-secondary { background: var(--paper-2); color: var(--ink-soft); border: 1px solid var(--line); font-size: .84rem; padding: 6px 13px; }
 .btn-outline   { background: transparent; color: var(--ink); border: 1px solid var(--line); font-size: .84rem; padding: 6px 13px; }
-.btn-danger    { background: rgba(198,90,52,.12); color: var(--terra-deep); font-size: .84rem; padding: 6px 13px; }
+.btn-danger    { background: color-mix(in srgb, var(--terra) 12%, transparent); color: var(--terra-deep); font-size: .84rem; padding: 6px 13px; }
 .btn-primary:active   { background: var(--ink-soft); }
-.btn-secondary:active { background: var(--clay); color: #fff; border-color: var(--clay); }
-.btn-danger:active    { background: var(--terra-deep); color: #fff; }
+.btn-secondary:active { background: var(--clay); color: var(--paper); border-color: var(--clay); }
+.btn-danger:active    { background: var(--terra-deep); color: var(--paper); }
 
 .btn-icon {
   width: 36px; height: 36px;
@@ -228,15 +247,14 @@ a.call:active, a.maps:active, .chip:active {
 @media (hover: hover) {
   .card:hover {
     box-shadow: 0 12px 28px -10px rgba(42,26,18,.5);
-    border-color: rgba(42,26,18,.2);
+    border-color: color-mix(in srgb, var(--card-accent, var(--tab-accent, rgba(42,26,18,.25))) 45%, transparent);
     transform: translateY(-1px);
   }
 }
 
 .card:active {
-  transform: scale(0.985);
-  box-shadow: 0 1px 6px -2px rgba(42,26,18,.22);
-  transition: transform .08s ease, box-shadow .08s ease;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow .08s ease;
 }
 
 /* ── CALENDAR LINK ──────────────────────────────────────── */
@@ -291,17 +309,17 @@ a.call:active, a.maps:active, .chip:active {
 }
 
 .pill-info  { background: var(--paper-2);              color: var(--ink-soft); }
-.pill-green { background: rgba(63,125,100,.12);         color: var(--jade); }
-.pill-sky   { background: rgba(58,110,165,.12);         color: var(--sky); }
-.pill-terra { background: rgba(198,90,52,.12);          color: var(--terra-deep); }
-.pill-warn  { background: rgba(224,168,62,.18);         color: #8a6010; }
-.pill-gold  { background: rgba(224,168,62,.22);         color: #7a5a10; letter-spacing: .04em; }
+.pill-green { background: color-mix(in srgb, var(--jade)  12%, transparent); color: var(--jade); }
+.pill-sky   { background: color-mix(in srgb, var(--sky)   12%, transparent); color: var(--sky); }
+.pill-terra { background: color-mix(in srgb, var(--terra) 12%, transparent); color: var(--terra-deep); }
+.pill-warn  { background: color-mix(in srgb, var(--gold)  18%, transparent); color: var(--gold-dark); }
+.pill-gold  { background: color-mix(in srgb, var(--gold)  22%, transparent); color: var(--gold-dark); letter-spacing: .04em; }
 
 /* ── DAY BADGES ─────────────────────────────────────────── */
-.b-fly  { background: rgba(58,110,165,.14); color: var(--sky); }
-.b-bed  { background: rgba(63,125,100,.14); color: var(--jade); }
-.b-act  { background: rgba(120,80,160,.13); color: var(--lila); }
-.b-warn { background: rgba(224,168,62,.2);  color: #9a6b12; }
+.b-fly  { background: color-mix(in srgb, var(--sky)   14%, transparent); color: var(--sky); }
+.b-bed  { background: color-mix(in srgb, var(--jade)  14%, transparent); color: var(--jade); }
+.b-act  { background: color-mix(in srgb, var(--lila)  13%, transparent); color: var(--lila); }
+.b-warn { background: color-mix(in srgb, var(--gold)  20%, transparent); color: var(--gold-dark); }
 
 /* ── CARD SECTIONS (shared across full cards) ───────────── */
 .card-section {

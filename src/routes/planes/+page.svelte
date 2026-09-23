@@ -11,8 +11,18 @@
   import { scrollToCurrent } from '$lib/utils/scroll';
   import { groupByKey } from '$lib/utils/group';
 
-  onMount(() => document.body.style.setProperty('--page-bg', 'color-mix(in srgb, #7850a0 8%, #f7f2ea)'));
-  onDestroy(() => document.body.style.removeProperty('--page-bg'));
+  onMount(() => {
+    document.body.style.setProperty('--page-bg', 'color-mix(in srgb, var(--lila) 8%, var(--paper))');
+    document.body.style.setProperty('--tab-accent', 'var(--lila)');
+    document.body.style.backgroundImage = 'url("/patterns/planes.svg")';
+    document.body.style.backgroundRepeat = 'repeat';
+  });
+  onDestroy(() => {
+    document.body.style.removeProperty('--page-bg');
+    document.body.style.removeProperty('--tab-accent');
+    document.body.style.backgroundImage = '';
+    document.body.style.backgroundRepeat = '';
+  });
 
   const today = todayDm();
 
@@ -45,8 +55,8 @@
   {#each grouped as [dm, activities]}
     <div class="day-group">
       <div class="section-label">{sectionLabel(dm)}</div>
-      {#each activities as activity (activity.id)}
-        <ActivityCard {activity} past={(activity.endDayDm ?? activity.dayDm) < today} />
+      {#each activities as activity, i (activity.id)}
+        <ActivityCard {activity} past={(activity.endDayDm ?? activity.dayDm) < today} hasLabel={i === 0} />
       {/each}
     </div>
   {/each}

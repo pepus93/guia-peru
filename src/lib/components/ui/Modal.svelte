@@ -131,7 +131,7 @@
   .modal-backdrop {
     position: fixed;
     inset: 0;
-    background: rgba(42,26,18,.55);
+    background: var(--overlay);
     z-index: 50;
     display: flex;
     align-items: flex-end;

@@ -86,21 +86,21 @@
     width: 32px;
     height: 32px;
     border-radius: 8px;
-    background: rgba(58,110,165,.12);
+    background: color-mix(in srgb, var(--sky) 12%, transparent);
     color: var(--sky);
     text-decoration: none;
     transition: background .15s;
     -webkit-tap-highlight-color: transparent;
   }
-  .ci-btn:active { background: rgba(58,110,165,.28); }
-  @media (hover: hover) { .ci-btn:hover { background: rgba(58,110,165,.22); } }
+  .ci-btn:active { background: color-mix(in srgb, var(--sky) 28%, transparent); }
+  @media (hover: hover) { .ci-btn:hover { background: color-mix(in srgb, var(--sky) 22%, transparent); } }
 
   .ci-btn-wa {
-    background: rgba(18,140,74,.12);
-    color: #128c4a;
+    background: color-mix(in srgb, var(--whatsapp) 12%, transparent);
+    color: var(--whatsapp);
   }
-  .ci-btn-wa:active { background: rgba(18,140,74,.28); }
-  @media (hover: hover) { .ci-btn-wa:hover { background: rgba(18,140,74,.22); } }
+  .ci-btn-wa:active { background: color-mix(in srgb, var(--whatsapp) 28%, transparent); }
+  @media (hover: hover) { .ci-btn-wa:hover { background: color-mix(in srgb, var(--whatsapp) 22%, transparent); } }
 
   .ci-booking {
     display: inline-flex;

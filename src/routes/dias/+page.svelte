@@ -1,5 +1,6 @@
 <script lang="ts">
   import { afterNavigate } from '$app/navigation';
+  import { onMount, onDestroy } from 'svelte';
   import { tripDays, loading } from '$lib/stores/trip';
   import type { TripDay, City } from '$lib/models/types';
   import { CITY_LABELS, CITY_COLORS } from '$lib/models/types';
@@ -26,6 +27,15 @@
     }
     return items;
   })();
+
+  onMount(() => {
+    document.body.style.backgroundImage = 'url("/patterns/dias.svg")';
+    document.body.style.backgroundRepeat = 'repeat';
+  });
+  onDestroy(() => {
+    document.body.style.backgroundImage = '';
+    document.body.style.backgroundRepeat = '';
+  });
 
   let pendingScroll = false;
   $: if (!$loading && pendingScroll) { pendingScroll = false; scrollToCurrent(); }
@@ -79,28 +89,66 @@
   /* ── City section header ─────────────────────────── */
   .city-sep {
     position: relative;
-    padding: 8px 0 12px 70px; /* 58px date-block + 12px gap */
+    padding: 10px 0 14px 46px;
     z-index: 1;
+    display: flex;
+    align-items: center;
   }
 
-  /* Dot de ciudad sobre el hilo */
+  /* Pin dot on the timeline thread */
   .city-sep::before {
     content: '';
     position: absolute;
-    left: 23px; /* 29px centro - 6px radio */
+    left: 23px;
     top: 50%;
     transform: translateY(-50%);
     width: 12px;
     height: 12px;
     border-radius: 50%;
     background: var(--city-color);
+    z-index: 2;
   }
 
+  /* Thread connecting pin to tag */
+  .city-sep::after {
+    content: '';
+    position: absolute;
+    left: 35px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 1.5px;
+    background: color-mix(in srgb, var(--city-color) 55%, transparent);
+  }
+
+  /* Tag body */
   .city-sep-label {
-    font-size: .68rem;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    background: var(--city-color);
+    color: var(--paper);
+    font-size: .64rem;
     font-weight: 700;
-    letter-spacing: .14em;
+    letter-spacing: .1em;
     text-transform: uppercase;
-    color: var(--city-color);
+    padding: 5px 13px 5px 17px;
+    border-radius: 3px 7px 7px 3px;
+    box-shadow: 0 2px 8px -3px rgba(0,0,0,.35);
+    white-space: nowrap;
+  }
+
+  /* Ojal — hole at left edge of tag */
+  .city-sep-label::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.4);
+    box-shadow: inset 0 0 0 0.5px rgba(0,0,0,.15);
   }
 </style>

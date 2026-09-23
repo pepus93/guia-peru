@@ -132,7 +132,7 @@
     color: var(--terra-deep);
     font-weight: 700;
     white-space: nowrap;
-    background: rgba(198,90,52,.1);
+    background: color-mix(in srgb, var(--terra) 10%, transparent);
     padding: 2px 7px;
     border-radius: 6px;
   }
