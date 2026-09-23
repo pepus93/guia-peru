@@ -1,19 +1,12 @@
 <script lang="ts">
-  import { tick } from 'svelte';
+  import { afterNavigate } from '$app/navigation';
   import { tripDays, loading } from '$lib/stores/trip';
   import type { TripDay, City } from '$lib/models/types';
-  import { CITY_LABELS } from '$lib/models/types';
+  import { CITY_LABELS, CITY_COLORS } from '$lib/models/types';
   import DayCard      from '$lib/components/cards/DayCard.svelte';
   import FlashHandler from '$lib/components/ui/FlashHandler.svelte';
   import PageTitle    from '$lib/components/ui/PageTitle.svelte';
-  import { todayDm } from '$lib/utils/dates';
-
-  const CITY_COLORS: Record<string, string> = {
-    lima:     'var(--sky)',
-    arequipa: 'var(--terra)',
-    cusco:    'var(--jade)',
-    selva:    '#5a9a4a',
-  };
+  import { scrollToCurrent } from '$lib/utils/scroll';
 
   type DisplayItem =
     | { type: 'city'; city: City; count: number }
@@ -34,14 +27,13 @@
     return items;
   })();
 
-  let scrolled = false;
-  $: if (!$loading && !scrolled) {
-    scrolled = true;
-    tick().then(() => {
-      const today = $tripDays.find(d => d.d === todayDm());
-      if (today) document.getElementById(today.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-  }
+  let pendingScroll = false;
+  $: if (!$loading && pendingScroll) { pendingScroll = false; scrollToCurrent(); }
+
+  afterNavigate(({ to }) => {
+    if (to?.url.searchParams.has('flash')) return;
+    if ($loading) { pendingScroll = true; } else { scrollToCurrent(); }
+  });
 </script>
 
 <FlashHandler {loading} />

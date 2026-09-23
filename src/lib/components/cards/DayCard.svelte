@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { TripDay } from '$lib/models/types';
+  import { CITY_COLORS } from '$lib/models/types';
   import { TripDayModel, BADGE_MAP, badgesFromDayItems } from '$lib/models/TripDayModel';
   import { FlightModel }        from '$lib/models/FlightModel';
   import { AccommodationModel } from '$lib/models/AccommodationModel';
@@ -18,6 +19,8 @@
   import { onMount } from 'svelte';
 
   export let day: TripDay;
+
+  $: cityColor = CITY_COLORS[day.city] ?? 'var(--ink-soft)';
 
   $: model      = new TripDayModel(day);
   $: flights = (day.flightIds ?? [])
@@ -86,12 +89,12 @@
 </script>
 
 <!-- Card -->
-<article class="day" class:today={model.isToday()} class:is-past={model.isPast} class:flash={$flashId === day.id} id={day.id}>
+<article class="day card" class:is-today={model.isToday()} class:is-past={model.isPast} class:expanded class:flash={$flashId === day.id} id={day.id} style="--flash-color: {cityColor}; --city-color: {cityColor}">
 
   <!-- HEAD -->
   <button class="day-head" on:click={toggle} aria-expanded={expanded}>
 
-    <div class="date-block">
+    <div class="date-block" style="background: color-mix(in srgb, {cityColor} 12%, transparent)">
       <span class="tl-dot" aria-hidden="true"></span>
       <div class="dow">{model.dow}</div>
       <div class="dnum font-serif">{model.dayNum}</div>
@@ -166,52 +169,24 @@
 
 <style>
   /* ── Card shell ─────────────────────────────────────── */
-  .day {
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-sm);
-    margin-bottom: 20px;
-    position: relative;
-    box-shadow: var(--shadow);
-    transition: box-shadow .2s ease, transform .2s ease, border-color .2s ease;
-  }
-  .day.today {
-    border-color: rgba(198,90,52,.5);
-    box-shadow: 0 0 0 1px rgba(198,90,52,.15), var(--shadow);
-  }
-  .day.today::before {
-    content: 'HOY';
-    position: absolute;
-    top: -1px;
-    right: 14px;
-    transform: translateY(-50%);
-    font-size: .72rem;
-    font-weight: 800;
-    letter-spacing: .14em;
-    color: var(--paper);
-    background: var(--terra);
-    padding: 2px 9px;
-    border-radius: 10px;
-    z-index: 1;
+  .day { margin-bottom: 20px; }
+  .day.expanded {
+    border-color: color-mix(in srgb, var(--city-color) 50%, transparent);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--city-color) 15%, transparent), var(--shadow);
   }
   .day.is-past { opacity: .45; filter: grayscale(.4); }
 
   @media (hover: hover) {
     .day:hover {
       box-shadow: 0 12px 28px -10px rgba(42,26,18,.5);
-      border-color: rgba(42,26,18,.2);
+      border-color: color-mix(in srgb, var(--city-color) 40%, transparent);
       transform: translateY(-1px);
     }
-    .day.today:hover {
-      box-shadow: 0 0 0 2px rgba(198,90,52,.25), 0 12px 28px -10px rgba(42,26,18,.5);
+    .day.is-today:hover,
+    .day.expanded:hover {
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--city-color) 25%, transparent), 0 12px 28px -10px rgba(42,26,18,.5);
     }
   }
-  .day:active {
-    transform: scale(0.985);
-    box-shadow: 0 1px 6px -2px rgba(42,26,18,.22);
-    transition: transform .08s ease, box-shadow .08s ease;
-  }
-
   /* ── Head ───────────────────────────────────────────── */
   .day-head {
     display: flex;
@@ -250,14 +225,20 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: var(--card);
-    border: 2px solid var(--line);
+    background: color-mix(in srgb, var(--city-color) 12%, var(--card));
+    border: 2px solid color-mix(in srgb, var(--city-color) 40%, transparent);
     z-index: 2;
     pointer-events: none;
   }
-  .today .tl-dot {
-    border-color: var(--terra);
-    background: var(--terra);
+  .is-today .tl-dot {
+    border-color: var(--city-color);
+    background: var(--city-color);
+    animation: tl-pulse 2.5s ease-out infinite;
+  }
+  @keyframes tl-pulse {
+    0%   { box-shadow: 0 0 0 0   color-mix(in srgb, var(--city-color) 45%, transparent); }
+    70%  { box-shadow: 0 0 0 7px color-mix(in srgb, var(--city-color) 0%, transparent);  }
+    100% { box-shadow: 0 0 0 0   color-mix(in srgb, var(--city-color) 0%, transparent);  }
   }
   .dow  { font-size: .72rem; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-soft); font-weight: 700; }
   .dnum { font-size: 1.6rem; font-weight: 700; line-height: 1; color: var(--ink); }

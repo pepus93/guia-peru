@@ -3,21 +3,26 @@
   import { CITY_LABELS } from '$lib/models/types';
   import HotelCard    from '$lib/components/cards/HotelCard.svelte';
   import FlashHandler from '$lib/components/ui/FlashHandler.svelte';
-  import PastToggle   from '$lib/components/ui/PastToggle.svelte';
-  import FAB           from '$lib/components/ui/FAB.svelte';
-  import PageTitle     from '$lib/components/ui/PageTitle.svelte';
+  import FAB          from '$lib/components/ui/FAB.svelte';
+  import PageTitle    from '$lib/components/ui/PageTitle.svelte';
   import { openModal } from '$lib/stores/ui';
   import { todayDm } from '$lib/utils/dates';
+  import { afterNavigate } from '$app/navigation';
+  import { scrollToCurrent } from '$lib/utils/scroll';
 
-  let pastOpen = false;
-  const today  = todayDm();
-
-  $: upcoming = $stayList.filter(h => h.endDm >= today);
-  $: past     = $stayList.filter(h => h.endDm <  today);
+  const today = todayDm();
 
   function hotelLabel(h: typeof $stayList[0]) {
     return `${h.dates} · ${CITY_LABELS[h.city] ?? h.city}`;
   }
+
+  let pendingScroll = false;
+  $: if (!$loading && pendingScroll) { pendingScroll = false; scrollToCurrent(); }
+
+  afterNavigate(({ to }) => {
+    if (to?.url.searchParams.has('flash')) return;
+    if ($loading) { pendingScroll = true; } else { scrollToCurrent(); }
+  });
 </script>
 
 <FlashHandler {loading} />
@@ -29,22 +34,10 @@
 {:else if $stayList.length === 0}
   <p class="empty-msg">No hay alojamientos.</p>
 {:else}
-  {#each upcoming as hotel (hotel.id)}
+  {#each $stayList as hotel (hotel.id)}
     <div class="day-group">
       <div class="section-label">{hotelLabel(hotel)}</div>
-      <HotelCard {hotel} />
+      <HotelCard {hotel} past={hotel.endDm < today} />
     </div>
   {/each}
-
-  {#if past.length > 0}
-    <PastToggle count={past.length} label="Alojamientos pasados" bind:open={pastOpen} />
-    {#if pastOpen}
-      {#each past as hotel (hotel.id)}
-        <div class="day-group">
-          <div class="section-label">{hotelLabel(hotel)}</div>
-          <HotelCard {hotel} past={true} />
-        </div>
-      {/each}
-    {/if}
-  {/if}
 {/if}

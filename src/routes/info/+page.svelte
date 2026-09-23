@@ -10,7 +10,7 @@
 <div class="section-label">Viajeros</div>
 
 {#if $loading}
-  <p class="loading-msg">Cargando…</p>
+  <p class="empty-msg">Cargando…</p>
 {:else}
   {#each $travelerList as t (t.id)}
     <div class="traveler-card">
@@ -128,8 +128,6 @@
 <p class="foot">Perú 2026 · Pepe & Sunta</p>
 
 <style>
-  .loading-msg { text-align: center; color: var(--ink-soft); padding: 40px 0; font-size: .85rem; }
-
   /* ── Viajeros ── */
   .traveler-card {
     background: var(--card);

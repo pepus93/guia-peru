@@ -75,10 +75,6 @@ export class TripDayModel {
     return CITY_GRADIENT[this.data.city] ?? CITY_GRADIENT.lima;
   }
 
-  get badgeInfos() {
-    return this.data.badges.map(b => ({ ...BADGE_MAP[b], type: b }));
-  }
-
   get isPast()  { return this.data.d < todayDm(); }
   isToday()     { return this.data.d === todayDm(); }
 }

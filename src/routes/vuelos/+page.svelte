@@ -1,34 +1,30 @@
 <script lang="ts">
   import { flightList, loading } from '$lib/stores/trip';
-  import FlightCard    from '$lib/components/cards/FlightCard.svelte';
-  import FlashHandler  from '$lib/components/ui/FlashHandler.svelte';
-  import PastToggle    from '$lib/components/ui/PastToggle.svelte';
-  import FAB           from '$lib/components/ui/FAB.svelte';
-  import PageTitle     from '$lib/components/ui/PageTitle.svelte';
+  import FlightCard   from '$lib/components/cards/FlightCard.svelte';
+  import FlashHandler from '$lib/components/ui/FlashHandler.svelte';
+  import FAB          from '$lib/components/ui/FAB.svelte';
+  import PageTitle    from '$lib/components/ui/PageTitle.svelte';
   import { openModal } from '$lib/stores/ui';
   import { dmToLabel, dmToDow, todayDm } from '$lib/utils/dates';
+  import { afterNavigate } from '$app/navigation';
+  import { scrollToCurrent } from '$lib/utils/scroll';
+  import { groupByKey } from '$lib/utils/group';
 
-  let pastOpen = false;
-  const today  = todayDm();
+  const today = todayDm();
 
-  $: upcoming = $flightList.filter(f => f.dm >= today);
-  $: past     = $flightList.filter(f => f.dm <  today);
-
-  function groupByDm(flights: typeof $flightList) {
-    const map = new Map<number, typeof $flightList>();
-    for (const f of flights) {
-      if (!map.has(f.dm)) map.set(f.dm, []);
-      map.get(f.dm)!.push(f);
-    }
-    return [...map.entries()];
-  }
-
-  $: groupedUpcoming = groupByDm(upcoming);
-  $: groupedPast     = groupByDm(past);
+  $: grouped = groupByKey($flightList, f => f.dm);
 
   function dayLabel(dm: number, dow: string) {
     return `${dmToLabel(dm)} · ${dow}`;
   }
+
+  let pendingScroll = false;
+  $: if (!$loading && pendingScroll) { pendingScroll = false; scrollToCurrent(); }
+
+  afterNavigate(({ to }) => {
+    if (to?.url.searchParams.has('flash')) return; // FlashHandler lo gestiona
+    if ($loading) { pendingScroll = true; } else { scrollToCurrent(); }
+  });
 </script>
 
 <FlashHandler {loading} />
@@ -40,26 +36,12 @@
 {:else if $flightList.length === 0}
   <p class="empty-msg">No hay vuelos.</p>
 {:else}
-  {#each groupedUpcoming as [dm, flights]}
+  {#each grouped as [dm, flights]}
     <div class="day-group">
       <div class="section-label">{dayLabel(dm, flights[0].dow)}</div>
       {#each flights as flight (flight.id)}
-        <FlightCard {flight} />
+        <FlightCard {flight} past={flight.dm < today} />
       {/each}
     </div>
   {/each}
-
-  {#if past.length > 0}
-    <PastToggle count={past.length} label="Vuelos pasados" bind:open={pastOpen} />
-    {#if pastOpen}
-      {#each groupedPast as [dm, flights]}
-        <div class="day-group">
-          <div class="section-label">{dayLabel(dm, flights[0].dow)}</div>
-          {#each flights as flight (flight.id)}
-            <FlightCard {flight} past={true} />
-          {/each}
-        </div>
-      {/each}
-    {/if}
-  {/if}
 {/if}

@@ -14,7 +14,7 @@ export async function scrollAndFlash(id: string): Promise<void> {
         if (Math.abs(top - prevTop) < 0.5) break;
         prevTop = top;
       }
-      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       flashElement(id);
       return;
     }

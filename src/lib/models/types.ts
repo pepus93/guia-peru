@@ -8,6 +8,13 @@ export const CITY_LABELS: Record<City, string> = {
   selva:    'Amazonia',
 };
 
+export const CITY_COLORS: Record<City, string> = {
+  lima:     'var(--sky)',
+  arequipa: 'var(--terra)',
+  cusco:    'var(--jade)',
+  selva:    '#5a9a4a',
+};
+
 // ── ACTIVITY TYPE ─────────────────────────────────────────────
 export type ActivityType =
   | 'tour' | 'restaurant' | 'museo' | 'transporte'

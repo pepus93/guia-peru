@@ -189,8 +189,13 @@ a.call:active, a.maps:active, .chip:active {
 
 /* ── TODAY CARD ─────────────────────────────────────────── */
 .card.is-today {
-  border-color: rgba(198,90,52,.5);
-  box-shadow: 0 0 0 1px rgba(198,90,52,.15), var(--shadow);
+  border-color: color-mix(in srgb, var(--flash-color, var(--terra)) 50%, transparent);
+  animation: card-today-pulse 2.5s ease-out infinite;
+}
+@keyframes card-today-pulse {
+  0%   { box-shadow: 0 0 0 1px color-mix(in srgb, var(--flash-color, var(--terra)) 15%, transparent), 0 0 0 0   color-mix(in srgb, var(--flash-color, var(--terra)) 30%, transparent), var(--shadow); }
+  70%  { box-shadow: 0 0 0 1px color-mix(in srgb, var(--flash-color, var(--terra)) 15%, transparent), 0 0 0 8px color-mix(in srgb, var(--flash-color, var(--terra)) 0%,  transparent), var(--shadow); }
+  100% { box-shadow: 0 0 0 1px color-mix(in srgb, var(--flash-color, var(--terra)) 15%, transparent), 0 0 0 0   color-mix(in srgb, var(--flash-color, var(--terra)) 0%,  transparent), var(--shadow); }
 }
 .card.is-today::before {
   content: 'HOY';
@@ -202,7 +207,7 @@ a.call:active, a.maps:active, .chip:active {
   font-weight: 800;
   letter-spacing: .14em;
   color: var(--paper);
-  background: var(--terra);
+  background: var(--flash-color, var(--terra));
   padding: 2px 9px;
   border-radius: 10px;
   z-index: 1;
@@ -216,6 +221,7 @@ a.call:active, a.maps:active, .chip:active {
   box-shadow: var(--shadow);
   position: relative;
   margin-bottom: 10px;
+  scroll-margin-top: 90px;
   transition: box-shadow .2s ease, transform .2s ease, border-color .2s ease;
 }
 
