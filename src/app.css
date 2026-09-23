@@ -30,7 +30,7 @@ html, body { height: 100%; overscroll-behavior-y: none; }
 
 body {
   font-family: 'Space Grotesk', system-ui, sans-serif;
-  background: var(--paper);
+  background: var(--page-bg, var(--paper));
   color: var(--ink);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;

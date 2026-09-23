@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onDestroy, onMount } from 'svelte';
   import { flightList, loading } from '$lib/stores/trip';
   import FlightCard   from '$lib/components/cards/FlightCard.svelte';
   import FlashHandler from '$lib/components/ui/FlashHandler.svelte';
@@ -9,6 +10,9 @@
   import { afterNavigate } from '$app/navigation';
   import { scrollToCurrent } from '$lib/utils/scroll';
   import { groupByKey } from '$lib/utils/group';
+
+  onMount(() => document.body.style.setProperty('--page-bg', 'color-mix(in srgb, #3a6ea5 8%, #f7f2ea)'));
+  onDestroy(() => document.body.style.removeProperty('--page-bg'));
 
   const today = todayDm();
 

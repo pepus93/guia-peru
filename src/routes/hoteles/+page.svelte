@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onDestroy, onMount } from 'svelte';
   import { stayList, loading } from '$lib/stores/trip';
   import { CITY_LABELS } from '$lib/models/types';
   import HotelCard    from '$lib/components/cards/HotelCard.svelte';
@@ -9,6 +10,9 @@
   import { todayDm } from '$lib/utils/dates';
   import { afterNavigate } from '$app/navigation';
   import { scrollToCurrent } from '$lib/utils/scroll';
+
+  onMount(() => document.body.style.setProperty('--page-bg', 'color-mix(in srgb, #3f7d64 8%, #f7f2ea)'));
+  onDestroy(() => document.body.style.removeProperty('--page-bg'));
 
   const today = todayDm();
 

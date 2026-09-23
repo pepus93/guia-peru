@@ -65,7 +65,7 @@
   }
 
   // ── Swipe-to-reveal ───────────────────────────────────────
-  const ACTIONS_W = 130;
+  const ACTIONS_W = 100;
   let swipeStartX  = 0;
   let swipeStartY  = 0;
   let swiping      = false;   // confirmed horizontal gesture
@@ -134,20 +134,18 @@
     {#if hasActions}
       <div class="card-actions">
         {#if !confirming}
-          <button class="ca-btn ca-edit" on:click={handleEdit}>
-            <Icon name="pencil" size={15} />
-            <span class="ca-lbl">Editar</span>
+          <button class="ca-btn ca-edit" on:click={handleEdit} aria-label="Editar">
+            <Icon name="pencil" size={22} />
           </button>
-          <button class="ca-btn ca-del" on:click={askDelete}>
-            <Icon name="trash" size={15} />
-            <span class="ca-lbl">Eliminar</span>
+          <button class="ca-btn ca-del" on:click={askDelete} aria-label="Eliminar">
+            <Icon name="trash-2" size={22} />
           </button>
         {:else}
-          <button class="ca-btn ca-no"  on:click={cancelDelete}>
-            <span class="ca-lbl">No</span>
+          <button class="ca-btn ca-no"  on:click={cancelDelete} aria-label="Cancelar">
+            <Icon name="x" size={22} />
           </button>
-          <button class="ca-btn ca-yes" on:click={confirmDelete}>
-            <span class="ca-lbl">Borrar</span>
+          <button class="ca-btn ca-yes" on:click={confirmDelete} aria-label="Confirmar borrado">
+            <Icon name="check" size={22} />
           </button>
         {/if}
       </div>
@@ -204,7 +202,7 @@
   .card-actions {
     position: absolute;
     right: 0; top: 0; bottom: 0;
-    width: 130px;
+    width: 100px;
     display: flex;
     flex-direction: column;
     z-index: 0;
@@ -224,38 +222,30 @@
     -webkit-tap-highlight-color: transparent;
   }
   @media (hover: hover) {
-    .ca-edit:hover { background: var(--line); color: var(--ink); }
+    .ca-edit:hover { background: rgba(217,139,69,.22); }
     .ca-del:hover  { background: rgba(198,90,52,.22); color: var(--terra-deep); }
-    .ca-no:hover   { background: var(--line); color: var(--ink); }
+    .ca-no:hover   { background: rgba(217,139,69,.22); }
     .ca-yes:hover  { background: rgba(198,90,52,.22); color: var(--terra-deep); }
   }
   .ca-btn:active { filter: brightness(.82); }
 
   .ca-edit {
-    background: var(--paper-2);
-    color: var(--ink-soft);
-    border-bottom: 1px solid var(--line);
+    background: rgba(217,139,69,.12);
+    color: var(--clay);
+    border-bottom: 1px solid rgba(217,139,69,.15);
   }
   .ca-del {
     background: rgba(198,90,52,.1);
     color: var(--terra);
   }
   .ca-no  {
-    background: var(--paper-2);
-    color: var(--ink-soft);
-    border-bottom: 1px solid var(--line);
+    background: rgba(217,139,69,.12);
+    color: var(--clay);
+    border-bottom: 1px solid rgba(217,139,69,.15);
   }
   .ca-yes {
     background: rgba(198,90,52,.12);
     color: var(--terra);
-  }
-
-  .ca-lbl {
-    font-size: .72rem;
-    font-weight: 700;
-    letter-spacing: .06em;
-    text-transform: uppercase;
-    color: inherit;
   }
 
   /* ── Dots trigger ─────────────────────────────────────── */

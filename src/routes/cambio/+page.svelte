@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
   import Icon      from '$lib/components/ui/Icon.svelte';
   import PageTitle from '$lib/components/ui/PageTitle.svelte';
 
@@ -21,9 +21,11 @@
   let penVal = '';
 
   onMount(() => {
+    document.body.style.setProperty('--page-bg', 'color-mix(in srgb, #d98b45 8%, #f7f2ea)');
     const saved = localStorage.getItem('eur_pen_rate');
     if (saved) rate = parseFloat(saved);
   });
+  onDestroy(() => document.body.style.removeProperty('--page-bg'));
 
   function onEurInput(e: Event) {
     const v = (e.target as HTMLInputElement).value;
