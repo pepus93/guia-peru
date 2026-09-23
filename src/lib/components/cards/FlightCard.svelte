@@ -4,6 +4,7 @@
   import { openModal, openBpModal } from '$lib/stores/ui';
   import { deleteFlight } from '$lib/stores/trip';
   import { getBpImage } from '$lib/utils/bpStorage';
+  import { FLASH_COLOR } from '$lib/config/ui';
   import Card       from './Card.svelte';
   import Icon       from '$lib/components/ui/Icon.svelte';
   import RouteTrack from '$lib/components/ui/RouteTrack.svelte';
@@ -40,7 +41,7 @@
   let viewerSrc: string | null = null;
 </script>
 
-<Card id={flight.id} {flashing} {past} {hasLabel} flashColor="var(--sky)" cssClass="flight-card{model.isInternational ? ' is-intl' : ''}" dayDm={flight.dm} collapsible={!compact} bind:expanded onEdit={!compact ? edit : undefined} onDelete={!compact ? remove : undefined}>
+<Card id={flight.id} {flashing} {past} {hasLabel} flashColor={FLASH_COLOR.flight} cssClass="flight-card{model.isInternational ? ' is-intl' : ''}" dayDm={flight.dm} collapsible={!compact} bind:expanded onEdit={!compact ? edit : undefined} onDelete={!compact ? remove : undefined}>
 
   <!-- Resumen siempre visible -->
   <div class="card-badge" style="color: {model.isInternational ? 'var(--danger)' : 'var(--sky)'}">{model.typeLabel}</div>
@@ -69,7 +70,7 @@
 
   {#if model.infoBadges.length}
     <div class="pill-line badges-row">
-      {#each model.infoBadges as b}<span class="pill {b.cls}">{b.label}</span>{/each}
+      {#each model.infoBadges as b}<span class="pill pill-{b.variant}">{b.label}</span>{/each}
     </div>
   {/if}
 

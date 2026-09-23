@@ -25,17 +25,17 @@ export class FlightModel {
       const isDirect = /directo/i.test(this.data.stops);
       b.push({
         label: isDirect ? 'Directo' : this.data.stops,
-        cls:   isDirect ? 'pill-green' : 'pill-warn',
+        variant:   isDirect ? 'green' : 'warn',
       });
     }
 
     // Duration — extracted from note field ("Duración 12h 55m" or "1h 32 min")
     const dur = this._parseDuration();
-    if (dur) b.push({ label: `Duración ${dur}`, cls: 'pill-info' });
+    if (dur) b.push({ label: `Duración ${dur}`, variant: 'info' });
 
     // Airline code
     if (this.data.code)
-      b.push({ label: this.data.code, cls: 'pill-info' });
+      b.push({ label: this.data.code, variant: 'info' });
 
     return b;
   }

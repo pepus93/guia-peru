@@ -3,6 +3,7 @@
   import { ActivityModel } from '$lib/models/ActivityModel';
   import { openModal, flashId } from '$lib/stores/ui';
   import { deleteActivity } from '$lib/stores/trip';
+  import { FLASH_COLOR, ACTIVITY_TYPES } from '$lib/config/ui';
   import Card        from './Card.svelte';
   import ContactInfo from '$lib/components/ui/ContactInfo.svelte';
   import Icon        from '$lib/components/ui/Icon.svelte';
@@ -14,7 +15,7 @@
   export let hasLabel  = false;
 
   $: model    = new ActivityModel(activity);
-  $: typeInfo = model.typeInfo;
+  $: typeInfo = ACTIVITY_TYPES[activity.type] ?? { icon: 'map-pin', bg: 'color-mix(in srgb, var(--ink) 7%, transparent)', label: activity.type, color: 'var(--ink-soft)' };
   $: flashing = $flashId === activity.id;
   $: hasRoute = !!(activity.meet && activity.end);
 
@@ -25,7 +26,7 @@
   async function remove() { await deleteActivity(activity.id); }
 </script>
 
-<Card id={activity.id} {flashing} {past} {hasLabel} flashColor="var(--lila)" cssClass="act-card" dayDm={activity.dayDm} collapsible={!compact} bind:expanded onEdit={!compact ? edit : undefined} onDelete={!compact ? remove : undefined}>
+<Card id={activity.id} {flashing} {past} {hasLabel} flashColor={FLASH_COLOR.activity} cssClass="act-card" dayDm={activity.dayDm} collapsible={!compact} bind:expanded onEdit={!compact ? edit : undefined} onDelete={!compact ? remove : undefined}>
 
   <!-- Badge tipo -->
   <div class="card-badge" style="color: var(--lila)">{typeInfo.label}</div>
@@ -79,7 +80,7 @@
   <!-- Pills -->
   {#if model.infoBadges.length}
     <div class="pill-line badges-row">
-      {#each model.infoBadges as b}<span class="pill {b.cls}">{b.label}</span>{/each}
+      {#each model.infoBadges as b}<span class="pill pill-{b.variant}">{b.label}</span>{/each}
     </div>
   {/if}
 

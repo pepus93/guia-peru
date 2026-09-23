@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { afterNavigate } from '$app/navigation';
   import { onMount, onDestroy } from 'svelte';
   import { tripDays, loading } from '$lib/stores/trip';
   import type { TripDay, City } from '$lib/models/types';
-  import { CITY_LABELS, CITY_COLORS } from '$lib/models/types';
+  import { CITY_LABELS, CITY_COLORS, PAGE_THEME } from '$lib/config/ui';
+  import { applyPageTheme } from '$lib/utils/pageTheme';
+  import { useScrollToCurrent } from '$lib/utils/scroll';
   import DayCard      from '$lib/components/cards/DayCard.svelte';
   import FlashHandler from '$lib/components/ui/FlashHandler.svelte';
   import PageTitle    from '$lib/components/ui/PageTitle.svelte';
-  import { scrollToCurrent } from '$lib/utils/scroll';
 
   type DisplayItem =
     | { type: 'city'; city: City; count: number }
@@ -28,26 +28,15 @@
     return items;
   })();
 
-  onMount(() => {
-    document.body.style.backgroundImage = 'url("/patterns/dias.svg")';
-    document.body.style.backgroundRepeat = 'repeat';
-  });
-  onDestroy(() => {
-    document.body.style.backgroundImage = '';
-    document.body.style.backgroundRepeat = '';
-  });
+  let cleanup: () => void;
+  onMount(() => { cleanup = applyPageTheme(PAGE_THEME.dias.accent, PAGE_THEME.dias.pattern); });
+  onDestroy(() => cleanup?.());
 
-  let pendingScroll = false;
-  $: if (!$loading && pendingScroll) { pendingScroll = false; scrollToCurrent(); }
-
-  afterNavigate(({ to }) => {
-    if (to?.url.searchParams.has('flash')) return;
-    if ($loading) { pendingScroll = true; } else { scrollToCurrent(); }
-  });
+  const stopScrollSub = useScrollToCurrent(loading);
 </script>
 
 <FlashHandler {loading} />
-<PageTitle title="Días" eyebrow="Perú 2026" />
+<PageTitle title="Días" />
 
 {#if $loading}
   <p class="empty-msg">Cargando…</p>
@@ -128,7 +117,7 @@
     align-items: center;
     background: var(--city-color);
     color: var(--paper);
-    font-size: .64rem;
+    font-size: .7rem;
     font-weight: 700;
     letter-spacing: .1em;
     text-transform: uppercase;

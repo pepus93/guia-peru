@@ -1,28 +1,16 @@
 <script lang="ts">
   import { onDestroy, onMount } from 'svelte';
   import { activityList, tripDays, loading } from '$lib/stores/trip';
+  import { PAGE_THEME } from '$lib/config/ui';
+  import { applyPageTheme } from '$lib/utils/pageTheme';
+  import { useScrollToCurrent } from '$lib/utils/scroll';
   import ActivityCard  from '$lib/components/cards/ActivityCard.svelte';
   import FlashHandler  from '$lib/components/ui/FlashHandler.svelte';
   import FAB           from '$lib/components/ui/FAB.svelte';
   import PageTitle     from '$lib/components/ui/PageTitle.svelte';
   import { openModal } from '$lib/stores/ui';
   import { dmToLabel, dmToDow, todayDm } from '$lib/utils/dates';
-  import { afterNavigate } from '$app/navigation';
-  import { scrollToCurrent } from '$lib/utils/scroll';
   import { groupByKey } from '$lib/utils/group';
-
-  onMount(() => {
-    document.body.style.setProperty('--page-bg', 'color-mix(in srgb, var(--lila) 8%, var(--paper))');
-    document.body.style.setProperty('--tab-accent', 'var(--lila)');
-    document.body.style.backgroundImage = 'url("/patterns/planes.svg")';
-    document.body.style.backgroundRepeat = 'repeat';
-  });
-  onDestroy(() => {
-    document.body.style.removeProperty('--page-bg');
-    document.body.style.removeProperty('--tab-accent');
-    document.body.style.backgroundImage = '';
-    document.body.style.backgroundRepeat = '';
-  });
 
   const today = todayDm();
 
@@ -34,18 +22,16 @@
     return day ? `${dmToLabel(dm)} · ${dow} · ${day.title}` : dmToLabel(dm);
   }
 
-  let pendingScroll = false;
-  $: if (!$loading && pendingScroll) { pendingScroll = false; scrollToCurrent(); }
+  let cleanup: () => void;
+  onMount(() => { cleanup = applyPageTheme(PAGE_THEME.planes.accent, PAGE_THEME.planes.pattern); });
+  onDestroy(() => cleanup?.());
 
-  afterNavigate(({ to }) => {
-    if (to?.url.searchParams.has('flash')) return;
-    if ($loading) { pendingScroll = true; } else { scrollToCurrent(); }
-  });
+  const stopScrollSub = useScrollToCurrent(loading);
 </script>
 
 <FlashHandler {loading} />
 <FAB on:click={() => openModal('activity')} />
-<PageTitle title="Planes" eyebrow="Perú 2026" accent="var(--lila)" />
+<PageTitle title="Planes" />
 
 {#if $loading}
   <p class="empty-msg">Cargando…</p>

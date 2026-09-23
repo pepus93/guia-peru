@@ -1,8 +1,8 @@
 <script lang="ts">
   import type { DayItemProps } from './DayItem.svelte';
   import DayItem from './DayItem.svelte';
-  import type { Activity } from '$lib/models/types';
-  import { DAY_ENTRY_STYLES } from '$lib/models/types';
+  import type { Activity } from '$lib/config/ui';
+  import { DAY_ENTRY_STYLES } from '$lib/config/ui';
 
   export let excursion: Activity;
   export let excDayIdx: number;

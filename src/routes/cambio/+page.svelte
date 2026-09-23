@@ -1,5 +1,7 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
+  import { PAGE_THEME } from '$lib/config/ui';
+  import { applyPageTheme } from '$lib/utils/pageTheme';
   import Icon      from '$lib/components/ui/Icon.svelte';
   import PageTitle from '$lib/components/ui/PageTitle.svelte';
 
@@ -20,20 +22,13 @@
   let eurVal = '';
   let penVal = '';
 
+  let cleanup: () => void;
   onMount(() => {
-    document.body.style.setProperty('--page-bg', 'color-mix(in srgb, var(--clay) 8%, var(--paper))');
-    document.body.style.setProperty('--tab-accent', 'var(--clay)');
-    document.body.style.backgroundImage = 'url("/patterns/cambio.svg")';
-    document.body.style.backgroundRepeat = 'repeat';
+    cleanup = applyPageTheme(PAGE_THEME.cambio.accent, PAGE_THEME.cambio.pattern);
     const saved = localStorage.getItem('eur_pen_rate');
     if (saved) rate = parseFloat(saved);
   });
-  onDestroy(() => {
-    document.body.style.removeProperty('--page-bg');
-    document.body.style.removeProperty('--tab-accent');
-    document.body.style.backgroundImage = '';
-    document.body.style.backgroundRepeat = '';
-  });
+  onDestroy(() => cleanup?.());
 
   function onEurInput(e: Event) {
     const v = (e.target as HTMLInputElement).value;
@@ -68,7 +63,7 @@
   }
 </script>
 
-<PageTitle title="Cambio" eyebrow="Perú 2026" accent="var(--clay)" />
+<PageTitle title="Cambio" />
 
 <div class="converter-card">
 

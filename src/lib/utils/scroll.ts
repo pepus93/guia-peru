@@ -1,4 +1,6 @@
 import { tick } from 'svelte';
+import { afterNavigate } from '$app/navigation';
+import { get, type Readable } from 'svelte/store';
 
 export async function scrollToCurrent(): Promise<void> {
   await tick();
@@ -10,4 +12,29 @@ export async function scrollToCurrent(): Promise<void> {
     if (first) { first.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
   }
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Encapsula el patrón pendingScroll + afterNavigate usado en todas las páginas con lista.
+// Llama en el top-level del <script> de un componente Svelte.
+// Devuelve la función de cleanup para usar en onDestroy.
+export function useScrollToCurrent(loading: Readable<boolean>): () => void {
+  let pendingScroll = false;
+
+  const unsub = loading.subscribe(isLoading => {
+    if (!isLoading && pendingScroll) {
+      pendingScroll = false;
+      scrollToCurrent();
+    }
+  });
+
+  afterNavigate(({ to }) => {
+    if (to?.url.searchParams.has('flash')) return;
+    if (get(loading)) {
+      pendingScroll = true;
+    } else {
+      scrollToCurrent();
+    }
+  });
+
+  return unsub;
 }

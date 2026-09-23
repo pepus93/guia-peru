@@ -1,5 +1,6 @@
 <script lang="ts">
   import { peruTime, spainTime, timeDiff } from '$lib/stores/ui';
+  import { TRIP_LABEL } from '$lib/config';
   import Icon from '$lib/components/ui/Icon.svelte';
 
 </script>
@@ -8,7 +9,7 @@
   <div class="header-top">
     <div class="header-left">
       <a class="header-title" href="/dias">
-        <span class="title-main font-serif">Perú 2026</span>
+        <span class="title-main font-serif">{TRIP_LABEL}</span>
         <span class="title-sub">Pepe & Sunta</span>
       </a>
       <a class="info-btn" href="/info" aria-label="Información">

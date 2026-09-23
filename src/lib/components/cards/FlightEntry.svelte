@@ -2,7 +2,7 @@
   import type { DayItemProps } from './DayItem.svelte';
   import DayItem from './DayItem.svelte';
   import type { FlightModel } from '$lib/models/FlightModel';
-  import { DAY_ENTRY_STYLES } from '$lib/models/types';
+  import { DAY_ENTRY_STYLES } from '$lib/config/ui';
 
   export let flight: FlightModel;
 

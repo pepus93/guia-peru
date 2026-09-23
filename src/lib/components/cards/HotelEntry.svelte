@@ -3,7 +3,7 @@
   import DayItem from './DayItem.svelte';
   import type { AccommodationModel } from '$lib/models/AccommodationModel';
   import { dmToDate } from '$lib/utils/dates';
-  import { DAY_ENTRY_STYLES } from '$lib/models/types';
+  import { DAY_ENTRY_STYLES } from '$lib/config/ui';
 
   export let hotel: AccommodationModel;
   export let dayDm: number;

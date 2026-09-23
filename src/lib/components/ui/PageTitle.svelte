@@ -1,7 +1,8 @@
 <script lang="ts">
+  import { TRIP_LABEL } from '$lib/config';
   export let title: string;
-  export let eyebrow: string = '';
-  export let accent: string = 'var(--terra)';
+  export let eyebrow: string = TRIP_LABEL;
+  export let accent: string = 'var(--tab-accent, var(--terra))';
 </script>
 
 <div class="page-title">

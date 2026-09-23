@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { TripDay } from '$lib/models/types';
-  import { CITY_COLORS } from '$lib/models/types';
+  import { CITY_COLORS } from '$lib/config/ui';
   import { TripDayModel, BADGE_MAP, badgesFromDayItems } from '$lib/models/TripDayModel';
   import { FlightModel }        from '$lib/models/FlightModel';
   import { AccommodationModel } from '$lib/models/AccommodationModel';
@@ -89,7 +89,7 @@
 </script>
 
 <!-- Card -->
-<article class="day card" class:is-today={model.isToday()} class:is-past={model.isPast} class:expanded class:flash={$flashId === day.id} id={day.id} style="--flash-color: {cityColor}; --city-color: {cityColor}">
+<article class="day card" class:is-today={model.isToday} class:is-past={model.isPast} class:expanded class:flash={$flashId === day.id} id={day.id} style="--flash-color: {cityColor}; --city-color: {cityColor}">
 
   <!-- HEAD -->
   <button class="day-head" on:click={toggle} aria-expanded={expanded}>

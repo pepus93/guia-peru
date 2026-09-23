@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Activity, ActivityType } from '$lib/models/types';
-  import { ACTIVITY_TYPES } from '$lib/models/types';
+  import { ACTIVITY_TYPES } from '$lib/config/ui';
   import { saveActivity, tripDays } from '$lib/stores/trip';
   import { closeModal } from '$lib/stores/ui';
   import { nanoid } from '$lib/utils/nanoid';

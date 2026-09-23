@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Accommodation } from '$lib/models/types';
-  import { CITY_LABELS } from '$lib/models/types';
+  import { CITY_LABELS, FLASH_COLOR } from '$lib/config/ui';
   import { AccommodationModel } from '$lib/models/AccommodationModel';
   import { openModal, flashId } from '$lib/stores/ui';
   import { deleteAccommodation } from '$lib/stores/trip';
@@ -22,7 +22,7 @@
   async function remove() { await deleteAccommodation(hotel.id); }
 </script>
 
-<Card id={hotel.id} {flashing} {past} {hasLabel} flashColor="var(--jade)" cssClass="hotel-card" dayDm={hotel.startDm} endDm={hotel.endDm} collapsible={false} onEdit={!compact ? edit : undefined} onDelete={!compact ? remove : undefined}>
+<Card id={hotel.id} {flashing} {past} {hasLabel} flashColor={FLASH_COLOR.accommodation} cssClass="hotel-card" dayDm={hotel.startDm} endDm={hotel.endDm} collapsible={false} onEdit={!compact ? edit : undefined} onDelete={!compact ? remove : undefined}>
 
   <!-- Badge ciudad -->
   <div class="card-badge" style="color: var(--jade)">{cityLabel}</div>

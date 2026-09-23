@@ -1,10 +1,11 @@
 <script lang="ts">
   import { travelerList, loading } from '$lib/stores/trip';
+  import { TRIP_LABEL } from '$lib/config';
   import Icon      from '$lib/components/ui/Icon.svelte';
   import PageTitle from '$lib/components/ui/PageTitle.svelte';
 </script>
 
-<PageTitle title="Info" eyebrow="Perú 2026" accent="var(--terra)" />
+<PageTitle title="Info" />
 
 <!-- ── VIAJEROS ──────────────────────────────────────────────── -->
 <div class="section-label">Viajeros</div>
@@ -125,7 +126,7 @@
   <div class="info-row"><Icon name="mountain" size={15} /><span>Cusco: 3400 m. Primeras 24h ritmo tranquilo</span></div>
 </div>
 
-<p class="foot">Perú 2026 · Pepe & Sunta</p>
+<p class="foot">{TRIP_LABEL} · Pepe & Sunta</p>
 
 <style>
   /* ── Viajeros ── */

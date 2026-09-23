@@ -76,5 +76,5 @@ export class TripDayModel {
   }
 
   get isPast()  { return this.data.d < todayDm(); }
-  isToday()     { return this.data.d === todayDm(); }
+  get isToday() { return this.data.d === todayDm(); }
 }

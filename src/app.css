@@ -13,14 +13,17 @@
   --whatsapp-light:#25d366;
   --whatsapp-deep: #1a7a3c;
   --overlay:       rgba(42,26,18,.55);
-  --clay:       #d98b45;
-  --jade:       #3f7d64;
-  --sky:        #3a6ea5;
-  --lila:       #7850a0;
-  --gold:       #e0a83e;
-  --line:       rgba(42,26,18,.14);
-  --shadow:     0 8px 24px -12px rgba(42,26,18,.45);
-  --shadow-sm:  0 2px 8px -4px rgba(42,26,18,.3);
+  --clay:        #d98b45;
+  --jade:        #3f7d64;
+  --sky:         #3a6ea5;
+  --lila:        #7850a0;
+  --gold:        #e0a83e;
+  --gold-mid:    #c08a14;
+  --selva:       #5a9a4a;
+  --line:        rgba(42,26,18,.14);
+  --shadow:      0 8px 24px -12px rgba(42,26,18,.45);
+  --shadow-sm:   0 2px 8px -4px rgba(42,26,18,.3);
+  --shadow-hover:0 12px 28px -10px rgba(42,26,18,.5);
   --radius-sm:  8px;
   --radius-md:  14px;
   --radius-lg:  18px;
@@ -246,7 +249,7 @@ a.call:active, a.maps:active, .chip:active {
 
 @media (hover: hover) {
   .card:hover {
-    box-shadow: 0 12px 28px -10px rgba(42,26,18,.5);
+    box-shadow: var(--shadow-hover);
     border-color: color-mix(in srgb, var(--card-accent, var(--tab-accent, rgba(42,26,18,.25))) 45%, transparent);
     transform: translateY(-1px);
   }

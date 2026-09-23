@@ -1,6 +1,7 @@
 import { writable, derived, get } from 'svelte/store';
 import type { Trip, TripDay, Activity, Flight, Accommodation, Traveler } from '$lib/models/types';
 import { trips, days, activities, flights, accommodations, travelers } from '$lib/firebase/services';
+import { seedFirestore } from '$lib/firebase/seed';
 import { db } from '$lib/firebase/config';
 import { SEED_TRIP, SEED_DAYS, SEED_ACTIVITIES, SEED_FLIGHTS, SEED_ACCOMMODATIONS, SEED_TRAVELERS } from '$lib/data/seed';
 import { TRIP_ID } from '$lib/config';
@@ -13,10 +14,10 @@ const sortFlights = (list: Flight[]) =>
 const sortStays = (list: Accommodation[]) =>
   [...list].sort((a, b) => a.startDm - b.startDm);
 
-// ── State ──────────────────────────────────────────────────
+// ── Raw state ──────────────────────────────────────────────
 
 export const trip           = writable<Trip | null>(null);
-export const tripDays       = writable<TripDay[]>([]);
+const _tripDays             = writable<TripDay[]>([]);
 export const activityList   = writable<Activity[]>([]);
 export const flightList     = writable<Flight[]>([]);
 export const stayList       = writable<Accommodation[]>([]);
@@ -30,6 +31,18 @@ export const activitiesByDay = derived(activityList, ($acts) =>
     (acc[a.dayDm] ??= []).push(a);
     return acc;
   }, {})
+);
+
+// tripDays computes the 'act' badge declaratively — no manual sync needed.
+export const tripDays = derived(
+  [_tripDays, activitiesByDay],
+  ([$days, $byDay]) => $days.map(d => ({
+    ...d,
+    badges: [
+      ...d.badges.filter(b => b !== 'act'),
+      ...($byDay[d.d]?.length ? ['act' as const] : []),
+    ],
+  }))
 );
 
 export const activitiesMap = derived(activityList, ($acts) =>
@@ -77,7 +90,7 @@ export async function loadTrip() {
 
   // Step 2: Firebase not available → seed data, no listeners
   if (!db) {
-    tripDays.set(SEED_DAYS);
+    _tripDays.set(SEED_DAYS);
     activityList.set(SEED_ACTIVITIES);
     flightList.set(sortFlights(SEED_FLIGHTS));
     stayList.set(sortStays(SEED_ACCOMMODATIONS));
@@ -95,23 +108,12 @@ export async function loadTrip() {
   };
 
   _unsubs.push(
-    days.watch(TRIP_ID, (d) => { tripDays.set(d); markReady('days'); }),
-    activities.watch(TRIP_ID, (a) => { activityList.set(a); markReady('acts'); }),
-    flights.watch(TRIP_ID, (f) => { flightList.set(sortFlights(f)); markReady('flights'); }),
-    accommodations.watch(TRIP_ID, (s) => { stayList.set(sortStays(s)); markReady('stays'); }),
-    travelers.watch(TRIP_ID, (tv) => { travelerList.set(tv); markReady('travelers'); }),
+    days.watch(TRIP_ID,           (d)  => { _tripDays.set(d);              markReady('days');      }),
+    activities.watch(TRIP_ID,     (a)  => { activityList.set(a);           markReady('acts');      }),
+    flights.watch(TRIP_ID,        (f)  => { flightList.set(sortFlights(f));markReady('flights');   }),
+    accommodations.watch(TRIP_ID, (s)  => { stayList.set(sortStays(s));    markReady('stays');     }),
+    travelers.watch(TRIP_ID,      (tv) => { travelerList.set(tv);          markReady('travelers'); }),
   );
-}
-
-async function seedFirestore() {
-  await trips.save(SEED_TRIP);
-  await Promise.all([
-    ...SEED_DAYS.map(d => days.save(d)),
-    ...SEED_ACTIVITIES.map(a => activities.save(a)),
-    ...SEED_FLIGHTS.map(f => flights.save(f)),
-    ...SEED_ACCOMMODATIONS.map(s => accommodations.save(s)),
-    ...SEED_TRAVELERS.map(t => travelers.save(t)),
-  ]);
 }
 
 // ── Mutations: Activity ────────────────────────────────────
@@ -121,24 +123,21 @@ export async function saveActivity(a: Activity) {
     const idx = list.findIndex(x => x.id === a.id);
     return idx >= 0 ? list.with(idx, a) : [...list, a];
   });
-  _syncDayActivityBadge(a.dayDm);
   await activities.save(a).catch((e) => console.error('[saveActivity]', e));
 }
 
 export async function deleteActivity(id: string) {
-  const a = get(activityList).find(x => x.id === id);
   activityList.update(list => list.filter(x => x.id !== id));
-  if (a) _syncDayActivityBadge(a.dayDm);
   await activities.delete(id).catch((e) => console.error('[deleteActivity]', e));
 }
 
 // ── Mutations: TripDay warn ────────────────────────────────
 
 export async function saveDayWarn(dayId: string, warn: string) {
-  tripDays.update(list =>
+  _tripDays.update(list =>
     list.map(d => d.id === dayId ? { ...d, warn: warn || undefined } : d)
   );
-  const updated = get(tripDays).find(d => d.id === dayId);
+  const updated = get(_tripDays).find(d => d.id === dayId);
   if (updated) await days.save(updated).catch((e) => console.error('[saveDayWarn]', e));
 }
 
@@ -178,19 +177,4 @@ export async function saveAccommodation(a: Accommodation) {
 export async function deleteAccommodation(id: string) {
   stayList.update(list => list.filter(x => x.id !== id));
   await accommodations.delete(id).catch((e) => console.error('[deleteAccommodation]', e));
-}
-
-// ── Helpers ────────────────────────────────────────────────
-
-function _syncDayActivityBadge(dayDm: number) {
-  const hasActs = get(activityList).some(a => a.dayDm === dayDm);
-  tripDays.update(list =>
-    list.map(day => {
-      if (day.d !== dayDm) return day;
-      const badges = hasActs
-        ? Array.from(new Set([...day.badges, 'act' as const]))
-        : day.badges.filter(b => b !== 'act');
-      return { ...day, badges };
-    })
-  );
 }

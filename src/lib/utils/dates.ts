@@ -1,10 +1,12 @@
+import { TRIP_YEAR } from '$lib/config';
+
 const DAYS_ES  = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
 const MONTHS_ES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
 
 export function dmToDate(dm: number): Date {
   const d = dm % 100;
   const m = Math.floor(dm / 100) - 1;
-  return new Date(2026, m, d);
+  return new Date(TRIP_YEAR, m, d);
 }
 
 export function dmToDow(dm: number): string {

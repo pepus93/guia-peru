@@ -1,28 +1,15 @@
 <script lang="ts">
   import { onDestroy, onMount } from 'svelte';
   import { stayList, loading } from '$lib/stores/trip';
-  import { CITY_LABELS } from '$lib/models/types';
+  import { CITY_LABELS, PAGE_THEME } from '$lib/config/ui';
+  import { applyPageTheme } from '$lib/utils/pageTheme';
+  import { useScrollToCurrent } from '$lib/utils/scroll';
   import HotelCard    from '$lib/components/cards/HotelCard.svelte';
   import FlashHandler from '$lib/components/ui/FlashHandler.svelte';
   import FAB          from '$lib/components/ui/FAB.svelte';
   import PageTitle    from '$lib/components/ui/PageTitle.svelte';
   import { openModal } from '$lib/stores/ui';
   import { todayDm } from '$lib/utils/dates';
-  import { afterNavigate } from '$app/navigation';
-  import { scrollToCurrent } from '$lib/utils/scroll';
-
-  onMount(() => {
-    document.body.style.setProperty('--page-bg', 'color-mix(in srgb, var(--jade) 8%, var(--paper))');
-    document.body.style.setProperty('--tab-accent', 'var(--jade)');
-    document.body.style.backgroundImage = 'url("/patterns/hotels.svg")';
-    document.body.style.backgroundRepeat = 'repeat';
-  });
-  onDestroy(() => {
-    document.body.style.removeProperty('--page-bg');
-    document.body.style.removeProperty('--tab-accent');
-    document.body.style.backgroundImage = '';
-    document.body.style.backgroundRepeat = '';
-  });
 
   const today = todayDm();
 
@@ -30,18 +17,16 @@
     return `${h.dates} · ${CITY_LABELS[h.city] ?? h.city}`;
   }
 
-  let pendingScroll = false;
-  $: if (!$loading && pendingScroll) { pendingScroll = false; scrollToCurrent(); }
+  let cleanup: () => void;
+  onMount(() => { cleanup = applyPageTheme(PAGE_THEME.hoteles.accent, PAGE_THEME.hoteles.pattern); });
+  onDestroy(() => cleanup?.());
 
-  afterNavigate(({ to }) => {
-    if (to?.url.searchParams.has('flash')) return;
-    if ($loading) { pendingScroll = true; } else { scrollToCurrent(); }
-  });
+  const stopScrollSub = useScrollToCurrent(loading);
 </script>
 
 <FlashHandler {loading} />
 <FAB on:click={() => openModal('hotel')} />
-<PageTitle title="Hoteles" eyebrow="Perú 2026" accent="var(--jade)" />
+<PageTitle title="Hoteles" />
 
 {#if $loading}
   <p class="empty-msg">Cargando…</p>

@@ -1,41 +1,15 @@
 // ── CITY ────────────────────────────────────────────────────
 export type City = 'lima' | 'arequipa' | 'cusco' | 'selva';
 
-export const CITY_LABELS: Record<City, string> = {
-  lima:     'Lima',
-  arequipa: 'Arequipa',
-  cusco:    'Cusco',
-  selva:    'Amazonia',
-};
-
-export const CITY_COLORS: Record<City, string> = {
-  lima:     'var(--sky)',
-  arequipa: 'var(--terra)',
-  cusco:    'var(--jade)',
-  selva:    '#5a9a4a',
-};
-
 // ── ACTIVITY TYPE ─────────────────────────────────────────────
 export type ActivityType =
   | 'tour' | 'restaurant' | 'museo' | 'transporte'
   | 'mirador' | 'playa' | 'compras' | 'ocio' | 'excursion';
 
-export const ACTIVITY_TYPES: Record<ActivityType, { icon: string; bg: string; label: string; color: string }> = {
-  tour:       { icon: 'star',         bg: 'rgba(63,125,100,.14)',  label: 'Tour',        color: 'var(--jade)' },
-  restaurant: { icon: 'utensils',     bg: 'rgba(224,168,62,.18)', label: 'Restaurante', color: 'var(--clay)' },
-  museo:      { icon: 'landmark',     bg: 'rgba(58,110,165,.14)', label: 'Museo',       color: 'var(--sky)' },
-  transporte: { icon: 'bus',          bg: 'rgba(217,139,69,.18)', label: 'Transporte',  color: 'var(--ink-soft)' },
-  mirador:    { icon: 'eye',          bg: 'rgba(63,125,100,.12)', label: 'Mirador',     color: 'var(--jade)' },
-  playa:      { icon: 'waves',        bg: 'rgba(58,110,165,.12)', label: 'Playa',       color: 'var(--sky)' },
-  compras:    { icon: 'shopping-bag', bg: 'rgba(198,90,52,.12)',  label: 'Compras',     color: 'var(--terra)' },
-  ocio:       { icon: 'music',        bg: 'rgba(224,168,62,.14)', label: 'Ocio',        color: '#c08a14' },
-  excursion:  { icon: 'mountain',     bg: 'rgba(120,80,160,.14)', label: 'Excursión',   color: '#7850a0' },
-};
-
 // ── INFO BADGE ────────────────────────────────────────────────
 export interface InfoBadge {
   label: string;
-  cls: 'pill-info' | 'pill-green' | 'pill-sky' | 'pill-terra' | 'pill-warn' | 'pill-gold';
+  variant: 'info' | 'green' | 'sky' | 'terra' | 'warn' | 'gold';
 }
 
 // ── BASE ACTIVITY ─────────────────────────────────────────────
@@ -184,14 +158,7 @@ export interface Trip {
 }
 
 // ── DAY ENTRY STYLES ──────────────────────────────────────
-// Fuente única de verdad para icono/color de cada tipo de entrada en DayCard
 export type DayEntryKind = 'flight' | 'hotel' | 'plan';
-
-export const DAY_ENTRY_STYLES: Record<DayEntryKind, { icon: string; iconBg: string; iconColor: string; itemBg: string }> = {
-  flight: { icon: 'plane',   iconBg: 'rgba(58,110,165,.14)',  iconColor: 'var(--sky)',  itemBg: 'rgba(58,110,165,.06)'  },
-  hotel:  { icon: 'bed',     iconBg: 'rgba(63,125,100,.14)',  iconColor: 'var(--jade)', itemBg: 'rgba(63,125,100,.06)'  },
-  plan:   { icon: 'compass', iconBg: 'rgba(120,80,160,.14)',  iconColor: 'var(--lila)', itemBg: 'rgba(120,80,160,.06)' },
-};
 
 // ── CITY INFO ─────────────────────────────────────────────────
 export interface CityInfo {

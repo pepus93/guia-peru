@@ -12,9 +12,10 @@
   import { fade } from 'svelte/transition';
   import { goto, beforeNavigate } from '$app/navigation';
   import { dev } from '$app/environment';
+  import { PUBLIC_PIN } from '$env/static/public';
+  import { TRIP_LABEL } from '$lib/config';
 
   const ROUTES = ['/dias', '/vuelos', '/hoteles', '/planes', '/cambio', '/info'];
-  const PIN = '8383';
 
   let unlocked = false;
   let pinInput = '';
@@ -57,7 +58,7 @@
   onDestroy(() => unsubscribeListeners());
 
   async function submitPin() {
-    if (pinInput === PIN) {
+    if (pinInput === PUBLIC_PIN) {
       localStorage.setItem('pin_ok', '1');
       unlocked = true;
       await ensureAuth();
@@ -115,7 +116,7 @@
     <div class="pin-box" class:shake={pinError}>
       <div class="pin-logo font-serif">🌄</div>
       <div class="pin-title font-serif">Pepe & Sunta</div>
-      <div class="pin-subtitle">Perú 2026</div>
+      <div class="pin-subtitle">{TRIP_LABEL}</div>
       <form on:submit|preventDefault={submitPin} class="pin-form">
         <input
           class="pin-input"
