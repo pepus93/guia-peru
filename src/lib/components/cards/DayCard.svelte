@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { TripDay } from '$lib/models/types';
-  import { TripDayModel, BADGE_MAP } from '$lib/models/TripDayModel';
+  import { TripDayModel, BADGE_MAP, badgesFromDayItems } from '$lib/models/TripDayModel';
   import { FlightModel }        from '$lib/models/FlightModel';
   import { AccommodationModel } from '$lib/models/AccommodationModel';
   import { ActivityModel }      from '$lib/models/ActivityModel';
@@ -48,12 +48,7 @@
     | { kind: 'excursion' }
     | { kind: 'activity'; act: ActivityModel };
 
-  $: badgeInfos = [
-    ...(flights.length > 0             ? [BADGE_MAP.fly]  : []),
-    ...(hotel                          ? [BADGE_MAP.bed]  : []),
-    ...((acts.length > 0 || excursion) ? [BADGE_MAP.act]  : []),
-    ...(day.warn                       ? [BADGE_MAP.warn] : []),
-  ];
+  $: badgeInfos = badgesFromDayItems(dayItems, !!day.warn);
 
   $: dayItems = ([
     ...flights.map(f  => ({ kind: 'flight'    as const, sortKey: timeToMinutes(f.data.dep), flight: f })),

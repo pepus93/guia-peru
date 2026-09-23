@@ -22,7 +22,7 @@
 
 <FlashHandler {loading} />
 <FAB on:click={() => openModal('hotel')} />
-<PageTitle title="Hoteles" accent="var(--jade)" />
+<PageTitle title="Hoteles" eyebrow="Perú 2026" accent="var(--jade)" />
 
 {#if $loading}
   <p class="empty-msg">Cargando…</p>

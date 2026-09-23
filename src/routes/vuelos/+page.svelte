@@ -33,7 +33,7 @@
 
 <FlashHandler {loading} />
 <FAB on:click={() => openModal('flight')} />
-<PageTitle title="Vuelos" accent="var(--sky)" />
+<PageTitle title="Vuelos" eyebrow="Perú 2026" accent="var(--sky)" />
 
 {#if $loading}
   <p class="empty-msg">Cargando…</p>

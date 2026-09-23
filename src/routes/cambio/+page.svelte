@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import Icon from '$lib/components/ui/Icon.svelte';
+  import Icon      from '$lib/components/ui/Icon.svelte';
+  import PageTitle from '$lib/components/ui/PageTitle.svelte';
 
   const DEFAULT_RATE = 4.10;
   const QUICK_EUR    = [1, 5, 10, 20, 50, 100];
@@ -56,6 +57,8 @@
     return (pen / rate).toFixed(2);
   }
 </script>
+
+<PageTitle title="Cambio" eyebrow="Perú 2026" accent="var(--clay)" />
 
 <div class="converter-card">
 

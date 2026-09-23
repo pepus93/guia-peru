@@ -1,6 +1,27 @@
 import type { TripDay, BadgeType } from './types';
 import { dmToDow, dmToLabel, dmToMonth, todayDm } from '$lib/utils/dates';
 
+type DayItemKind = 'flight' | 'hotel' | 'excursion' | 'activity';
+
+export function badgesFromDayItems(
+  dayItems: Array<{ kind: DayItemKind }>,
+  hasWarn: boolean
+): Array<{ cls: string; icon: string; text: string }> {
+  const seen = new Set<BadgeType>();
+  const result: Array<{ cls: string; icon: string; text: string }> = [];
+  for (const item of dayItems) {
+    const key: BadgeType =
+      item.kind === 'flight' ? 'fly' :
+      item.kind === 'hotel'  ? 'bed' : 'act';
+    if (!seen.has(key)) {
+      seen.add(key);
+      result.push(BADGE_MAP[key]);
+    }
+  }
+  if (hasWarn) result.push(BADGE_MAP.warn);
+  return result;
+}
+
 export const BADGE_MAP: Record<BadgeType, { cls: string; icon: string; text: string }> = {
   fly:  { cls: 'b-fly',  icon: 'plane',          text: 'Vuelo' },
   bed:  { cls: 'b-bed',  icon: 'bed',             text: 'Dormir' },

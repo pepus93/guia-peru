@@ -1,7 +1,10 @@
 <script lang="ts">
   import { travelerList, loading } from '$lib/stores/trip';
-  import Icon from '$lib/components/ui/Icon.svelte';
+  import Icon      from '$lib/components/ui/Icon.svelte';
+  import PageTitle from '$lib/components/ui/PageTitle.svelte';
 </script>
+
+<PageTitle title="Info" eyebrow="Perú 2026" accent="var(--terra)" />
 
 <!-- ── VIAJEROS ──────────────────────────────────────────────── -->
 <div class="section-label">Viajeros</div>
