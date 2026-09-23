@@ -52,9 +52,9 @@ export const FLASH_COLOR = {
 // ── PAGE THEMES ───────────────────────────────────────────────
 // Acento y patrón SVG de fondo por pestaña
 export const PAGE_THEME = {
-  hoteles: { accent: 'var(--jade)', pattern: '/patterns/hotels.svg' },
-  vuelos:  { accent: 'var(--sky)',  pattern: '/patterns/vuelos.svg' },
-  planes:  { accent: 'var(--lila)', pattern: '/patterns/planes.svg' },
-  cambio:  { accent: 'var(--clay)', pattern: '/patterns/cambio.svg' },
-  dias:    { accent: null,          pattern: '/patterns/dias.svg'   },
+  hoteles: { accent: 'var(--jade)', pattern: '' },
+  vuelos:  { accent: 'var(--sky)',  pattern: '' },
+  planes:  { accent: 'var(--lila)', pattern: '' },
+  cambio:  { accent: 'var(--clay)', pattern: '' },
+  dias:    { accent: null,          pattern: '' },
 } as const;
