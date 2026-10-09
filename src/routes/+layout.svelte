@@ -3,7 +3,8 @@
   import '../app.css';
   import Header     from '$lib/components/layout/Header.svelte';
   import BottomNav  from '$lib/components/layout/BottomNav.svelte';
-  import Modal      from '$lib/components/ui/Modal.svelte';
+  import Modal       from '$lib/components/ui/Modal.svelte';
+  import ImageViewer from '$lib/components/ui/ImageViewer.svelte';
   import Icon       from '$lib/components/ui/Icon.svelte';
   import { loadTrip, unsubscribeListeners } from '$lib/stores/trip';
   import { ensureAuth } from '$lib/firebase/auth';
@@ -155,6 +156,7 @@
   </main>
   <BottomNav />
   <Modal />
+  <ImageViewer />
 {/if}
 
 <style>

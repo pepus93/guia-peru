@@ -1,14 +1,13 @@
 <script lang="ts">
   import type { Flight, BoardingPass } from '$lib/models/types';
   import { FlightModel } from '$lib/models/FlightModel';
-  import { openModal, openBpModal } from '$lib/stores/ui';
+  import { openModal, openBpModal, openImageViewer, flashId } from '$lib/stores/ui';
   import { deleteFlight } from '$lib/stores/trip';
   import { FLASH_COLOR } from '$lib/config/ui';
   import Card       from './Card.svelte';
   import Icon       from '$lib/components/ui/Icon.svelte';
   import RouteTrack from '$lib/components/ui/RouteTrack.svelte';
   import MapLink    from '$lib/components/ui/MapLink.svelte';
-  import { flashId } from '$lib/stores/ui';
 
   export let flight: Flight;
   export let compact   = false;
@@ -34,22 +33,6 @@
     return flight.boardingPasses?.find(p => p.travelerId === tid);
   }
 
-  // Full-screen image viewer
-  let viewerSrc: string | null = null;
-
-  const VIEWPORT_LOCKED   = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no';
-  const VIEWPORT_UNLOCKED = 'width=device-width, initial-scale=1';
-
-  function openViewer(src: string) {
-    viewerSrc = src;
-    document.querySelector('meta[name="viewport"]')?.setAttribute('content', VIEWPORT_UNLOCKED);
-  }
-
-  function closeViewer() {
-    viewerSrc = null;
-    // maximum-scale=1 hace que el browser snapee al zoom 1 inmediatamente
-    document.querySelector('meta[name="viewport"]')?.setAttribute('content', VIEWPORT_LOCKED);
-  }
 </script>
 
 <Card id={flight.id} {flashing} {past} {hasLabel} flashColor={FLASH_COLOR.flight} cssClass="flight-card{model.isInternational ? ' is-intl' : ''}" dayDm={flight.dm} collapsible={!compact} bind:expanded onEdit={!compact ? edit : undefined} onDelete={!compact ? remove : undefined}>
@@ -119,7 +102,7 @@
           <div class="bp-who">{t.label}</div>
           {#if img}
             <div class="bp-actions">
-              <button class="bp-thumb-btn" on:click={() => openViewer(img)} title="Ver QR">
+              <button class="bp-thumb-btn" on:click={() => openImageViewer(img)} title="Ver QR">
                 <img src={img} alt="Boarding pass" class="bp-thumb" />
               </button>
               <button class="bp-edit-btn" on:click={() => openBpModal(flight, t.id, bp)}>Editar</button>
@@ -135,22 +118,6 @@
   </svelte:fragment>
 </Card>
 
-<!-- Full-screen image viewer -->
-{#if viewerSrc}
-  <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
-  <!-- svelte-ignore a11y-no-static-element-interactions -->
-  <div class="viewer-backdrop"
-    on:click={closeViewer}
-    on:touchstart|stopPropagation
-    on:touchend|stopPropagation
-    on:touchmove|stopPropagation
-  >
-    <img src={viewerSrc} alt="Tarjeta de embarque" class="viewer-img" />
-    <button class="viewer-close" on:click|stopPropagation={closeViewer}>
-      <Icon name="x" size={16} />
-    </button>
-  </div>
-{/if}
 
 <style>
   .flight-row { display: flex; align-items: center; gap: 8px; }
@@ -243,33 +210,4 @@
   }
   .bp-add-btn:active { background: color-mix(in srgb, var(--sky) 28%, transparent); }
   @media (hover: hover) { .bp-add-btn:hover { background: color-mix(in srgb, var(--sky) 22%, transparent); } }
-
-  /* ── Full-screen viewer ──────────────────────────────────── */
-  .viewer-backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 200;
-    background: rgba(0,0,0,.92);
-    overflow: auto;
-    overscroll-behavior: contain;
-    -webkit-overflow-scrolling: touch;
-  }
-  .viewer-img {
-    width: 100%;
-    min-height: 100dvh;
-    object-fit: contain;
-    display: block;
-  }
-  .viewer-close {
-    position: absolute;
-    top: 16px; right: 16px;
-    background: rgba(255,255,255,.15);
-    border: none;
-    color: #fff;
-    font-size: 1.1rem;
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-  }
 </style>

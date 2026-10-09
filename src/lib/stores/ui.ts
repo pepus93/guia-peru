@@ -42,6 +42,13 @@ export function closeBpModal() {
   _bpModal.set({ open: false, flight: null, travelerId: null, existing: null });
 }
 
+// ── Image viewer ──────────────────────────────────────────
+
+export const imageViewer = writable<string | null>(null);
+
+export function openImageViewer(src: string) { imageViewer.set(src); }
+export function closeImageViewer() { imageViewer.set(null); }
+
 // ── Deep link flash ────────────────────────────────────────
 
 export const flashId = writable<string | null>(null);
