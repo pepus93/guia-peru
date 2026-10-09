@@ -36,7 +36,7 @@ export class ActivityModel extends BaseDayModel<Activity> {
     return `https://wa.me/${num}`;
   }
 
-  get mapsUrl()  { return this.data.mapsQuery ? mapsUrl(this.data.mapsQuery) : ''; }
+  get mapsUrl()  { const q = this.data.mapsQuery ?? this.data.addr; return q ? mapsUrl(q) : ''; }
   get hasMaps()  { return !!(this.mapsUrl || this.meetUrl || this.endUrl); }
   get hasPhone() { return !!this.data.tel; }
 

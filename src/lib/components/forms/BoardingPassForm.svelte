@@ -1,8 +1,7 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
   import { bpModal, closeBpModal } from '$lib/stores/ui';
   import { saveBoardingPass } from '$lib/stores/trip';
-  import { getBpImage, setBpImage, removeBpImage, fileToDataUrl } from '$lib/utils/bpStorage';
+  import { fileToDataUrl, compressImage } from '$lib/utils/bpStorage';
 
   const TRAVELER_LABEL: Record<string, string> = { pepe: 'Pepe', sunta: 'Sunta' };
 
@@ -10,20 +9,16 @@
   $: travelerId = $bpModal.travelerId;
   $: existing   = $bpModal.existing;
 
-  let imagePreview: string | null = null;
+  $: imagePreview = existing?.imageDataUrl ?? null;
+
   let imageChanged = false;
   let saving = false;
-
-  onMount(() => {
-    if (flight && travelerId) {
-      imagePreview = getBpImage(flight.id, travelerId);
-    }
-  });
 
   async function onFileChange(e: Event) {
     const file = (e.target as HTMLInputElement).files?.[0];
     if (!file) return;
-    imagePreview = await fileToDataUrl(file);
+    const raw = await fileToDataUrl(file);
+    imagePreview = await compressImage(raw);
     imageChanged = true;
   }
 
@@ -36,11 +31,12 @@
     if (!flight || !travelerId) return;
     saving = true;
     try {
-      if (imageChanged) {
-        if (imagePreview) setBpImage(flight.id, travelerId, imagePreview);
-        else removeBpImage(flight.id, travelerId);
-      }
-      await saveBoardingPass(flight.id, { travelerId });
+      const bp = {
+        ...(existing ?? {}),
+        travelerId,
+        imageDataUrl: imageChanged ? (imagePreview ?? undefined) : existing?.imageDataUrl,
+      };
+      await saveBoardingPass(flight.id, bp);
       closeBpModal();
     } finally {
       saving = false;

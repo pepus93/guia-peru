@@ -62,6 +62,7 @@ export interface BoardingPass {
   terminal?: string;
   boardingTime?: string;
   locator?: string;
+  imageDataUrl?: string;
 }
 
 export interface Flight {

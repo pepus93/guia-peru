@@ -7,8 +7,8 @@ import { dmToDateRange } from '$lib/utils/dates';
 export class BaseDayModel<T extends BaseActivity> {
   constructor(readonly data: T) {}
 
-  get meetUrl()  { return this.data.meetQuery ? mapsUrl(this.data.meetQuery) : ''; }
-  get endUrl()   { return this.data.endQuery  ? mapsUrl(this.data.endQuery)  : ''; }
+  get meetUrl() { const q = this.data.meetQuery ?? this.data.meet; return q ? mapsUrl(q) : ''; }
+  get endUrl()  { const q = this.data.endQuery  ?? this.data.end;  return q ? mapsUrl(q) : ''; }
 
   get timeLabel() {
     return [this.data.time, this.data.duration].filter(Boolean).join(' · ');

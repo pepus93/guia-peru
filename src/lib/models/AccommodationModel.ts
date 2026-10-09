@@ -5,7 +5,7 @@ import { dmToDate } from '$lib/utils/dates';
 export class AccommodationModel {
   constructor(readonly data: Accommodation) {}
 
-  get mapsUrl() { return mapsUrl(this.data.mapsQuery ?? this.data.name); }
+  get mapsUrl() { return mapsUrl(this.data.mapsQuery ?? this.data.addr ?? this.data.name); }
 
   get nights() {
     const from = dmToDate(this.data.startDm);

@@ -3,7 +3,6 @@
   import { FlightModel } from '$lib/models/FlightModel';
   import { openModal, openBpModal } from '$lib/stores/ui';
   import { deleteFlight } from '$lib/stores/trip';
-  import { getBpImage } from '$lib/utils/bpStorage';
   import { FLASH_COLOR } from '$lib/config/ui';
   import Card       from './Card.svelte';
   import Icon       from '$lib/components/ui/Icon.svelte';
@@ -34,9 +33,6 @@
   function getBp(tid: 'pepe' | 'sunta'): BoardingPass | undefined {
     return flight.boardingPasses?.find(p => p.travelerId === tid);
   }
-
-  let bpImages: Record<string, string | null> = { pepe: null, sunta: null };
-  $: { flight.boardingPasses; bpImages = { pepe: getBpImage(flight.id, 'pepe'), sunta: getBpImage(flight.id, 'sunta') }; }
 
   // Full-screen image viewer
   let viewerSrc: string | null = null;
@@ -104,7 +100,7 @@
       </div>
       {#each TRAVELERS as t}
         {@const bp = getBp(t.id)}
-        {@const img = bpImages[t.id]}
+        {@const img = bp?.imageDataUrl ?? null}
         <div class="bp-row">
           <div class="bp-who">{t.label}</div>
           {#if img}
@@ -234,14 +230,14 @@
     inset: 0;
     z-index: 200;
     background: rgba(0,0,0,.92);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    overflow: auto;
+    overscroll-behavior: contain;
   }
   .viewer-img {
     width: 100%;
-    height: 100dvh;
+    min-height: 100dvh;
     object-fit: contain;
+    display: block;
     touch-action: pinch-zoom;
   }
   .viewer-close {
