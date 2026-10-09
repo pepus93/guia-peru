@@ -36,6 +36,18 @@
 
   // Full-screen image viewer
   let viewerSrc: string | null = null;
+
+  function setViewerZoom(enabled: boolean) {
+    const vp = document.querySelector('meta[name="viewport"]');
+    if (!vp) return;
+    vp.setAttribute('content', enabled
+      ? 'width=device-width, initial-scale=1'
+      : 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
+    );
+  }
+
+  function openViewer(src: string) { viewerSrc = src; setViewerZoom(true); }
+  function closeViewer() { viewerSrc = null; setViewerZoom(false); }
 </script>
 
 <Card id={flight.id} {flashing} {past} {hasLabel} flashColor={FLASH_COLOR.flight} cssClass="flight-card{model.isInternational ? ' is-intl' : ''}" dayDm={flight.dm} collapsible={!compact} bind:expanded onEdit={!compact ? edit : undefined} onDelete={!compact ? remove : undefined}>
@@ -105,7 +117,7 @@
           <div class="bp-who">{t.label}</div>
           {#if img}
             <div class="bp-actions">
-              <button class="bp-thumb-btn" on:click={() => (viewerSrc = img)} title="Ver QR">
+              <button class="bp-thumb-btn" on:click={() => openViewer(img)} title="Ver QR">
                 <img src={img} alt="Boarding pass" class="bp-thumb" />
               </button>
               <button class="bp-edit-btn" on:click={() => openBpModal(flight, t.id, bp)}>Editar</button>
@@ -124,9 +136,9 @@
 <!-- Full-screen image viewer -->
 {#if viewerSrc}
   <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
-  <div class="viewer-backdrop" on:click={() => (viewerSrc = null)}>
+  <div class="viewer-backdrop" on:click={closeViewer}>
     <img src={viewerSrc} alt="Tarjeta de embarque" class="viewer-img" />
-    <button class="viewer-close" on:click={() => (viewerSrc = null)}>
+    <button class="viewer-close" on:click={closeViewer}>
       <Icon name="x" size={16} />
     </button>
   </div>
