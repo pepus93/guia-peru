@@ -37,8 +37,19 @@
   // Full-screen image viewer
   let viewerSrc: string | null = null;
 
-  function openViewer(src: string) { viewerSrc = src; }
-  function closeViewer() { viewerSrc = null; }
+  const VIEWPORT_LOCKED   = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no';
+  const VIEWPORT_UNLOCKED = 'width=device-width, initial-scale=1';
+
+  function openViewer(src: string) {
+    viewerSrc = src;
+    document.querySelector('meta[name="viewport"]')?.setAttribute('content', VIEWPORT_UNLOCKED);
+  }
+
+  function closeViewer() {
+    viewerSrc = null;
+    // maximum-scale=1 hace que el browser snapee al zoom 1 inmediatamente
+    document.querySelector('meta[name="viewport"]')?.setAttribute('content', VIEWPORT_LOCKED);
+  }
 </script>
 
 <Card id={flight.id} {flashing} {past} {hasLabel} flashColor={FLASH_COLOR.flight} cssClass="flight-card{model.isInternational ? ' is-intl' : ''}" dayDm={flight.dm} collapsible={!compact} bind:expanded onEdit={!compact ? edit : undefined} onDelete={!compact ? remove : undefined}>
@@ -127,9 +138,15 @@
 <!-- Full-screen image viewer -->
 {#if viewerSrc}
   <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
-  <div class="viewer-backdrop" on:click={closeViewer}>
+  <!-- svelte-ignore a11y-no-static-element-interactions -->
+  <div class="viewer-backdrop"
+    on:click={closeViewer}
+    on:touchstart|stopPropagation
+    on:touchend|stopPropagation
+    on:touchmove|stopPropagation
+  >
     <img src={viewerSrc} alt="Tarjeta de embarque" class="viewer-img" />
-    <button class="viewer-close" on:click={closeViewer}>
+    <button class="viewer-close" on:click|stopPropagation={closeViewer}>
       <Icon name="x" size={16} />
     </button>
   </div>
@@ -238,7 +255,9 @@
     -webkit-overflow-scrolling: touch;
   }
   .viewer-img {
-    width: max(100%, 700px);
+    width: 100%;
+    min-height: 100dvh;
+    object-fit: contain;
     display: block;
   }
   .viewer-close {
