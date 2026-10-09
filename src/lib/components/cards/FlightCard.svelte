@@ -37,17 +37,8 @@
   // Full-screen image viewer
   let viewerSrc: string | null = null;
 
-  function setViewerZoom(enabled: boolean) {
-    const vp = document.querySelector('meta[name="viewport"]');
-    if (!vp) return;
-    vp.setAttribute('content', enabled
-      ? 'width=device-width, initial-scale=1'
-      : 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
-    );
-  }
-
-  function openViewer(src: string) { viewerSrc = src; setViewerZoom(true); }
-  function closeViewer() { viewerSrc = null; setViewerZoom(false); }
+  function openViewer(src: string) { viewerSrc = src; }
+  function closeViewer() { viewerSrc = null; }
 </script>
 
 <Card id={flight.id} {flashing} {past} {hasLabel} flashColor={FLASH_COLOR.flight} cssClass="flight-card{model.isInternational ? ' is-intl' : ''}" dayDm={flight.dm} collapsible={!compact} bind:expanded onEdit={!compact ? edit : undefined} onDelete={!compact ? remove : undefined}>
@@ -244,13 +235,11 @@
     background: rgba(0,0,0,.92);
     overflow: auto;
     overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
   }
   .viewer-img {
-    width: 100%;
-    min-height: 100dvh;
-    object-fit: contain;
+    width: max(100%, 700px);
     display: block;
-    touch-action: pinch-zoom;
   }
   .viewer-close {
     position: absolute;
